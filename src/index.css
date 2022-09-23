@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+   body {
+      @apply bg-slate-900;
+   }
+}
+@layer components {
+   .titleText {
+      @apply text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-200 via-slate-400 to-black;
+   }
+   .input {
+      @apply outline-none border py-2 lg:py-1 pl-6 pr-3 w-full focus:outline-none focus:ring focus:ring-slate-300;
+   }
+   .inputIcon {
+      @apply pointer-events-none w-4 h-4 text-gray-400 absolute top-3 lg:top-2 left-1;
+   }
+}
