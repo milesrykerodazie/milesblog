@@ -1,6 +1,8 @@
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { BsPersonFill } from 'react-icons/bs';
 import { GrMail } from 'react-icons/gr';
 import { RiLockPasswordFill } from 'react-icons/ri';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 const RegistrationForm = ({
    data,
@@ -13,8 +15,12 @@ const RegistrationForm = ({
       password: string;
       confirmPassword: string;
    };
+
    handleChange: any;
 }) => {
+   const [passwordToggle, setPasswordToggle] = useState<string>('password');
+   const [confirmToggle, setConfirmToggle] = useState<string>('password');
+
    const registerForm = (
       <div className='space-y-5 pb-3'>
          <div className='bg-white'>
@@ -22,6 +28,7 @@ const RegistrationForm = ({
                {' '}
                Full Name
             </label>
+
             <div className='relative'>
                <input
                   type='text'
@@ -73,12 +80,29 @@ const RegistrationForm = ({
             </div>
          </div>
          <div className='bg-white'>
-            <label htmlFor='password' className='text-slate-600'>
-               Password
-            </label>
+            <div className='flex items-center justify-between'>
+               <label htmlFor='password' className='text-slate-600'>
+                  Password
+               </label>
+               {data?.password !== '' && (
+                  <>
+                     {passwordToggle === 'password' ? (
+                        <AiOutlineEye
+                           onClick={() => setPasswordToggle('text')}
+                           className='lg:w-5 lg:h-5 text-slate-800'
+                        />
+                     ) : (
+                        <AiOutlineEyeInvisible
+                           onClick={() => setPasswordToggle('password')}
+                           className='lg:w-5 lg:h-5 text-slate-800'
+                        />
+                     )}
+                  </>
+               )}
+            </div>
             <div className='relative'>
                <input
-                  type='password'
+                  type={passwordToggle}
                   id='password'
                   name='password'
                   placeholder='Password'
@@ -91,18 +115,36 @@ const RegistrationForm = ({
             </div>
          </div>
          <div className='bg-white'>
-            <label htmlFor='confirmPassword' className='text-slate-600'>
-               Confirm Password
-            </label>
+            <div className='flex items-center justify-between'>
+               <label htmlFor='confirmPassword' className='text-slate-600'>
+                  Confirm Password
+               </label>
+               {data?.confirmPassword !== '' && (
+                  <>
+                     {confirmToggle === 'password' ? (
+                        <AiOutlineEye
+                           onClick={() => setConfirmToggle('text')}
+                           className='lg:w-5 lg:h-5 text-slate-800'
+                        />
+                     ) : (
+                        <AiOutlineEyeInvisible
+                           onClick={() => setConfirmToggle('password')}
+                           className='lg:w-5 lg:h-5 text-slate-800'
+                        />
+                     )}
+                  </>
+               )}
+            </div>
             <div className='relative'>
                <input
-                  type='password'
+                  type={confirmToggle}
                   id='confirmPassword'
                   name='confirmPassword'
                   placeholder='Confirm Password'
                   value={data.confirmPassword}
                   onChange={handleChange}
                   autoComplete='off'
+                  disabled={data?.password === ''}
                   className='input'
                />
                <RiLockPasswordFill className='inputIcon' />

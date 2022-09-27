@@ -1,17 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import ActionButton from '../components/ActionButton';
 import VerifyEmailForm from '../components/forms/VerifyEmailForm';
+import { useVerifyEmailMutation } from '../redux/features/authApiSlice';
 
 const VerifyEmail = () => {
+   //the verify email request
+   const [
+      verifyEmail,
+      { data: verifySuccess, isLoading, isSuccess, isError, error },
+   ] = useVerifyEmailMutation();
+
+   // initializing navigate
+   const navigate = useNavigate();
+   //states for verify email
    const [data, setData] = useState({
-      userId: '',
+      username: '',
       verificationCode: '',
    });
 
-   const handleSubmit = (e: React.SyntheticEvent) => {
-      e.preventDefault();
-      console.log(JSON.stringify(data));
-   };
+   useEffect(() => {
+      if (isSuccess) {
+         setData({
+            username: '',
+            verificationCode: '',
+         });
+         navigate('/login');
+      }
+   }, [isSuccess, navigate]);
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const type = event.target.type;
@@ -26,7 +42,21 @@ const VerifyEmail = () => {
       }));
    };
 
-   const canSave = [...Object.values(data)].every(Boolean);
+   const canSubmit = [...Object.values(data)].every(Boolean);
+
+   const verifyEmailObject = {
+      username: data?.username.trim(),
+      otp: data?.verificationCode.trim(),
+   };
+
+   const handleSubmit = async (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      if (canSubmit) {
+         await verifyEmail(verifyEmailObject);
+      }
+   };
+
+   console.log('success verify message: => ', verifySuccess);
 
    const verifyEmailContent = (
       <form
@@ -40,7 +70,19 @@ const VerifyEmail = () => {
                      Verify Email
                   </h2>
                   <VerifyEmailForm data={data} handleChange={handleChange} />
-                  <ActionButton buttonDescription='Verify' canSave={canSave} />
+                  <ActionButton
+                     buttonDescription='Verify'
+                     canSubmit={canSubmit}
+                     isLoading={isLoading}
+                  />
+                  <Link to='/login'>
+                     <button
+                        type='button'
+                        className='w-full bg-slate-600 text-white py-2 rounded-md font-semibold tracking-wide uppercase mt-4'
+                     >
+                        Skip
+                     </button>
+                  </Link>
                </div>
             </div>
          </div>

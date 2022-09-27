@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import ActionButton from '../components/ActionButton';
 import RegistrationForm from '../components/forms/RegistrationForm';
+import { useRegisterMutation } from '../redux/features/authApiSlice';
 
 const Register = () => {
+   //the register state from redux
+   const [
+      register,
+      { data: successResponse, isLoading, isSuccess, isError, error },
+   ] = useRegisterMutation();
+
+   // initializing navigate
+   const navigate = useNavigate();
+
+   //states for form details
    const [data, setData] = useState({
       fullName: '',
       email: '',
@@ -12,10 +23,22 @@ const Register = () => {
       confirmPassword: '',
    });
 
-   const handleSubmit = (e: React.SyntheticEvent) => {
-      e.preventDefault();
-      console.log(JSON.stringify(data));
-   };
+   const [passwordMatch, setPasswordMatch] = useState<string>('');
+
+   // console.log('register data: =>', data);
+
+   useEffect(() => {
+      if (isSuccess) {
+         setData({
+            fullName: '',
+            email: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
+         });
+         navigate('/verifyemail');
+      }
+   }, [isSuccess, navigate]);
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const type = event.target.type;
@@ -30,7 +53,26 @@ const Register = () => {
       }));
    };
 
-   const canSave = [...Object.values(data)].every(Boolean);
+   const canSubmit = [...Object.values(data)].every(Boolean);
+
+   const registerObject = {
+      fullName: data?.fullName.trim(),
+      email: data?.email.trim(),
+      username: data?.username.trim(),
+      password: data?.password.trim(),
+   };
+
+   const handleSubmit = async (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      if (data?.password.trim() !== data?.confirmPassword.trim()) {
+         setPasswordMatch('Password do not match');
+         setData({ ...data, password: '', confirmPassword: '' });
+         return;
+      }
+      if (canSubmit) {
+         await register(registerObject);
+      }
+   };
 
    const registerContent = (
       <form
@@ -44,7 +86,11 @@ const Register = () => {
                      Sign Up
                   </h2>
                   <RegistrationForm data={data} handleChange={handleChange} />
-                  <ActionButton buttonDescription='Sign Up' canSave={canSave} />
+                  <ActionButton
+                     buttonDescription='Sign Up'
+                     canSubmit={canSubmit}
+                     isLoading={isLoading}
+                  />
                </div>
                <div className='mt-4 flex items-center justify-center space-x-2'>
                   <p className='text-white text-xs tracking-wide'>

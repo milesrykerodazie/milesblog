@@ -1,17 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ActionButton from '../components/ActionButton';
 import { GrMail } from 'react-icons/gr';
+import { useForgotPasswordMutation } from '../redux/features/authApiSlice';
 
 const ForgotPassword = () => {
-   // const handleSubmit = (e: React.SyntheticEvent) => {
-   //    e.preventDefault();
-   //    console.log(JSON.stringify(data));
-   // };
+   const [
+      forgotPassword,
+      { data: fPSuccess, isLoading, isSuccess, isError, error },
+   ] = useForgotPasswordMutation();
 
-   // const canSave = [...Object.values(data)].every(Boolean);
+   // initializing navigate
+   const navigate = useNavigate();
 
-   const verifyEmailContent = (
-      <form className='bg-rg-image h-screen bg-cover bg-center'>
+   const [email, setEmail] = useState<string>('');
+   const [emailEmpty, setEmailEmpty] = useState<string>('');
+
+   useEffect(() => {
+      if (isSuccess) {
+         setEmail('');
+      }
+   }, [isSuccess, navigate]);
+
+   const canSubmit = [email].every(Boolean);
+
+   const handleSubmit = async (e: React.SyntheticEvent) => {
+      e.preventDefault();
+
+      if (!canSubmit) return setEmailEmpty('Email is required!');
+      if (canSubmit) await forgotPassword(email);
+   };
+
+   const forgotPasswordContent = (
+      <form
+         className='bg-rg-image h-screen bg-cover bg-center'
+         onSubmit={handleSubmit}
+      >
          <div className='bg-slate-900/90 h-full'>
             <div className='flex flex-col justify-center items-center h-full'>
                <div className='max-w-3xl w-full mx-auto bg-white p-5 space-y-3 shadow-md  shadow-white lg:rounded-md'>
@@ -29,6 +53,8 @@ const ForgotPassword = () => {
                            id='email'
                            name='email'
                            placeholder='Email'
+                           value={email}
+                           onChange={(e) => setEmail(e.target.value)}
                            autoComplete='off'
                            className='input'
                         />
@@ -37,14 +63,15 @@ const ForgotPassword = () => {
                   </div>
                   <ActionButton
                      buttonDescription='Get reset link'
-                     canSave={false}
+                     canSubmit={canSubmit}
+                     isLoading={isLoading}
                   />
                </div>
             </div>
          </div>
       </form>
    );
-   return verifyEmailContent;
+   return forgotPasswordContent;
 };
 
 export default ForgotPassword;

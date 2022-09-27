@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import ActionButton from '../components/ActionButton';
 import LoginForm from '../components/forms/LoginForm';
+import { useLoginMutation } from '../redux/features/authApiSlice';
+import { useAppDispatch } from '../redux/app/store';
+import { setCredentials } from '../redux/features/auth/authSlice';
+import usePersist from '../hooks/usePersist';
+
+const customId = 'custom-id-yes';
 
 const Login = () => {
+   //the login function
+   const [
+      login,
+      { data: loginResponse, isLoading, isSuccess, isError, error },
+   ] = useLoginMutation();
+
+   // initializing navigate
+   const navigate = useNavigate();
+   const dispatch = useAppDispatch();
+   const [persist, setPersist] = usePersist();
+
    const [data, setData] = useState({
       email: '',
       password: '',
    });
-
-   const handleSubmit = (e: React.SyntheticEvent) => {
-      e.preventDefault();
-      console.log(JSON.stringify(data));
-   };
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const type = event.target.type;
@@ -26,8 +39,37 @@ const Login = () => {
          [name]: value,
       }));
    };
+   const handleToggle = () => setPersist((current: any) => !current);
+   const canSubmit = [...Object.values(data)].every(Boolean);
+   const loginObject = {
+      email: data?.email.trim(),
+      password: data?.password.trim(),
+   };
 
-   const canSave = [...Object.values(data)].every(Boolean);
+   const handleSubmit = async (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      if (canSubmit) {
+         await login(loginObject);
+      }
+   };
+   useEffect(() => {
+      if (loginResponse) {
+         toast.success(loginResponse?.success, {
+            toastId: customId,
+         });
+      }
+   }, [loginResponse]);
+
+   useEffect(() => {
+      if (isSuccess) {
+         setData({
+            email: '',
+            password: '',
+         });
+         dispatch(setCredentials({ accessToken: loginResponse?.accessToken }));
+         navigate('/blog');
+      }
+   }, [isSuccess, navigate, dispatch]);
 
    const loginContent = (
       <form
@@ -41,7 +83,26 @@ const Login = () => {
                      Sign In
                   </h2>
                   <LoginForm data={data} handleChange={handleChange} />
-                  <ActionButton buttonDescription='Sign In' canSave={canSave} />
+                  {isError && (
+                     <p className='text-red-500 text-sm'>
+                        {(error as any)?.data?.message}
+                     </p>
+                  )}
+                  <label htmlFor='persist' className='form__persist'>
+                     <input
+                        type='checkbox'
+                        className='form__checkbox'
+                        id='persist'
+                        onChange={handleToggle}
+                        checked={persist}
+                     />
+                     Trust This Device
+                  </label>
+                  <ActionButton
+                     buttonDescription='Sign In'
+                     canSubmit={canSubmit}
+                     isLoading={isLoading}
+                  />
                   <Link to='/forgotpassword'>
                      <p className='text-sm text-slate-600 font-medium'>
                         Forgot Password?

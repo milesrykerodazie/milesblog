@@ -1,5 +1,7 @@
 import { GrMail } from 'react-icons/gr';
 import { RiLockPasswordFill } from 'react-icons/ri';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { useState } from 'react';
 
 const LoginForm = ({
    data,
@@ -7,11 +9,11 @@ const LoginForm = ({
 }: {
    data: {
       email: string;
-
       password: string;
    };
    handleChange: any;
 }) => {
+   const [passwordToggle, setPasswordToggle] = useState<string>('password');
    const loginForm = (
       <div className='space-y-5 pb-3'>
          <div className='bg-white'>
@@ -34,12 +36,29 @@ const LoginForm = ({
          </div>
 
          <div className='bg-white'>
-            <label htmlFor='password' className='text-slate-600'>
-               Password
-            </label>
+            <div className='flex items-center justify-between'>
+               <label htmlFor='password' className='text-slate-600'>
+                  Password
+               </label>
+               {data?.password !== '' && (
+                  <>
+                     {passwordToggle === 'password' ? (
+                        <AiOutlineEye
+                           onClick={() => setPasswordToggle('text')}
+                           className='lg:w-5 lg:h-5 text-slate-800'
+                        />
+                     ) : (
+                        <AiOutlineEyeInvisible
+                           onClick={() => setPasswordToggle('password')}
+                           className='lg:w-5 lg:h-5 text-slate-800'
+                        />
+                     )}
+                  </>
+               )}
+            </div>
             <div className='relative'>
                <input
-                  type='password'
+                  type={passwordToggle}
                   id='password'
                   name='password'
                   placeholder='Password'

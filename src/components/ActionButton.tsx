@@ -1,21 +1,23 @@
-import React from 'react';
+import { ImSpinner } from 'react-icons/im';
+import { actionTypes } from '../typescriptTypes';
 
 const ActionButton = ({
    buttonDescription,
-   canSave,
-}: {
-   buttonDescription: string;
-   canSave: any;
-}) => {
+   canSubmit,
+   isLoading,
+}: actionTypes) => {
    const Button = (
       <button
          type='submit'
-         disabled={!canSave}
-         className={`w-full bg-slate-600 text-white py-2 rounded-md font-semibold tracking-wide uppercase ${
-            !canSave && 'opacity-20 text-gray-400'
+         disabled={!canSubmit}
+         className={`w-full bg-slate-600 text-white py-2 rounded-md font-semibold tracking-wide uppercase flex items-center justify-center space-x-3 ${
+            !canSubmit && 'opacity-20 text-gray-400'
          }`}
       >
-         {buttonDescription}
+         <span>{buttonDescription}</span>{' '}
+         {isLoading && (
+            <ImSpinner className='w-6 h-6 text-slate-200 animate-spin' />
+         )}
       </button>
    );
 
