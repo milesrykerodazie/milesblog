@@ -25,7 +25,7 @@ const VerifyEmail = () => {
             username: '',
             verificationCode: '',
          });
-         navigate('/login');
+         navigate('/auth/login');
       }
    }, [isSuccess, navigate]);
 
@@ -75,7 +75,7 @@ const VerifyEmail = () => {
                      canSubmit={canSubmit}
                      isLoading={isLoading}
                   />
-                  <Link to='/login'>
+                  <Link to='/auth/login'>
                      <button
                         type='button'
                         className='w-full bg-slate-600 text-white py-2 rounded-md font-semibold tracking-wide uppercase mt-4'

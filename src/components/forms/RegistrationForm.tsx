@@ -22,13 +22,11 @@ const RegistrationForm = ({
    const [confirmToggle, setConfirmToggle] = useState<string>('password');
 
    const registerForm = (
-      <div className='space-y-5 pb-3'>
-         <div className='bg-white'>
-            <label htmlFor='fullName' className='text-slate-600'>
-               {' '}
+      <div className='space-y-7 pb-3'>
+         <div className=''>
+            <label htmlFor='fullName' className='label'>
                Full Name
             </label>
-
             <div className='relative'>
                <input
                   type='text'
@@ -43,8 +41,8 @@ const RegistrationForm = ({
                <BsPersonFill className='inputIcon' />
             </div>
          </div>
-         <div className='bg-white'>
-            <label htmlFor='email' className='text-slate-600'>
+         <div className=''>
+            <label htmlFor='email' className='label'>
                E-mail
             </label>
             <div className='relative'>
@@ -61,8 +59,8 @@ const RegistrationForm = ({
                <GrMail className='inputIcon' />
             </div>
          </div>
-         <div className='bg-white'>
-            <label htmlFor='username' className='text-slate-600'>
+         <div className=''>
+            <label htmlFor='username' className='label'>
                Username
             </label>
             <div className='relative'>
@@ -79,9 +77,9 @@ const RegistrationForm = ({
                <BsPersonFill className='inputIcon' />
             </div>
          </div>
-         <div className='bg-white'>
+         <div className=''>
             <div className='flex items-center justify-between'>
-               <label htmlFor='password' className='text-slate-600'>
+               <label htmlFor='password' className='label'>
                   Password
                </label>
                {data?.password !== '' && (
@@ -89,12 +87,12 @@ const RegistrationForm = ({
                      {passwordToggle === 'password' ? (
                         <AiOutlineEye
                            onClick={() => setPasswordToggle('text')}
-                           className='lg:w-5 lg:h-5 text-slate-800'
+                           className='lg:w-5 lg:h-5 text-slate-800 dark:text-slate-400 duration-500 ease-in'
                         />
                      ) : (
                         <AiOutlineEyeInvisible
                            onClick={() => setPasswordToggle('password')}
-                           className='lg:w-5 lg:h-5 text-slate-800'
+                           className='lg:w-5 lg:h-5 text-slate-800 dark:text-slate-400 duration-500 ease-in'
                         />
                      )}
                   </>
@@ -114,9 +112,9 @@ const RegistrationForm = ({
                <RiLockPasswordFill className='inputIcon' />
             </div>
          </div>
-         <div className='bg-white'>
+         <div className=''>
             <div className='flex items-center justify-between'>
-               <label htmlFor='confirmPassword' className='text-slate-600'>
+               <label htmlFor='confirmPassword' className='label'>
                   Confirm Password
                </label>
                {data?.confirmPassword !== '' && (
@@ -124,12 +122,12 @@ const RegistrationForm = ({
                      {confirmToggle === 'password' ? (
                         <AiOutlineEye
                            onClick={() => setConfirmToggle('text')}
-                           className='lg:w-5 lg:h-5 text-slate-800'
+                           className='lg:w-5 lg:h-5 text-slate-800 dark:text-slate-400 duration-500 ease-in'
                         />
                      ) : (
                         <AiOutlineEyeInvisible
                            onClick={() => setConfirmToggle('password')}
-                           className='lg:w-5 lg:h-5 text-slate-800'
+                           className='lg:w-5 lg:h-5 text-slate-800 dark:text-slate-400 duration-500 ease-in'
                         />
                      )}
                   </>

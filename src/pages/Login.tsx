@@ -67,9 +67,9 @@ const Login = () => {
             password: '',
          });
          dispatch(setCredentials({ accessToken: loginResponse?.accessToken }));
-         navigate('/blog');
+         navigate('/');
       }
-   }, [isSuccess, navigate, dispatch]);
+   }, [isSuccess, navigate, dispatch, loginResponse?.accessToken]);
 
    const loginContent = (
       <form
@@ -78,8 +78,8 @@ const Login = () => {
       >
          <div className='bg-slate-900/90 h-full'>
             <div className='flex flex-col justify-center items-center h-full'>
-               <div className='max-w-3xl w-full mx-auto bg-white p-5 space-y-3 shadow-md  shadow-white lg:rounded-md'>
-                  <h2 className='text-xl font-bold text-center py-2 text-slate-600'>
+               <div className='max-w-3xl w-full mx-auto bg-white dark:bg-black  p-5 space-y-3 shadow-md shadow-fuchsia-500 lg:rounded-md duration-500 ease-in'>
+                  <h2 className='text-xl font-bold text-center py-2 text-fuchsia-500'>
                      Sign In
                   </h2>
                   <LoginForm data={data} handleChange={handleChange} />
@@ -88,33 +88,36 @@ const Login = () => {
                         {(error as any)?.data?.message}
                      </p>
                   )}
-                  <label htmlFor='persist' className='form__persist'>
+                  <label
+                     htmlFor='persist'
+                     className='label flex text-xs space-x-2 items-center'
+                  >
                      <input
                         type='checkbox'
-                        className='form__checkbox'
+                        className=''
                         id='persist'
                         onChange={handleToggle}
                         checked={persist}
                      />
-                     Trust This Device
+                     <span className=''>Trust This Device</span>
                   </label>
                   <ActionButton
                      buttonDescription='Sign In'
                      canSubmit={canSubmit}
                      isLoading={isLoading}
                   />
-                  <Link to='/forgotpassword'>
-                     <p className='text-sm text-slate-600 font-medium'>
+                  <Link to='/auth/forgotpassword'>
+                     <p className='text-sm text-slate-500 font-medium mt-1'>
                         Forgot Password?
                      </p>
                   </Link>
                </div>
                <div className='mt-4 flex items-center justify-center space-x-2'>
-                  <p className='text-white text-xs tracking-wide'>
+                  <p className='text-fuchsia-500 font-medium text-sm tracking-wide'>
                      Do not have an account?
                   </p>
-                  <Link to='/register'>
-                     <button className='text-slate-300 font-semibold text-sm'>
+                  <Link to='/auth'>
+                     <button className='text-white font-semibold text-sm'>
                         Sign Up
                      </button>
                   </Link>

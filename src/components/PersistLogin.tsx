@@ -31,28 +31,19 @@ const PersistLogin = () => {
          process.env.NODE_ENV !== 'development'
       ) {
          const verifyRefreshToken = async () => {
-            console.log('verifying refresh token');
             try {
-               const response = await refresh({});
-               console.log('refresh response from persist login: =>', response);
-
-               if ((response as any)?.data) {
-                  const { accessToken } = (response as any)?.data;
-                  console.log('access token received => ', accessToken);
-                  setTrueSuccess(true);
-               }
-               return;
+               await refresh({});
+               setTrueSuccess(true);
             } catch (err) {
                console.error(err);
             }
          };
-
          if (!token && persist) verifyRefreshToken();
       }
       return () => (effectRan.current = true);
-
       // eslint-disable-next-line
    }, []);
+
    return (
       <React.Fragment>
          {!persist ? (
@@ -79,3 +70,33 @@ export default PersistLogin;
 //       <Link to='/login'>Please login again</Link>
 //    </p>
 // )
+
+//for reference purposes only
+
+// useEffect(() => {
+//    if (
+//       effectRan.current === true ||
+//       process.env.NODE_ENV !== 'development'
+//    ) {
+//       const verifyRefreshToken = async () => {
+//          console.log('verifying refresh token');
+//          try {
+//             const response = await refresh({});
+//             console.log('refresh response from persist login: =>', response);
+//             if ((response as any)?.data) {
+//                const { accessToken } = (response as any)?.data;
+//                console.log('access token received => ', accessToken);
+//                setTrueSuccess(true);
+//             }
+//             return;
+//          } catch (err) {
+//             console.error(err);
+//          }
+//       };
+
+//       if (!token && persist) verifyRefreshToken();
+//    }
+//    return () => (effectRan.current = true);
+
+//    // eslint-disable-next-line
+// }, []);

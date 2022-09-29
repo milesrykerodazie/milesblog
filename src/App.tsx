@@ -1,5 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import BlogLayout from './components/layout/BlogLayout';
+import { Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import BlogPage from './pages/BlogPage';
 import ForgotPassword from './pages/ForgotPassword';
@@ -9,21 +8,25 @@ import PersistLogin from './components/PersistLogin';
 import Register from './pages/Register';
 import ResetPasword from './pages/ResetPasword';
 import VerifyEmail from './pages/VerifyEmail';
-import { useAppSelector } from './redux/app/store';
-import { selectCurrentToken } from './redux/features/auth/authSlice';
+import Contact from './pages/Contact';
+import About from './pages/About';
+
 const App = () => {
-   const token = useAppSelector(selectCurrentToken);
    return (
       <Routes>
-         <Route path='/' element={<Layout />}>
-            <Route element={<PersistLogin />}>
+         <Route element={<PersistLogin />}>
+            <Route path='/' element={<Layout />}>
                <Route index element={<Home />} />
-               <Route path='blog' element={<BlogLayout />}>
+               <Route path='/about' element={<About />} />
+               <Route path='/contact' element={<Contact />} />
+               <Route path='blog'>
                   <Route index element={<BlogPage />} />
                </Route>
-               <Route path='verifyemail' element={<VerifyEmail />} />
             </Route>
-            <Route path='register' element={<Register />} />
+         </Route>
+         <Route path='auth'>
+            <Route index element={<Register />} />
+            <Route path='verifyemail' element={<VerifyEmail />} />
             <Route path='login' element={<Login />} />
             <Route path='forgotpassword' element={<ForgotPassword />} />
             <Route path='resetpassword' element={<ResetPasword />} />

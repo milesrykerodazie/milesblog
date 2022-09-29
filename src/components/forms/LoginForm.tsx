@@ -16,8 +16,8 @@ const LoginForm = ({
    const [passwordToggle, setPasswordToggle] = useState<string>('password');
    const loginForm = (
       <div className='space-y-5 pb-3'>
-         <div className='bg-white'>
-            <label htmlFor='email' className='text-slate-600'>
+         <div className=''>
+            <label htmlFor='email' className='label'>
                E-mail
             </label>
             <div className='relative'>
@@ -35,9 +35,9 @@ const LoginForm = ({
             </div>
          </div>
 
-         <div className='bg-white'>
+         <div className=''>
             <div className='flex items-center justify-between'>
-               <label htmlFor='password' className='text-slate-600'>
+               <label htmlFor='password' className='label'>
                   Password
                </label>
                {data?.password !== '' && (
@@ -45,12 +45,12 @@ const LoginForm = ({
                      {passwordToggle === 'password' ? (
                         <AiOutlineEye
                            onClick={() => setPasswordToggle('text')}
-                           className='lg:w-5 lg:h-5 text-slate-800'
+                           className='lg:w-5 lg:h-5 text-slate-800 dark:text-slate-400 duration-500 ease-in'
                         />
                      ) : (
                         <AiOutlineEyeInvisible
                            onClick={() => setPasswordToggle('password')}
-                           className='lg:w-5 lg:h-5 text-slate-800'
+                           className='lg:w-5 lg:h-5 text-slate-800 dark:text-slate-400 duration-500 ease-in'
                         />
                      )}
                   </>

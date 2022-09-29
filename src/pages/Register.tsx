@@ -36,7 +36,7 @@ const Register = () => {
             password: '',
             confirmPassword: '',
          });
-         navigate('/verifyemail');
+         navigate('/auth/verifyemail');
       }
    }, [isSuccess, navigate]);
 
@@ -79,10 +79,10 @@ const Register = () => {
          className='bg-rg-image h-screen bg-cover bg-center'
          onSubmit={handleSubmit}
       >
-         <div className='bg-slate-900/90 h-full'>
+         <div className='bg-black/90 h-full'>
             <div className='flex flex-col justify-center items-center h-full'>
-               <div className='max-w-3xl w-full mx-auto bg-white p-5 space-y-3 shadow-md  shadow-white lg:rounded-md'>
-                  <h2 className='text-xl font-bold text-center py-2 text-slate-600'>
+               <div className='max-w-3xl w-full mx-auto bg-white dark:bg-black p-5 space-y-3 shadow-md shadow-fuchsia-500 lg:rounded-md duration-500 ease-in'>
+                  <h2 className='text-xl font-bold text-center py-2 text-fuchsia-500'>
                      Sign Up
                   </h2>
                   <RegistrationForm data={data} handleChange={handleChange} />
@@ -93,11 +93,11 @@ const Register = () => {
                   />
                </div>
                <div className='mt-4 flex items-center justify-center space-x-2'>
-                  <p className='text-white text-xs tracking-wide'>
+                  <p className='text-fuchsia-500 font-medium text-sm tracking-wide'>
                      Already have an account?
                   </p>
-                  <Link to='/login'>
-                     <button className='text-slate-300 font-semibold text-sm'>
+                  <Link to='/auth/login'>
+                     <button className='text-white font-semibold text-sm'>
                         Sign In
                      </button>
                   </Link>

@@ -57,7 +57,7 @@ const ResetPassword = () => {
             password: '',
             confirmPassword: '',
          });
-         navigate('/login');
+         navigate('/auth/login');
       }
    }, [resetSuccess, navigate]);
 

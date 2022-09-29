@@ -10,7 +10,7 @@ const ActionButton = ({
       <button
          type='submit'
          disabled={!canSubmit}
-         className={`w-full bg-slate-600 text-white py-2 rounded-md font-semibold tracking-wide uppercase flex items-center justify-center space-x-3 ${
+         className={`w-full bg-fuchsia-300 text-white py-2 rounded-md font-semibold tracking-wide uppercase flex items-center justify-center space-x-3 ${
             !canSubmit && 'opacity-20 text-gray-400'
          }`}
       >

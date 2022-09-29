@@ -4,8 +4,8 @@ import { selectCurrentToken } from '../redux/features/auth/authSlice';
 
 const BlogPage = () => {
    const token = useAppSelector(selectCurrentToken);
-   console.log('the token response: => ', token);
-   return <div className='text-white'>BlogPage</div>;
+
+   return <div className='text-black'>BlogPage</div>;
 };
 
 export default BlogPage;

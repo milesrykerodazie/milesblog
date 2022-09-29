@@ -10,11 +10,12 @@ const ForgotPassword = () => {
       { data: fPSuccess, isLoading, isSuccess, isError, error },
    ] = useForgotPasswordMutation();
 
+   console.log('forgot password date: => ', fPSuccess);
+
    // initializing navigate
    const navigate = useNavigate();
 
    const [email, setEmail] = useState<string>('');
-   const [emailEmpty, setEmailEmpty] = useState<string>('');
 
    useEffect(() => {
       if (isSuccess) {
@@ -26,8 +27,6 @@ const ForgotPassword = () => {
 
    const handleSubmit = async (e: React.SyntheticEvent) => {
       e.preventDefault();
-
-      if (!canSubmit) return setEmailEmpty('Email is required!');
       if (canSubmit) await forgotPassword(email);
    };
 
