@@ -7,7 +7,9 @@ const Layout = () => {
       <div className='h-screen bg-white opacity-95 dark:bg-black duration-500 ease-in '>
          <Header />
          <MobileHeader />
-         <Outlet />
+         <div className='pt-8'>
+            <Outlet />
+         </div>
       </div>
    );
 };

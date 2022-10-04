@@ -7,7 +7,6 @@ const Home = () => {
    console.log('role token: =>', token);
    return (
       <div className=''>
-         <hr className='border-slate-200  dark:border-slate-800 duration-500 ease-in' />
          <div className='space-x-4 p-3'>
             <h1 className='titleText'>Home</h1>
          </div>

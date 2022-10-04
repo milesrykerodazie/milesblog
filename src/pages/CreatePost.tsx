@@ -11,14 +11,23 @@ const CreatePost = () => {
       { data: postSuccess, isLoading, isSuccess, isError, error },
    ] = useCreatePostMutation();
 
+   //for authomatically getting post owner on login
+   let user: any;
+   const userName = localStorage.getItem('user');
+   if (userName) {
+      user = JSON.parse(userName);
+   }
+
    //states for form details
    const [data, setData] = useState({
-      postOwner: '',
+      postOwner: user ? user?.username : '',
       title: '',
-      category: '',
+      role: user ? user?.role : '',
    });
 
    const [valueEditor, setValueEditor] = useState('');
+   const [category, setCategory] = useState('');
+   const [featured, setFeatured] = useState(false);
 
    //image state
    const [image, setImage] = useState(undefined);
@@ -28,10 +37,11 @@ const CreatePost = () => {
          setData({
             postOwner: '',
             title: '',
-            category: '',
+            role: '',
          });
          setImage(undefined);
          setValueEditor('');
+         setCategory('');
       }
    }, [isSuccess]);
 
@@ -53,7 +63,6 @@ const CreatePost = () => {
       if (event.target.files) {
          const file = event.target.files[0];
          setFileToBase(file);
-         console.log(file);
       }
    };
 
@@ -71,20 +80,19 @@ const CreatePost = () => {
    const postObject = {
       postOwner: data?.postOwner,
       title: data?.title,
-      category: data?.category,
+      category: category,
       image: image,
       post: valueEditor,
+      role: data?.role,
+      featured: featured,
    };
 
    const handleSubmit = async (e: React.SyntheticEvent) => {
       e.preventDefault();
-      console.log('post object: => ', postObject);
       if (canSubmit && valueEditor) {
          await createPost(postObject);
       }
    };
-
-   console.log('success data from post: => ', postSuccess);
 
    return (
       <form onSubmit={handleSubmit} className='py-10'>
@@ -102,29 +110,11 @@ const CreatePost = () => {
                setImage={setImage}
                canSubmit={canSubmit}
                isLoading={isLoading}
+               featured={featured}
+               setFeatured={setFeatured}
+               category={category}
+               setCategory={setCategory}
             />
-            {/* {image && (
-            <div className='mt-2 flex justify-center'>
-               <div className='h-1/2'>
-                  <img
-                     src={image}
-                     alt='logo'
-                     className='rounded-md object-cover'
-                  />
-               </div>
-               <div
-                  className='-ml-3 -mt-2 z-40'
-                  onClick={() => setImage(undefined)}
-               >
-                  <AiFillCloseCircle className='w-6 h-6 text-sm7' />
-               </div>
-            </div>
-         )} */}
-            {/* <ActionButton
-            buttonDescription='Create Post'
-            canSubmit={canSubmit}
-            isLoading={isLoading}
-         /> */}
          </div>
       </form>
    );

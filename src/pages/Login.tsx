@@ -62,7 +62,10 @@ const Login = () => {
          const decoded = jwtDecode(loginResponse?.accessToken);
          // @ts-expect-error
          const { username, roles } = decoded.UserCred;
-         localStorage.setItem('user', JSON.stringify({ role: roles }));
+         localStorage.setItem(
+            'user',
+            JSON.stringify({ role: roles, username: username }),
+         );
       }
    }, [loginResponse]);
 
