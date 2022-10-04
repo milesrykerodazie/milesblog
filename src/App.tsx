@@ -10,6 +10,9 @@ import ResetPasword from './pages/ResetPasword';
 import VerifyEmail from './pages/VerifyEmail';
 import Contact from './pages/Contact';
 import About from './pages/About';
+import AdminDashboard from './components/AdminDashboard';
+import CreatePost from './pages/CreatePost';
+import PrivateRoutes from './redux/features/auth/PrivateRoutes';
 
 const App = () => {
    return (
@@ -19,8 +22,10 @@ const App = () => {
                <Route index element={<Home />} />
                <Route path='/about' element={<About />} />
                <Route path='/contact' element={<Contact />} />
-               <Route path='blog'>
-                  <Route index element={<BlogPage />} />
+               <Route path='/blog' element={<BlogPage />} />
+               <Route path='admin' element={<PrivateRoutes authRole='Admin' />}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path='create' element={<CreatePost />} />
                </Route>
             </Route>
          </Route>

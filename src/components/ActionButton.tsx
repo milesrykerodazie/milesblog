@@ -11,7 +11,7 @@ const ActionButton = ({
          type='submit'
          disabled={!canSubmit}
          className={`w-full bg-fuchsia-300 text-white py-2 rounded-md font-semibold tracking-wide uppercase flex items-center justify-center space-x-3 ${
-            !canSubmit && 'opacity-20 text-gray-400'
+            !canSubmit && 'opacity-20 text-gray-600'
          }`}
       >
          <span>{buttonDescription}</span>{' '}

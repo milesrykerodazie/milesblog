@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAppSelector } from '../redux/app/store';
 import { selectCurrentToken } from '../redux/features/auth/authSlice';
@@ -15,6 +15,8 @@ const Navbar = () => {
    //reference for useEffect cleanup
    const effectRan = useRef(false);
 
+   const navigate = useNavigate();
+
    // @ts-expect-error
    useEffect(() => {
       if (
@@ -25,6 +27,8 @@ const Navbar = () => {
             toast.success(logoutData?.message, {
                toastId: customId,
             });
+            localStorage.removeItem('user');
+            navigate('/');
          }
       }
       return () => (effectRan.current = true);

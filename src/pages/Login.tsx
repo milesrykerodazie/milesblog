@@ -7,6 +7,7 @@ import { useLoginMutation } from '../redux/features/authApiSlice';
 import { useAppDispatch } from '../redux/app/store';
 import { setCredentials } from '../redux/features/auth/authSlice';
 import usePersist from '../hooks/usePersist';
+import jwtDecode from 'jwt-decode';
 
 const customId = 'custom-id-yes';
 
@@ -57,6 +58,11 @@ const Login = () => {
          toast.success(loginResponse?.success, {
             toastId: customId,
          });
+
+         const decoded = jwtDecode(loginResponse?.accessToken);
+         // @ts-expect-error
+         const { username, roles } = decoded.UserCred;
+         localStorage.setItem('user', JSON.stringify({ role: roles }));
       }
    }, [loginResponse]);
 
@@ -70,6 +76,8 @@ const Login = () => {
          navigate('/');
       }
    }, [isSuccess, navigate, dispatch, loginResponse?.accessToken]);
+
+   console.log('Login response: ', loginResponse);
 
    const loginContent = (
       <form

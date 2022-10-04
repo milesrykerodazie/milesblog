@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 
-const BlogLayout = () => {
+const AdminLayout = () => {
    return <Outlet />;
 };
 
-export default BlogLayout;
+export default AdminLayout;
