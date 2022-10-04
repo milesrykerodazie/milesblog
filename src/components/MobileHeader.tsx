@@ -8,7 +8,7 @@ const MobileHeader = () => {
    const [open, setOpen] = useState<boolean>(false);
    return (
       <nav>
-         <div className='py-3 h-12 flex items-center justify-between md:hidden'>
+         <div className='py-3 px-5 h-12 flex items-center justify-between md:hidden'>
             <Link to='/'>
                <p className='text-black/80 font-extrabold font-kaushan text-xl tracking-widest dark:text-white/90'>
                   <span className='text-fuchsia-500'>Miles</span>-Blog

@@ -19,6 +19,14 @@ export default function ThemeProvider({ children }: childrenProps) {
       localStorage.setItem('theme', theme);
    }, [theme]);
 
+   useEffect(() => {
+      if (theme === 'dark') {
+         document.documentElement.classList.add('dark');
+      } else {
+         document.documentElement.classList.remove('dark');
+      }
+   }, [theme]);
+
    return (
       <div id='theme-wrapper' className={`${theme}`}>
          {children}

@@ -66,8 +66,6 @@ const CreatePost = () => {
       };
    };
 
-   console.log('Image from file: => ', image);
-
    const canSubmit = [...Object.values(data)].every(Boolean);
 
    const postObject = {
@@ -89,21 +87,23 @@ const CreatePost = () => {
    console.log('success data from post: => ', postSuccess);
 
    return (
-      <form
-         className='max-w-7xl w-full mx-auto bg-white dark:bg-black p-5 space-y-3 shadow-md shadow-fuchsia-500 lg:rounded-md duration-500 ease-in'
-         onSubmit={handleSubmit}
-      >
-         <h2 className='text-xl font-bold text-center py-2 text-fuchsia-500'>
-            Create Post
-         </h2>{' '}
-         <CreatePostForm
-            data={data}
-            handleChange={handleChange}
-            handleImage={handleImage}
-            valueEditor={valueEditor}
-            setValueEditor={setValueEditor}
-         />
-         {image && (
+      <form onSubmit={handleSubmit} className='py-10'>
+         <div className='lg:max-w-[90%] w-full lg:mx-auto bg-white dark:bg-black p-5 space-y-3 shadow-md shadow-fuchsia-500 lg:rounded-md duration-500 ease-in'>
+            <h2 className='text-2xl font-bold text-center pt-2 pb-3 text-fuchsia-500'>
+               Create Post
+            </h2>{' '}
+            <CreatePostForm
+               data={data}
+               handleChange={handleChange}
+               handleImage={handleImage}
+               valueEditor={valueEditor}
+               setValueEditor={setValueEditor}
+               image={image}
+               setImage={setImage}
+               canSubmit={canSubmit}
+               isLoading={isLoading}
+            />
+            {/* {image && (
             <div className='mt-2 flex justify-center'>
                <div className='h-1/2'>
                   <img
@@ -119,12 +119,13 @@ const CreatePost = () => {
                   <AiFillCloseCircle className='w-6 h-6 text-sm7' />
                </div>
             </div>
-         )}
-         <ActionButton
+         )} */}
+            {/* <ActionButton
             buttonDescription='Create Post'
             canSubmit={canSubmit}
             isLoading={isLoading}
-         />
+         /> */}
+         </div>
       </form>
    );
 };

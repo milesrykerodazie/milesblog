@@ -45,7 +45,7 @@ const PersistLogin = () => {
    }, []);
 
    return (
-      <React.Fragment>
+      <div>
          {!persist ? (
             <Outlet />
          ) : isLoading ? (
@@ -57,7 +57,7 @@ const PersistLogin = () => {
          ) : !token ? (
             <Outlet />
          ) : null}
-      </React.Fragment>
+      </div>
    );
 };
 export default PersistLogin;

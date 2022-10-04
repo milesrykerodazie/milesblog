@@ -4,7 +4,7 @@ import MobileHeader from '../MobileHeader';
 
 const Layout = () => {
    return (
-      <div className='bg-white opacity-95 dark:bg-black h-screen duration-500 ease-in px-2 md:px-0'>
+      <div className='h-screen bg-white opacity-95 dark:bg-black duration-500 ease-in '>
          <Header />
          <MobileHeader />
          <Outlet />
