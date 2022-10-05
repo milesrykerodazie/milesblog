@@ -3,7 +3,9 @@ import ActionButton from '../components/ActionButton';
 import CreatePostForm from '../components/forms/CreatePostForm';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { useCreatePostMutation } from '../redux/features/postApiSlice';
+import { toast } from 'react-toastify';
 
+const customId = 'custom-id-yes';
 const CreatePost = () => {
    //getting the method to post
    const [
@@ -28,6 +30,15 @@ const CreatePost = () => {
    const [valueEditor, setValueEditor] = useState('');
    const [category, setCategory] = useState('');
    const [featured, setFeatured] = useState(false);
+   const [tags, setTags] = useState([]);
+
+   //removing dublicates from tags array
+   let uniqueTags: any[] = [];
+   tags.forEach((element: any) => {
+      if (!uniqueTags.includes(element)) {
+         uniqueTags.push(element);
+      }
+   });
 
    //image state
    const [image, setImage] = useState(undefined);
@@ -35,15 +46,21 @@ const CreatePost = () => {
    useEffect(() => {
       if (isSuccess) {
          setData({
-            postOwner: '',
+            postOwner: user ? user?.username : '',
             title: '',
-            role: '',
+            role: user ? user?.role : '',
          });
          setImage(undefined);
          setValueEditor('');
          setCategory('');
+         setTags([]);
       }
-   }, [isSuccess]);
+      if (postSuccess) {
+         toast.success(postSuccess?.message, {
+            toastId: customId,
+         });
+      }
+   }, [isSuccess, postSuccess]);
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const type = event.target.type;
@@ -75,6 +92,13 @@ const CreatePost = () => {
       };
    };
 
+   //adding tags
+   // const addTag = (value: any) => {
+   //    if (value) {
+   //       setTags([...tags, value]);
+   //    }
+   // };
+
    const canSubmit = [...Object.values(data)].every(Boolean);
 
    const postObject = {
@@ -85,6 +109,7 @@ const CreatePost = () => {
       post: valueEditor,
       role: data?.role,
       featured: featured,
+      tags: uniqueTags,
    };
 
    const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -114,6 +139,8 @@ const CreatePost = () => {
                setFeatured={setFeatured}
                category={category}
                setCategory={setCategory}
+               tags={tags}
+               setTags={setTags}
             />
          </div>
       </form>

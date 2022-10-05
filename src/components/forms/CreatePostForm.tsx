@@ -7,10 +7,12 @@ import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import {
    MdOutlineKeyboardArrowDown,
    MdKeyboardArrowRight,
+   MdOutlineClose,
+   MdRemoveCircle,
 } from 'react-icons/md';
 import { TiTick } from 'react-icons/ti';
 import { useState } from 'react';
-import { CATEGORIES } from '../../config/configurations';
+import { CATEGORIES, TagOptions } from '../../config/configurations';
 
 const CreatePostForm = ({
    data,
@@ -26,6 +28,8 @@ const CreatePostForm = ({
    setFeatured,
    category,
    setCategory,
+   tags,
+   setTags,
 }: {
    data: {
       postOwner: string;
@@ -44,8 +48,25 @@ const CreatePostForm = ({
    setFeatured?: any;
    category?: any;
    setCategory?: any;
+   tags?: any;
+   setTags?: any;
 }) => {
    const [open, setOpen] = useState(false);
+   const [openTag, setOpenTag] = useState(false);
+
+   //removing dublicates from tags array
+   let uniqueTags: any[] = [];
+   tags.forEach((element: any) => {
+      if (!uniqueTags.includes(element)) {
+         uniqueTags.push(element);
+      }
+   });
+   //removing tags not needed
+   const removeTag = (removedTag: any) => {
+      const newTags = uniqueTags.filter((tag) => tag !== removedTag);
+      setTags(newTags);
+   };
+
    const postForm = (
       <div>
          <div className='flex flex-col lg:flex-row lg:space-x-3'>
@@ -145,10 +166,71 @@ const CreatePostForm = ({
                         <label htmlFor='role' className='label'>
                            Role
                         </label>
-                        <p className='text-xs text-gray-500/60 dark: py-2'>
+                        <p className='text-xs text-gray-400 py-2'>
                            {data?.role}
                         </p>
                      </div>
+                  </div>
+               </div>
+               <div className=''>
+                  <label htmlFor='tags' className='label'>
+                     Tags
+                  </label>
+                  <div className='relative'>
+                     <div className='flex items-center justify-between'>
+                        {uniqueTags?.length !== 0 ? (
+                           <div className='flex space-x-2 py-2'>
+                              {uniqueTags.map((tag: any, index: any) => (
+                                 <span
+                                    key={index}
+                                    className='border text-xs px-2 py-1 rounded border-fuchsia-300 dark:text-white flex relative'
+                                 >
+                                    {tag}{' '}
+                                    <MdRemoveCircle
+                                       className='absolute -top-2 -right-1 text-fuchsia-500 w-4 h-4 cursor-pointer'
+                                       onClick={() => removeTag(tag)}
+                                    />
+                                 </span>
+                              ))}
+                           </div>
+                        ) : (
+                           <p className='text-xs text-gray-500/60 dark: py-2'>
+                              Select Tags
+                           </p>
+                        )}
+
+                        {!openTag ? (
+                           <MdKeyboardArrowRight
+                              className='w-4 h-4 lg:w-6 lg:h-6 text-gray-800 dark:text-white duration-500 ease-in'
+                              onClick={() => setOpenTag((current) => !current)}
+                           />
+                        ) : (
+                           <MdOutlineKeyboardArrowDown
+                              className='w-4 h-4 lg:w-6 lg:h-6 text-gray-800 dark:text-white duration-500 ease-in '
+                              onClick={() => setOpenTag((current) => !current)}
+                           />
+                        )}
+                     </div>
+
+                     {/* select category */}
+                     {openTag && (
+                        <div className='bg-white dark:bg-black shadow-md shadow-fuchsia-600 absolute top-9 z-20 px-1 rounded mt-1 py-1 h-28 overflow-y-auto w-full duration-500 ease-in'>
+                           {TagOptions?.map(({ id, value }) => (
+                              <p
+                                 key={id}
+                                 onClick={() => {
+                                    setOpenTag((current) => !current);
+                                    setTags([...tags, value]);
+                                 }}
+                                 className='text-sm text-black/90 dark:text-white cursor-pointer hover:bg-fuchsia-500 duration-500 ease-in select-none'
+                              >
+                                 <span className='pl-2 capitalize text-xs'>
+                                    {value}
+                                 </span>
+                              </p>
+                           ))}
+                        </div>
+                     )}
                   </div>
                </div>
                <div>
@@ -187,8 +269,8 @@ const CreatePostForm = ({
 
             <div className='flex-1'>
                <div className='flex items-center space-x-2 justify-end'>
-                  <p>Suspend:</p>
-                  <BsFillEyeSlashFill />
+                  <p className='text-sm text-gray-500'>Suspend:</p>
+                  <BsFillEyeSlashFill className='dark:text-white' />
                </div>
                <Editor />
                <ReactQuill

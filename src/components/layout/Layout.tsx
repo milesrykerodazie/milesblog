@@ -7,7 +7,7 @@ const Layout = () => {
       <div className='h-screen bg-white opacity-95 dark:bg-black duration-500 ease-in '>
          <Header />
          <MobileHeader />
-         <div className='pt-8'>
+         <div className='pt-12'>
             <Outlet />
          </div>
       </div>

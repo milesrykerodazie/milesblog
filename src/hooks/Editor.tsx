@@ -1,5 +1,8 @@
 import React from 'react';
 import { Quill } from 'react-quill';
+// @ts-expect-error
+import ImageResize from 'quill-image-resize-module-react';
+import 'react-quill/dist/quill.snow.css';
 
 // Custom Undo button icon component for Quill editor. You can import it directly
 // from 'quill/assets/icons/undo.svg' but I found that a number of loaders do not
@@ -37,7 +40,7 @@ function redoChange() {
 
 // Add sizes to whitelist and register them
 const Size = Quill.import('formats/size');
-Size.whitelist = ['extra-small', 'small', 'medium', 'large'];
+Size.whitelist = ['extra-small', 'small', 'medium', 'large', 'huge'];
 Quill.register(Size, true);
 
 // Add fonts to whitelist and register them
@@ -52,6 +55,8 @@ Font.whitelist = [
 ];
 Quill.register(Font, true);
 
+Quill.register('modules/imageResize', ImageResize);
+
 // Modules object for setting up the Quill editor
 export const modules = {
    toolbar: {
@@ -61,8 +66,12 @@ export const modules = {
          redo: redoChange,
       },
    },
+   imageResize: {
+      parchment: Quill.import('parchment'),
+      modules: ['Resize', 'DisplaySize'],
+   },
    history: {
-      delay: 500,
+      delay: 2000,
       maxStack: 100,
       userOnly: true,
    },
@@ -86,6 +95,7 @@ export const formats = [
    'indent',
    'link',
    'color',
+   'image',
    'code-block',
 ];
 
@@ -106,11 +116,14 @@ export const QuillToolbar = () => (
             <option value='small'>Size 2</option>
             <option value='medium'>Size 3</option>
             <option value='large'>Size 4</option>
+            <option value='huge'>Size 5</option>
          </select>
          <select className='ql-header' defaultValue='3'>
             <option value='1'>Heading</option>
             <option value='2'>Subheading</option>
             <option value='3'>Normal</option>
+            <option value='4'>Small</option>
+            <option value='5'>Extra-small</option>
          </select>
       </span>
       <span className='ql-formats'>
@@ -138,6 +151,7 @@ export const QuillToolbar = () => (
       </span>
       <span className='ql-formats'>
          <button className='ql-link' />
+         <button className='ql-image' />
       </span>
       <span className='ql-formats'>
          <button className='ql-formula' />

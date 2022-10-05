@@ -34,3 +34,30 @@ export const CATEGORIES = [
       value: 'God',
    },
 ];
+
+export const TagOptions = [
+   {
+      id: '001',
+      value: 'tag1',
+   },
+   {
+      id: '002',
+      value: 'tag2',
+   },
+   {
+      id: '003',
+      value: 'tag3',
+   },
+   {
+      id: '004',
+      value: 'tag4',
+   },
+   {
+      id: '005',
+      value: 'tag5',
+   },
+   {
+      id: '006',
+      value: 'tag6',
+   },
+];
