@@ -1,6 +1,6 @@
 export interface actionTypes {
    buttonDescription: string;
-   canSubmit: any;
+   canSubmit?: any;
    isLoading?: boolean;
 }
 

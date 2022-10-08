@@ -1,7 +1,7 @@
-import Banner from '../components/Banner';
-import Post from '../components/Post';
-import { useGetPostsQuery } from '../redux/features/postApiSlice';
+import { memo } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
+import { useGetPostsQuery } from '../redux/features/postApiSlice';
+import Post from './Post';
 
 //get stuff from localeStorage
 const useAuth = () => {
@@ -26,7 +26,7 @@ const useAuth = () => {
    }
 };
 
-const Home = () => {
+const FeaturedPosts = () => {
    const {
       data: postsData,
       isLoading,
@@ -43,35 +43,42 @@ const Home = () => {
 
    const filtered = postsData?.ids.filter(
       (filteredPost) =>
-         (postsData as any)?.entities[filteredPost].suspended === false,
+         (postsData as any)?.entities[filteredPost].suspended === false &&
+         (postsData as any)?.entities[filteredPost].featured === true,
    );
-
    return (
-      <div className=''>
-         <Banner filtered={filtered} />
-
+      <div>
+         <h2 className='text-lg text-gray-800 dark:text-white font-semibold bg-white dark:bg-black z-50 py-2'>
+            Featured Post
+         </h2>
          {isLoading ? (
             <div className='flex items-center justify-center mt-24'>
                <BiLoaderCircle className='w-14 h-12 text-gray-500 animate-spin' />
             </div>
          ) : isError ? (
-            <div className='flex items-center justify-center h-[calc(100vh-96px)]'>
+            <div>
                <p className='text-xl font-semibold'>
                   {(error as any)?.data?.message}
                </p>
             </div>
          ) : isSuccess ? (
-            <div>
+            <div className='h-[500px] overflow-y-scroll py-4'>
                {role && role === 'Admin' ? (
-                  <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-1'>
-                     {postsData?.ids.map((postId) => (
-                        <Post key={postId} postId={postId} />
-                     ))}
+                  <div className='grid grid-cols-1 after:gap-3 px-1'>
+                     {postsData?.ids
+                        .filter(
+                           (adminFeatured) =>
+                              (postsData as any)?.entities[adminFeatured]
+                                 .featured === true,
+                        )
+                        .map((postId) => (
+                           <Post key={postId} postId={postId} featured />
+                        ))}
                   </div>
                ) : (
-                  <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-1'>
+                  <div className='grid grid-cols-1  gap-3 px-1'>
                      {(filtered as any)?.map((postId: any) => (
-                        <Post key={postId} postId={postId} />
+                        <Post key={postId} postId={postId} featured />
                      ))}
                   </div>
                )}
@@ -81,4 +88,5 @@ const Home = () => {
    );
 };
 
-export default Home;
+const memoizedFeaturedPosts = memo(FeaturedPosts);
+export default memoizedFeaturedPosts;

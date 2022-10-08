@@ -1,7 +1,7 @@
-import Banner from '../components/Banner';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetCategoryPostsQuery } from '../redux/features/postApiSlice';
 import Post from '../components/Post';
-import { useGetPostsQuery } from '../redux/features/postApiSlice';
-import { BiLoaderCircle } from 'react-icons/bi';
 
 //get stuff from localeStorage
 const useAuth = () => {
@@ -26,20 +26,20 @@ const useAuth = () => {
    }
 };
 
-const Home = () => {
+const CategoryPosts = () => {
+   const { id }: any = useParams();
    const {
       data: postsData,
       isLoading,
       isSuccess,
       isError,
       error,
-   } = useGetPostsQuery('postList', {
-      pollingInterval: 120000,
+   } = useGetCategoryPostsQuery(`${id}`, {
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
    });
 
-   const { role } = useAuth();
+   const { auth, role } = useAuth();
 
    const filtered = postsData?.ids.filter(
       (filteredPost) =>
@@ -47,13 +47,9 @@ const Home = () => {
    );
 
    return (
-      <div className=''>
-         <Banner filtered={filtered} />
-
+      <div>
          {isLoading ? (
-            <div className='flex items-center justify-center mt-24'>
-               <BiLoaderCircle className='w-14 h-12 text-gray-500 animate-spin' />
-            </div>
+            <p>Loading...</p>
          ) : isError ? (
             <div className='flex items-center justify-center h-[calc(100vh-96px)]'>
                <p className='text-xl font-semibold'>
@@ -81,4 +77,4 @@ const Home = () => {
    );
 };
 
-export default Home;
+export default CategoryPosts;

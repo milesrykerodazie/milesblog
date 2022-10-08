@@ -1,11 +1,4 @@
 import { MdClose } from 'react-icons/md';
-import { MdDynamicFeed, MdVideoLabel, MdGroup, MdSchool } from 'react-icons/md';
-import { AiFillWechat, AiFillBook } from 'react-icons/ai';
-import {
-   BsFillQuestionSquareFill,
-   BsFillHandbagFill,
-   BsFillCalendarEventFill,
-} from 'react-icons/bs';
 import { Dispatch, SetStateAction } from 'react';
 
 export interface stateTyp {
@@ -48,15 +41,3 @@ const SideNavbar = ({ open, setOpen }: stateTyp) => {
 };
 
 export default SideNavbar;
-
-// className={`w-full bg-fuchsia-300 text-white py-2 rounded-md font-semibold tracking-wide uppercase flex items-center justify-center space-x-3 ${
-//    !canSubmit && 'opacity-20 text-gray-400'
-// }`}
-
-// import React from 'react';
-
-// const SideNavbar = () => {
-//    return <div className='text-yellow-500'>SideNavbar</div>;
-// };
-
-// export default SideNavbar;

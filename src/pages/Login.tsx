@@ -55,10 +55,6 @@ const Login = () => {
    };
    useEffect(() => {
       if (loginResponse) {
-         toast.success(loginResponse?.success, {
-            toastId: customId,
-         });
-
          const decoded = jwtDecode(loginResponse?.accessToken);
          // @ts-expect-error
          const { username, roles } = decoded.UserCred;
@@ -76,6 +72,9 @@ const Login = () => {
             password: '',
          });
          dispatch(setCredentials({ accessToken: loginResponse?.accessToken }));
+         toast.success(loginResponse?.success, {
+            toastId: customId,
+         });
          navigate('/');
       }
    }, [isSuccess, navigate, dispatch, loginResponse?.accessToken]);
@@ -87,7 +86,7 @@ const Login = () => {
          className='bg-rg-image h-screen bg-cover bg-center'
          onSubmit={handleSubmit}
       >
-         <div className='bg-slate-900/90 h-full'>
+         <div className='dark:bg-black/80 bg-white/80 h-screen w-full duration-500 ease-in'>
             <div className='flex flex-col justify-center items-center h-full'>
                <div className='max-w-3xl w-full mx-auto bg-white dark:bg-black  p-5 space-y-3 shadow-md shadow-fuchsia-500 lg:rounded-md duration-500 ease-in'>
                   <h2 className='text-xl font-bold text-center py-2 text-fuchsia-500'>
@@ -122,16 +121,16 @@ const Login = () => {
                         Forgot Password?
                      </p>
                   </Link>
-               </div>
-               <div className='mt-4 flex items-center justify-center space-x-2'>
-                  <p className='text-fuchsia-500 font-medium text-sm tracking-wide'>
-                     Do not have an account?
-                  </p>
-                  <Link to='/auth'>
-                     <button className='text-white font-semibold text-sm'>
-                        Sign Up
-                     </button>
-                  </Link>
+                  <div className=' flex items-center justify-center space-x-2'>
+                     <p className='text-fuchsia-500 font-medium text-sm tracking-wide'>
+                        Do not have an account?
+                     </p>
+                     <Link to='/auth'>
+                        <button className='dark:text-white text-gray-700 font-semibold text-sm'>
+                           Sign Up
+                        </button>
+                     </Link>
+                  </div>
                </div>
             </div>
          </div>

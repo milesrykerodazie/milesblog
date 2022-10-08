@@ -13,19 +13,32 @@ import About from './pages/About';
 import AdminDashboard from './components/AdminDashboard';
 import CreatePost from './pages/CreatePost';
 import PrivateRoutes from './redux/features/auth/PrivateRoutes';
+import PostDetails from './pages/PostDetails';
+import CategoryPosts from './pages/CategoryPosts';
+import EditPost from './pages/EditPost';
+import PostsPrefetch from './components/PostsPrefetch';
 
 const App = () => {
    return (
       <Routes>
          <Route element={<PersistLogin />}>
-            <Route path='/' element={<Layout />}>
-               <Route index element={<Home />} />
-               <Route path='/about' element={<About />} />
-               <Route path='/contact' element={<Contact />} />
-               <Route path='/blog' element={<BlogPage />} />
-               <Route path='admin' element={<PrivateRoutes authRole='Admin' />}>
-                  <Route index element={<AdminDashboard />} />
-                  <Route path='create' element={<CreatePost />} />
+            <Route element={<PostsPrefetch />}>
+               <Route path='/' element={<Layout />}>
+                  <Route index element={<Home />} />
+                  <Route path='/about' element={<About />} />
+                  <Route path='/contact' element={<Contact />} />
+                  <Route path='/blog' element={<BlogPage />} />
+                  <Route path='/category/:id' element={<CategoryPosts />} />
+
+                  <Route path='/post/:id' element={<PostDetails />} />
+                  <Route
+                     path='admin'
+                     element={<PrivateRoutes authRole='Admin' />}
+                  >
+                     <Route index element={<AdminDashboard />} />
+                     <Route path='create' element={<CreatePost />} />
+                     <Route path='edit/:id' element={<EditPost />} />
+                  </Route>
                </Route>
             </Route>
          </Route>

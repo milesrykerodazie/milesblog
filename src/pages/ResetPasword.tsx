@@ -16,14 +16,8 @@ const ResetPassword = () => {
    const { token, id } = queryString.parse(location.search);
 
    // verify token and id from reset link
-   //@ts-ignore
-   const {
-      data: verified,
-      isLoading,
-      isSuccess,
-      isError,
-      error,
-   } = useVerifyResetLinkQuery({
+
+   const { isLoading, isSuccess, isError, error } = useVerifyResetLinkQuery({
       token,
       id,
    });
@@ -39,7 +33,7 @@ const ResetPassword = () => {
          isError: resetIsError,
          error: resetError,
       },
-   ] = useResetPasswordMutation(); //@ts-ignore
+   ] = useResetPasswordMutation();
 
    // initializing navigate
    const navigate = useNavigate();
@@ -62,7 +56,7 @@ const ResetPassword = () => {
    }, [resetSuccess, navigate]);
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const type = event.target.type;
+      // const type = event.target.type;
 
       const name = event.target.name;
 
@@ -97,7 +91,6 @@ const ResetPassword = () => {
       }
    }, [successResponse]);
 
-   console.log('reset success: => ', successResponse);
    const resetPasswordContent = (
       <form
          className='bg-rg-image h-screen bg-cover bg-center'
@@ -118,14 +111,12 @@ const ResetPassword = () => {
                         />
                         {passwordMatch && (
                            <p className='text-red-500 text-sm'>
-                              {/* @ts-ignore */}
                               {passwordMatch}
                            </p>
                         )}
                         {resetIsError && (
                            <p className='text-red-500 text-sm'>
-                              {/* @ts-ignore */}
-                              {resetError?.data?.message}
+                              {(resetError as any)?.data?.message}
                            </p>
                         )}
                         <ActionButton
@@ -137,8 +128,9 @@ const ResetPassword = () => {
                   )}
 
                   {isError && (
-                     //   @ts-ignore
-                     <p className='text-red-500'>{error?.data?.message}</p>
+                     <p className='text-red-500'>
+                        {(error as any)?.data?.message}
+                     </p>
                   )}
                </div>
             </div>

@@ -1,13 +1,13 @@
 import { apiSlice } from '../app/api/apiSlice';
 import { createSelector, createEntityAdapter } from '@reduxjs/toolkit';
 
-const potsAdapter = createEntityAdapter({});
+const postsAdapter = createEntityAdapter({});
 
 // const sortedDesc = arr1.sort(
 //    (objA, objB) => Number(objB.date) - Number(objA.date),
 //  );
 
-const initialState = potsAdapter.getInitialState();
+const initialState = postsAdapter.getInitialState();
 
 export const postApiSlice = apiSlice.injectEndpoints({
    endpoints: (builder) => ({
@@ -24,7 +24,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
 
       getPosts: builder.query({
          query: () => ({
-            url: '/posts',
+            url: '/admin-posts',
             validiteStatus: (
                response: { status: number },
                result: { isError: any },
@@ -37,10 +37,10 @@ export const postApiSlice = apiSlice.injectEndpoints({
 
             // @ts-expect-error
             const loadedPosts = responseData?.posts?.map((post) => {
-               post.id = post._id;
+               post.id = post.postSlug;
                return post;
             });
-            return potsAdapter.setAll(initialState, loadedPosts);
+            return postsAdapter.setAll(initialState, loadedPosts);
          },
          providesTags: (result: any, error: any, arg: any) => {
             if (result?.ids) {
@@ -50,29 +50,76 @@ export const postApiSlice = apiSlice.injectEndpoints({
                ];
             } else return [{ type: 'Post', id: 'LIST' }];
          },
+      }),
+      getCategoryPosts: builder.query({
+         query: (id) => ({
+            url: `category-posts?category=${id}`,
+            validiteStatus: (
+               response: { status: number },
+               result: { isError: any },
+            ) => {
+               return response.status === 200 && !result.isError;
+            },
+         }),
+         transformResponse: (responseData) => {
+            console.log(' category post response: => ', responseData);
 
-         //       providesTags: (result) =>
-         //      result
-         //        ? [
-         //            ...result.map(({ id }) => ({ type: 'Posts' as const, id })),
-         //            { type: 'Posts', id: 'LIST' },
-         //          ]
-         //        : [{ type: 'Posts', id: 'LIST' }],
-         //  }),
+            // @ts-expect-error
+            const loadedPosts = responseData?.posts?.map((post) => {
+               post.id = post.postSlug;
+               return post;
+            });
+            return postsAdapter.setAll(initialState, loadedPosts);
+         },
+         providesTags: (result: any, error: any, arg: any) => {
+            if (result?.ids) {
+               return [
+                  { type: 'User', id: 'LIST' },
+                  ...result.ids.map((id: any) => ({ type: 'Post', id })),
+               ];
+            } else return [{ type: 'Post', id: 'LIST' }];
+         },
+      }),
+
+      updatePost: builder.mutation({
+         query: (initialPost) => ({
+            url: '/update-post',
+            method: 'PATCH',
+            body: {
+               ...initialPost,
+            },
+         }),
+         invalidatesTags: (result, error, arg) => [
+            { type: 'Post', id: arg.id },
+         ],
       }),
    }),
 });
 
-export const { useCreatePostMutation, useGetPostsQuery } = postApiSlice;
+export const {
+   useCreatePostMutation,
+   useGetPostsQuery,
+   useGetCategoryPostsQuery,
+   useUpdatePostMutation,
+} = postApiSlice;
 
 // returns the query result object
 // @ts-expect-error
 export const selectPostsResult = postApiSlice.endpoints.getPosts.select();
 
-//memoize the result
+export const selectCategoryPostsResult =
+   // @ts-expect-error
+   postApiSlice.endpoints.getCategoryPosts.select();
+
+//memoize the posts result
 const selectPostData = createSelector(
    selectPostsResult,
    (postResult) => postResult.data,
+);
+//memoize the category posts result
+const selectCategoryPostData = createSelector(
+   selectCategoryPostsResult,
+   (catPostResult) => catPostResult.data,
 );
 
 export const {
@@ -80,4 +127,13 @@ export const {
    selectById: selectPostById,
    selectIds: selectPostIds,
    // @ts-expect-error
-} = potsAdapter.getSelectors((state) => selectPostData(state ?? initialState));
+} = postsAdapter.getSelectors((state) => selectPostData(state ?? initialState));
+
+export const {
+   selectAll: selectAllCategoryPosts,
+   selectById: selectCategoryPostById,
+   selectIds: selectCategoryPostIds,
+} = postsAdapter.getSelectors((state) =>
+   // @ts-expect-error
+   selectCategoryPostData(state ?? initialState),
+);

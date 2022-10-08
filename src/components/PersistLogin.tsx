@@ -1,9 +1,10 @@
-import { Outlet, Link } from 'react-router-dom';
-import React, { useEffect, useRef, useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import { useRefreshMutation } from '../redux/features/authApiSlice';
 import usePersist from '../hooks/usePersist';
 import { useAppSelector } from '../redux/app/store';
 import { selectCurrentToken } from '../redux/features/auth/authSlice';
+import LoadingComponent from './LoadingComponent';
 
 const PersistLogin = () => {
    const [persist] = usePersist();
@@ -14,14 +15,7 @@ const PersistLogin = () => {
 
    const [
       refresh,
-      {
-         data: refreshData,
-         isUninitialized,
-         isLoading,
-         isSuccess,
-         isError,
-         error,
-      },
+      { data: refreshData, isUninitialized, isLoading, isSuccess },
    ] = useRefreshMutation();
 
    // @ts-expect-error
@@ -49,7 +43,7 @@ const PersistLogin = () => {
          {!persist ? (
             <Outlet />
          ) : isLoading ? (
-            <p>Loading...</p>
+            <LoadingComponent />
          ) : isSuccess && trueSuccess ? (
             <Outlet />
          ) : token && isUninitialized ? (
@@ -61,42 +55,3 @@ const PersistLogin = () => {
    );
 };
 export default PersistLogin;
-
-// : isError ? (
-//    <p>
-//       {(error as any)?.data?.message
-//          ? `${(error as any)?.data?.message} - `
-//          : 'Server Error.'}
-//       <Link to='/login'>Please login again</Link>
-//    </p>
-// )
-
-//for reference purposes only
-
-// useEffect(() => {
-//    if (
-//       effectRan.current === true ||
-//       process.env.NODE_ENV !== 'development'
-//    ) {
-//       const verifyRefreshToken = async () => {
-//          console.log('verifying refresh token');
-//          try {
-//             const response = await refresh({});
-//             console.log('refresh response from persist login: =>', response);
-//             if ((response as any)?.data) {
-//                const { accessToken } = (response as any)?.data;
-//                console.log('access token received => ', accessToken);
-//                setTrueSuccess(true);
-//             }
-//             return;
-//          } catch (err) {
-//             console.error(err);
-//          }
-//       };
-
-//       if (!token && persist) verifyRefreshToken();
-//    }
-//    return () => (effectRan.current = true);
-
-//    // eslint-disable-next-line
-// }, []);

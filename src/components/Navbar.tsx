@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAppSelector } from '../redux/app/store';
@@ -8,8 +8,7 @@ import { useLogoutMutation } from '../redux/features/authApiSlice';
 const customId = 'custom-id-yes';
 
 const Navbar = () => {
-   const [logout, { data: logoutData, isLoading, isSuccess, isError, error }] =
-      useLogoutMutation();
+   const [logout, { data: logoutData, isSuccess }] = useLogoutMutation();
    //getting the token from redux
    const token = useAppSelector(selectCurrentToken);
    //reference for useEffect cleanup

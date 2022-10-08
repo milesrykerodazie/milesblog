@@ -10,8 +10,6 @@ const ForgotPassword = () => {
       { data: fPSuccess, isLoading, isSuccess, isError, error },
    ] = useForgotPasswordMutation();
 
-   console.log('forgot password date: => ', fPSuccess);
-
    // initializing navigate
    const navigate = useNavigate();
 
@@ -21,6 +19,7 @@ const ForgotPassword = () => {
       if (isSuccess) {
          setEmail('');
       }
+      // eslint-disable-next-line
    }, [isSuccess, navigate]);
 
    const canSubmit = [email].every(Boolean);
@@ -65,6 +64,16 @@ const ForgotPassword = () => {
                      canSubmit={canSubmit}
                      isLoading={isLoading}
                   />
+                  {fPSuccess && (
+                     <p className='py-1 text-fuchsia-400 text-sm text-center'>
+                        {fPSuccess?.message}
+                     </p>
+                  )}
+                  {isError && (
+                     <p className='py-1 text-red-600 text-sm text-center'>
+                        {(error as any)?.data?.message}
+                     </p>
+                  )}
                </div>
             </div>
          </div>

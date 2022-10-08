@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ActionButton from '../components/ActionButton';
 import CreatePostForm from '../components/forms/CreatePostForm';
-import { AiFillCloseCircle } from 'react-icons/ai';
 import { useCreatePostMutation } from '../redux/features/postApiSlice';
 import { toast } from 'react-toastify';
 
@@ -30,6 +28,7 @@ const CreatePost = () => {
    const [valueEditor, setValueEditor] = useState('');
    const [category, setCategory] = useState('');
    const [featured, setFeatured] = useState(false);
+   const [suspended, setSuspended] = useState(false);
    const [tags, setTags] = useState([]);
 
    //removing dublicates from tags array
@@ -60,10 +59,11 @@ const CreatePost = () => {
             toastId: customId,
          });
       }
+      // eslint-disable-next-line
    }, [isSuccess, postSuccess]);
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const type = event.target.type;
+      // const type = event.target.type;
 
       const name = event.target.name;
 
@@ -92,13 +92,6 @@ const CreatePost = () => {
       };
    };
 
-   //adding tags
-   // const addTag = (value: any) => {
-   //    if (value) {
-   //       setTags([...tags, value]);
-   //    }
-   // };
-
    const canSubmit = [...Object.values(data)].every(Boolean);
 
    const postObject = {
@@ -109,6 +102,7 @@ const CreatePost = () => {
       post: valueEditor,
       role: data?.role,
       featured: featured,
+      suspended: suspended,
       tags: uniqueTags,
    };
 
@@ -120,8 +114,13 @@ const CreatePost = () => {
    };
 
    return (
-      <form onSubmit={handleSubmit} className='py-10'>
-         <div className='lg:max-w-[90%] w-full lg:mx-auto bg-white dark:bg-black p-5 space-y-3 shadow-md shadow-fuchsia-500 lg:rounded-md duration-500 ease-in'>
+      <form onSubmit={handleSubmit} className='pb-10'>
+         <div className=' w-full lg:mx-auto bg-white dark:bg-black p-5 space-y-3 shadow-md shadow-fuchsia-500 lg:rounded-md duration-500 ease-in'>
+            {isError && (
+               <h2 className='py-2 text-red-600 '>
+                  {(error as any)?.data?.message}
+               </h2>
+            )}
             <h2 className='text-2xl font-bold text-center pt-2 pb-3 text-fuchsia-500'>
                Create Post
             </h2>{' '}
@@ -137,6 +136,8 @@ const CreatePost = () => {
                isLoading={isLoading}
                featured={featured}
                setFeatured={setFeatured}
+               suspended={suspended}
+               setSuspended={setSuspended}
                category={category}
                setCategory={setCategory}
                tags={tags}

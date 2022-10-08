@@ -7,7 +7,6 @@ import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import {
    MdOutlineKeyboardArrowDown,
    MdKeyboardArrowRight,
-   MdOutlineClose,
    MdRemoveCircle,
 } from 'react-icons/md';
 import { TiTick } from 'react-icons/ti';
@@ -26,6 +25,8 @@ const CreatePostForm = ({
    isLoading,
    featured,
    setFeatured,
+   suspended,
+   setSuspended,
    category,
    setCategory,
    tags,
@@ -46,6 +47,8 @@ const CreatePostForm = ({
    isLoading?: any;
    featured?: boolean;
    setFeatured?: any;
+   suspended?: boolean;
+   setSuspended?: any;
    category?: any;
    setCategory?: any;
    tags?: any;
@@ -268,9 +271,16 @@ const CreatePostForm = ({
             </div>
 
             <div className='flex-1'>
-               <div className='flex items-center space-x-2 justify-end'>
-                  <p className='text-sm text-gray-500'>Suspend:</p>
-                  <BsFillEyeSlashFill className='dark:text-white' />
+               <div
+                  className='flex items-center space-x-2 justify-end'
+                  onClick={() => setSuspended((current: any) => !current)}
+               >
+                  <p className='text-gray-800 dark:text-gray-200'>Suspend:</p>
+                  {suspended ? (
+                     <BsFillEyeSlashFill className='text-gray-800 dark:text-gray-200' />
+                  ) : (
+                     <BsFillEyeFill className='text-gray-800 dark:text-gray-200' />
+                  )}
                </div>
                <Editor />
                <ReactQuill

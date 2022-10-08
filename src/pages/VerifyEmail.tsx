@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import ActionButton from '../components/ActionButton';
 import VerifyEmailForm from '../components/forms/VerifyEmailForm';
 import { useVerifyEmailMutation } from '../redux/features/authApiSlice';
+
+const customId = 'custom-id-yes';
 
 const VerifyEmail = () => {
    //the verify email request
@@ -25,12 +28,16 @@ const VerifyEmail = () => {
             username: '',
             verificationCode: '',
          });
+         toast.success(verifySuccess?.message, {
+            toastId: customId,
+         });
          navigate('/auth/login');
       }
+      // eslint-disable-next-line
    }, [isSuccess, navigate]);
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const type = event.target.type;
+      // const type = event.target.type;
 
       const name = event.target.name;
 
@@ -55,8 +62,6 @@ const VerifyEmail = () => {
          await verifyEmail(verifyEmailObject);
       }
    };
-
-   console.log('success verify message: => ', verifySuccess);
 
    const verifyEmailContent = (
       <form
@@ -83,6 +88,11 @@ const VerifyEmail = () => {
                         Skip
                      </button>
                   </Link>
+                  {isError && (
+                     <p className='py-1 text-red-600 text-sm text-center'>
+                        {(error as any)?.data?.message}
+                     </p>
+                  )}
                </div>
             </div>
          </div>
