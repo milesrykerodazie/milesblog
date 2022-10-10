@@ -31,6 +31,7 @@ const Navbar = () => {
          }
       }
       return () => (effectRan.current = true);
+      // eslint-disable-next-line
    }, [isSuccess, logoutData?.message]);
 
    return (

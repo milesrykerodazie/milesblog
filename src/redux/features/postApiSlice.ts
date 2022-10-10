@@ -1,7 +1,7 @@
 import { apiSlice } from '../app/api/apiSlice';
 import { createSelector, createEntityAdapter } from '@reduxjs/toolkit';
 
-const postsAdapter = createEntityAdapter({});
+const postsAdapter = createEntityAdapter();
 
 // const sortedDesc = arr1.sort(
 //    (objA, objB) => Number(objB.date) - Number(objA.date),
@@ -44,10 +44,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
          },
          providesTags: (result: any, error: any, arg: any) => {
             if (result?.ids) {
-               return [
-                  { type: 'User', id: 'LIST' },
-                  ...result.ids.map((id: any) => ({ type: 'Post', id })),
-               ];
+               return [...result.ids.map((id: any) => ({ type: 'Post', id }))];
             } else return [{ type: 'Post', id: 'LIST' }];
          },
       }),
@@ -63,20 +60,17 @@ export const postApiSlice = apiSlice.injectEndpoints({
          }),
          transformResponse: (responseData) => {
             console.log(' category post response: => ', responseData);
-
-            // @ts-expect-error
-            const loadedPosts = responseData?.posts?.map((post) => {
-               post.id = post.postSlug;
-               return post;
-            });
+            const loadedPosts = (responseData as any)?.posts?.map(
+               (post: any) => {
+                  post.id = post.postSlug;
+                  return post;
+               },
+            );
             return postsAdapter.setAll(initialState, loadedPosts);
          },
          providesTags: (result: any, error: any, arg: any) => {
             if (result?.ids) {
-               return [
-                  { type: 'User', id: 'LIST' },
-                  ...result.ids.map((id: any) => ({ type: 'Post', id })),
-               ];
+               return [...result.ids.map((id: any) => ({ type: 'Post', id }))];
             } else return [{ type: 'Post', id: 'LIST' }];
          },
       }),
@@ -93,6 +87,32 @@ export const postApiSlice = apiSlice.injectEndpoints({
             { type: 'Post', id: arg.id },
          ],
       }),
+      likePost: builder.mutation({
+         query: ({ id, username }) => ({
+            url: '/like-post',
+            method: 'PATCH',
+            body: {
+               id,
+               username,
+            },
+         }),
+         invalidatesTags: (result, error, arg) => [
+            { type: 'Post', id: arg.id },
+         ],
+      }),
+      deletePost: builder.mutation({
+         query: ({ id, postOwner }) => ({
+            url: `/delete-post`,
+            method: 'DELETE',
+            body: {
+               id,
+               postOwner,
+            },
+         }),
+         invalidatesTags: (result, error, arg) => [
+            { type: 'Post', id: arg.id },
+         ],
+      }),
    }),
 });
 
@@ -101,11 +121,14 @@ export const {
    useGetPostsQuery,
    useGetCategoryPostsQuery,
    useUpdatePostMutation,
+   useLikePostMutation,
+   useDeletePostMutation,
 } = postApiSlice;
 
 // returns the query result object
-// @ts-expect-error
+//@ts-expect-error
 export const selectPostsResult = postApiSlice.endpoints.getPosts.select();
+console.log('selectPost result: => ', selectPostsResult);
 
 export const selectCategoryPostsResult =
    // @ts-expect-error
@@ -116,6 +139,7 @@ const selectPostData = createSelector(
    selectPostsResult,
    (postResult) => postResult.data,
 );
+console.log('selectPost daTA: => ', selectPostData);
 //memoize the category posts result
 const selectCategoryPostData = createSelector(
    selectCategoryPostsResult,
@@ -126,8 +150,10 @@ export const {
    selectAll: selectAllPosts,
    selectById: selectPostById,
    selectIds: selectPostIds,
+} = postsAdapter.getSelectors((state) =>
    // @ts-expect-error
-} = postsAdapter.getSelectors((state) => selectPostData(state ?? initialState));
+   selectPostData(state ?? initialState),
+);
 
 export const {
    selectAll: selectAllCategoryPosts,

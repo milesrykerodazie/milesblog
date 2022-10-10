@@ -29,7 +29,7 @@ const Login = () => {
    });
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const type = event.target.type;
+      // const type = event.target.type;
 
       const name = event.target.name;
 
@@ -56,8 +56,8 @@ const Login = () => {
    useEffect(() => {
       if (loginResponse) {
          const decoded = jwtDecode(loginResponse?.accessToken);
-         // @ts-expect-error
-         const { username, roles } = decoded.UserCred;
+
+         const { username, roles } = (decoded as any).UserCred;
          localStorage.setItem(
             'user',
             JSON.stringify({ role: roles, username: username }),
@@ -77,9 +77,8 @@ const Login = () => {
          });
          navigate('/');
       }
+      // eslint-disable-next-line
    }, [isSuccess, navigate, dispatch, loginResponse?.accessToken]);
-
-   console.log('Login response: ', loginResponse);
 
    const loginContent = (
       <form

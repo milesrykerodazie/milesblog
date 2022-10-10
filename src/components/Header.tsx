@@ -15,7 +15,7 @@ const Header = () => {
    }, [pageScroll]);
    return (
       <header
-         className={`bg-white dark:bg-black shadow-sm shadow-fuchsia-300 hidden px-10 py-3 lg:h-20 md:block fixed w-full top-0 z-50 ease-in duration-500 space-y-2 ${
+         className={`bg-white dark:bg-black shadow-sm shadow-fuchsia-300 hidden px-10 py-3 lg:h-20 lg:block fixed w-full top-0 z-50 ease-in duration-500 space-y-2 ${
             pageScroll && 'shadow-md shadow-fuchsia-700'
          }`}
       >

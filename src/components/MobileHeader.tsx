@@ -18,7 +18,7 @@ const MobileHeader = () => {
    return (
       <nav>
          <div
-            className={`bg-white shadow-md shadow-fuchsia-200 py-3 px-5 h-12 flex items-center justify-between md:hidden fixed w-full z-50 ease-in duration-500 ${
+            className={`bg-white dark:bg-black shadow-md shadow-fuchsia-200 py-3 px-5 h-12 flex items-center justify-between lg:hidden fixed w-full z-50 ease-in duration-500 ${
                pageScroll && 'shadow-md shadow-fuchsia-700'
             }`}
          >
