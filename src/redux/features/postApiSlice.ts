@@ -128,7 +128,6 @@ export const {
 // returns the query result object
 //@ts-expect-error
 export const selectPostsResult = postApiSlice.endpoints.getPosts.select();
-console.log('selectPost result: => ', selectPostsResult);
 
 export const selectCategoryPostsResult =
    // @ts-expect-error
@@ -139,7 +138,7 @@ const selectPostData = createSelector(
    selectPostsResult,
    (postResult) => postResult.data,
 );
-console.log('selectPost daTA: => ', selectPostData);
+
 //memoize the category posts result
 const selectCategoryPostData = createSelector(
    selectCategoryPostsResult,

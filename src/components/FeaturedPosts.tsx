@@ -62,7 +62,13 @@ const FeaturedPosts = () => {
                </p>
             </div>
          ) : isSuccess ? (
-            <div className='h-[500px] overflow-y-scroll py-4'>
+            <div
+               className={` py-4 ${
+                  postsData?.ids.length === 1
+                     ? 'h-auto'
+                     : 'h-[500px] overflow-y-scroll'
+               }`}
+            >
                {role && role === 'Admin' ? (
                   <div className='grid grid-cols-1 after:gap-3 px-1'>
                      {postsData?.ids

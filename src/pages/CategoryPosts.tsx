@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetCategoryPostsQuery } from '../redux/features/postApiSlice';
 import Post from '../components/Post';
+import { BiLoaderCircle } from 'react-icons/bi';
 
 //get stuff from localeStorage
 const useAuth = () => {
@@ -49,7 +50,9 @@ const CategoryPosts = () => {
    return (
       <div>
          {isLoading ? (
-            <p>Loading...</p>
+            <div className='flex items-center justify-center mt-24'>
+               <BiLoaderCircle className='w-14 h-12 text-gray-500 animate-spin' />
+            </div>
          ) : isError ? (
             <div className='flex items-center justify-center h-[calc(100vh-96px)]'>
                <p className='text-xl font-semibold text-gray-800 dark:text-gray-300'>
@@ -57,21 +60,25 @@ const CategoryPosts = () => {
                </p>
             </div>
          ) : isSuccess ? (
-            <div>
-               {role && role === 'Admin' ? (
-                  <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-1'>
-                     {postsData?.ids.map((postId) => (
-                        <Post key={postId} postId={postId} />
-                     ))}
-                  </div>
-               ) : (
-                  <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-1'>
-                     {(filtered as any)?.map((postId: any) => (
-                        <Post key={postId} postId={postId} />
-                     ))}
+            <>
+               {postsData && (
+                  <div>
+                     {role && role === 'Admin' ? (
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-1'>
+                           {postsData?.ids.map((postId) => (
+                              <Post key={postId} postId={postId} />
+                           ))}
+                        </div>
+                     ) : (
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-1'>
+                           {(filtered as any)?.map((postId: any) => (
+                              <Post key={postId} postId={postId} />
+                           ))}
+                        </div>
+                     )}
                   </div>
                )}
-            </div>
+            </>
          ) : null}
       </div>
    );
