@@ -75,6 +75,37 @@ export const postApiSlice = apiSlice.injectEndpoints({
          },
       }),
 
+      getPostComments: builder.query({
+         query: (id) => ({
+            url: `post-comments?id=${id}`,
+            validiteStatus: (
+               response: { status: number },
+               result: { isError: any },
+            ) => {
+               return response.status === 200 && !result.isError;
+            },
+         }),
+         transformResponse: (responseData) => {
+            console.log('post response: => ', responseData);
+
+            // @ts-expect-error
+            const loadedComments = responseData?.postComments?.map(
+               (comment: any) => {
+                  comment.id = comment._id;
+                  return comment;
+               },
+            );
+            return postsAdapter.setAll(initialState, loadedComments);
+         },
+         providesTags: (result: any, error: any, arg: any) => {
+            if (result?.ids) {
+               return [
+                  ...result.ids.map((id: any) => ({ type: 'Comment', id })),
+               ];
+            } else return [{ type: 'Comment', id: 'LIST' }];
+         },
+      }),
+
       updatePost: builder.mutation({
          query: (initialPost) => ({
             url: '/update-post',
@@ -123,6 +154,7 @@ export const {
    useUpdatePostMutation,
    useLikePostMutation,
    useDeletePostMutation,
+   useGetPostCommentsQuery,
 } = postApiSlice;
 
 // returns the query result object

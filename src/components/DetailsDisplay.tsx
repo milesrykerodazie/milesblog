@@ -1,21 +1,24 @@
 import { AiFillDelete, AiFillEdit, AiFillLike } from 'react-icons/ai';
 import { FaComments } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState, useRef } from 'react';
 import {
    useDeletePostMutation,
    useLikePostMutation,
 } from '../redux/features/postApiSlice';
 import { toast } from 'react-toastify';
 import { ImSpinner } from 'react-icons/im';
+import Comments from './Comments';
+import { usePostCommentMutation } from '../redux/features/commentsApiSlice';
 
 const customId = 'custom-id-yes';
-const DetailsDisplay = ({ post }: any) => {
+
+const DetailsDisplay = ({ post, comments }: any) => {
    //like post
    const [likePost, { data: likeData, isLoading, isSuccess, isError, error }] =
       useLikePostMutation();
 
-   //like post
+   //delete post
    const [
       deletePost,
       {
@@ -26,6 +29,17 @@ const DetailsDisplay = ({ post }: any) => {
          error: deleteError,
       },
    ] = useDeletePostMutation();
+   //comment on post
+   const [
+      postComment,
+      {
+         data: commentData,
+         isLoading: commentLoading,
+         isSuccess: commentSuccess,
+         isError: isCommentError,
+         error: commentError,
+      },
+   ] = usePostCommentMutation();
 
    //use navigation
    const navigate = useNavigate();
@@ -40,6 +54,18 @@ const DetailsDisplay = ({ post }: any) => {
    const [likes, setLikes] = useState(post?.likes?.length);
    const [isLiked, setIsLiked] = useState(false);
    const [openDelete, setOpenDelete] = useState(false);
+   const [commentText, setCommentText] = useState('');
+
+   //text area ref
+   const textAreaRef = useRef(null);
+   const resizeTextArea = () => {
+      if (textAreaRef?.current) {
+         (textAreaRef as any).current.style.height = 'auto';
+         (textAreaRef as any).current.style.height =
+            (textAreaRef as any).current.scrollHeight + 'px';
+      }
+   };
+   useEffect(resizeTextArea, [commentText]);
 
    //formatting date
    const dateCreated = new Date(post?.createdAt).toLocaleString('en-US', {
@@ -104,9 +130,29 @@ const DetailsDisplay = ({ post }: any) => {
          });
          navigate('/');
       }
-   }, [deleteSuccess, navigate]);
+      if (commentSuccess) {
+         toast.success(commentData?.message, {
+            toastId: customId,
+         });
+         setCommentText('');
+      }
+   }, [deleteSuccess, commentSuccess, navigate]);
 
    console.log('deleted post: =>', deleteData?.deletedPost);
+
+   const commentObject = {
+      postId: post?._id,
+      commentOwner: user?.username,
+      comment: commentText,
+   };
+
+   //comment on post
+   const handleComment = async (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      if (commentText) {
+         await postComment(commentObject);
+      }
+   };
 
    return (
       <div>
@@ -229,18 +275,62 @@ const DetailsDisplay = ({ post }: any) => {
                      <span>{post?.comments.length}</span>
                   )}
                </div>
-               <div>
-                  <textarea
-                     rows={4}
-                     placeholder='your comment.....'
-                     className='border border-gray-300 dark:border-gray-600 rounded-sm w-full px-2 py-1 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-xs'
-                  />
-                  <div className='flex items-center justify-end'>
-                     <button className='text-white bg-fuchsia-600 p-2 rounded-sm font-semibold'>
-                        comment
-                     </button>
+               <div className=''>
+                  {user !== undefined && (
+                     <div>
+                        {isCommentError && (
+                           <p className='text-sm text-red-500'>
+                              {(commentError as any)?.data?.message}
+                           </p>
+                        )}
+                        <textarea
+                           style={{ resize: 'none' }}
+                           ref={textAreaRef}
+                           rows={1}
+                           value={commentText}
+                           onChange={(e) => setCommentText(e.target.value)}
+                           placeholder='your comment.....'
+                           className='border border-gray-300 dark:border-gray-600 rounded-xl w-full px-2 py-3 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-xs overflow-hidden'
+                        />
+                        <div className='flex items-center justify-end'>
+                           <button
+                              disabled={!commentText}
+                              className={`text-white bg-fuchsia-600 p-2 rounded-sm font-semibold ${
+                                 commentText
+                                    ? 'cursor-pointer'
+                                    : 'cursor-not-allowed opacity-40'
+                              }`}
+                              onClick={handleComment}
+                           >
+                              {commentLoading ? (
+                                 <p className='flex items-center'>
+                                    Comenting...
+                                    <ImSpinner className='w-6 h-6 text-slate-200 ml-2 animate-spin' />
+                                 </p>
+                              ) : (
+                                 <p>Comment</p>
+                              )}
+                           </button>
+                        </div>
+                     </div>
+                  )}
+
+                  <div className='pt-3'>
+                     {comments?.length > 0 ? (
+                        <div>
+                           {comments?.map((comment: any) => (
+                              <div key={comment?.id}>
+                                 <Comments
+                                    key={comment?.id}
+                                    comment={comment}
+                                 />
+                              </div>
+                           ))}
+                        </div>
+                     ) : (
+                        <p>No comments.</p>
+                     )}
                   </div>
-                  <div className='text-sm'>display comments here</div>
                </div>
             </div>
          </div>

@@ -39,13 +39,21 @@ const FeaturedPosts = () => {
       refetchOnMountOrArgChange: true,
    });
 
+   console.log('post length:', postsData?.ids.length);
+
    const { role } = useAuth();
+
+   const adminFilter = postsData?.ids.filter(
+      (adminFeatured) =>
+         (postsData as any)?.entities[adminFeatured].featured === true,
+   );
 
    const filtered = postsData?.ids.filter(
       (filteredPost) =>
          (postsData as any)?.entities[filteredPost].suspended === false &&
          (postsData as any)?.entities[filteredPost].featured === true,
    );
+
    return (
       <div>
          <h2 className='text-lg text-gray-800 dark:text-white font-semibold bg-white dark:bg-black z-50 py-2'>
@@ -64,22 +72,17 @@ const FeaturedPosts = () => {
          ) : isSuccess ? (
             <div
                className={` py-4 ${
-                  postsData?.ids.length === 1
-                     ? 'h-auto'
+                  (adminFilter as any)?.length < 2 ||
+                  (filtered as any)?.length < 2
+                     ? 'h-auto overflow-y-hidden'
                      : 'h-[500px] overflow-y-scroll'
                }`}
             >
                {role && role === 'Admin' ? (
                   <div className='grid grid-cols-1 after:gap-3 px-1'>
-                     {postsData?.ids
-                        .filter(
-                           (adminFeatured) =>
-                              (postsData as any)?.entities[adminFeatured]
-                                 .featured === true,
-                        )
-                        .map((postId) => (
-                           <Post key={postId} postId={postId} featured />
-                        ))}
+                     {(adminFilter as any)?.map((postId: any) => (
+                        <Post key={postId} postId={postId} featured />
+                     ))}
                   </div>
                ) : (
                   <div className='grid grid-cols-1  gap-3 px-1'>
