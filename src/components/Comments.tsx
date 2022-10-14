@@ -73,6 +73,7 @@ const Comments = ({ comment }: any) => {
    const [openReply, setOpenReply] = useState(false);
    const [openEdit, setOpenEdit] = useState(false);
    const [openDelete, setOpenDelete] = useState(false);
+   const [openReplies, setOpenReplies] = useState(false);
 
    //text area ref
    const textAreaRef = useRef(null);
@@ -191,18 +192,20 @@ const Comments = ({ comment }: any) => {
                      : 'https://demofree.sirv.com/nope-not-here.jpg'
                }
                alt='user-img'
-               className='w-8 h-8 rounded-full object-cover'
+               className='w-8 h-8 rounded-full object-cover ring-2 ring-fuchsia-600'
             />
             <div className='space-y-3 flex-1'>
-               <div className='bg-gray-200 p-2 rounded-md flex justify-between relative'>
+               <div className='bg-gray-200 dark:bg-gray-800 p-2 rounded-md flex justify-between relative duration-500 ease-in'>
                   <div>
-                     <p className='capitalize underline text-sm'>
+                     <p className='capitalize underline text-sm text-gray-600 dark:text-gray-400 duration-500 ease-in'>
                         {comment?.username}
                      </p>
-                     <p className='text-sm'>{comment?.comment}</p>
+                     <p className='text-sm text-gray-600 dark:text-gray-400 duration-500 ease-in'>
+                        {comment?.comment}
+                     </p>
                   </div>
                   <div className='flex flex-col space-y-2 px-2'>
-                     <span className='text-xs'>
+                     <span className='text-xs text-gray-600 dark:text-gray-400 duration-500 ease-in'>
                         {format(comment?.createdAt)}
                      </span>
                      {user && user?.username === comment?.commentOwner && (
@@ -214,17 +217,17 @@ const Comments = ({ comment }: any) => {
                               }
                            />
                            <AiFillEdit
-                              className='text-lg text-gray-700 cursor-pointer'
+                              className='text-lg text-gray-600 dark:text-gray-400 cursor-pointer duration-500 ease-in'
                               onClick={() => setOpenEdit((current) => !current)}
                            />
                         </div>
                      )}
                   </div>
                   {openDelete && (
-                     <div className='absolute top-2 left-1/2 flex space-x-2 items-center bg-white dark:bg-gray-800 px-2 py-1 rounded-sm shadow-md shadow-fuchsia-500'>
+                     <div className='absolute top-5 right-2  flex space-x-2 items-center bg-white dark:bg-gray-800 px-2 py-1 rounded-sm shadow-md shadow-fuchsia-500 duration-500 ease-in'>
                         <p className='text-fuchsia-500 text-sm flex items-center duration-500 ease-in'>
                            {isDeleteLoading ? (
-                              <span className='flex items-baseline'>
+                              <span className='flex items-center '>
                                  Deleting...
                                  <ImSpinner className='ml-1 animate-spin' />
                               </span>
@@ -237,11 +240,11 @@ const Comments = ({ comment }: any) => {
                               </span>
                            )}
                         </p>
-                        <span className='text-gray-800 dark:text-gray-300 text-sm'>
+                        <span className='text-gray-800 dark:text-gray-300 text-sm duration-500 ease-in'>
                            /
                         </span>
                         <p
-                           className='text-gray-800 dark:text-gray-300 text-sm cursor-pointer'
+                           className='text-gray-800 dark:text-gray-300 text-sm cursor-pointer duration-500 ease-in'
                            onClick={() => setOpenDelete((current) => !current)}
                         >
                            Cancel
@@ -263,7 +266,7 @@ const Comments = ({ comment }: any) => {
                         value={updateText}
                         onChange={(e) => setUpdateText(e.target.value)}
                         placeholder='your reply...'
-                        className='border border-gray-300 dark:border-gray-600 rounded-xl w-full px-2 py-3 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-xs overflow-hidden'
+                        className='border border-gray-300 dark:border-gray-600 rounded-xl w-full px-2 py-3 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-xs overflow-hidden text-sm'
                      />
                      <div className='flex items-center space-x-3'>
                         <button
@@ -285,7 +288,7 @@ const Comments = ({ comment }: any) => {
                            )}
                         </button>
                         <p
-                           className='text-gray-800 dark:text-gray-200 text-sm cursor-pointer'
+                           className='text-gray-800 dark:text-gray-200 text-sm cursor-pointer duration-500 ease-in'
                            onClick={() => setOpenEdit(false)}
                         >
                            cancel
@@ -293,32 +296,44 @@ const Comments = ({ comment }: any) => {
                      </div>
                   </div>
                )}
-               <div className='flex space-x-2 text-sm items-center'>
-                  <div className='flex space-x-2 items-center'>
-                     <p>Like</p>
+               <div className='flex items-center justify-between'>
+                  <div className='flex space-x-2 text-sm items-center'>
                      <div className='flex space-x-2 items-center'>
-                        <p className='cursor-pointer' onClick={handleLike}>
-                           {isLiked ? (
-                              <AiFillLike className='w-6 h-6 text-fuchsia-600' />
-                           ) : (
-                              <AiFillLike className='w-6 h-6 text-gray-600 dark:text-gray-300' />
-                           )}
+                        <p className='text-gray-800 dark:text-gray-300 duration-500 ease-in'>
+                           Like
                         </p>
-                        {likes > 0 && (
-                           <span className='text-gray-800 dark:text-gray-300'>
-                              {likes}
-                           </span>
-                        )}
+                        <div className='flex space-x-2 items-center'>
+                           <p className='cursor-pointer' onClick={handleLike}>
+                              {isLiked ? (
+                                 <AiFillLike className='w-6 h-6 text-fuchsia-600' />
+                              ) : (
+                                 <AiFillLike className='w-6 h-6 text-gray-600 dark:text-gray-300 duration-500 ease-in' />
+                              )}
+                           </p>
+                           {likes > 0 && (
+                              <span className='text-gray-800 dark:text-gray-300 duration-500 ease-in'>
+                                 {likes}
+                              </span>
+                           )}
+                        </div>
+                     </div>
+                     <span className='text-gray-800 dark:text-gray-300 duration-500 ease-in'>
+                        |
+                     </span>
+                     <div
+                        className='flex items-center space-x-2 cursor-pointer text-gray-800 dark:text-gray-300 duration-500 ease-in'
+                        onClick={() => setOpenReply((current: any) => !current)}
+                     >
+                        <p>Reply</p>
+                        <p>{comment?.replies.length}</p>
                      </div>
                   </div>
-                  <span>|</span>
-                  <div
-                     className='flex items-center space-x-2 cursor-pointer'
-                     onClick={() => setOpenReply((current: any) => !current)}
+                  <p
+                     className='text-sm text-fuchsia-600 cursor-pointer'
+                     onClick={() => setOpenReplies((current) => !current)}
                   >
-                     <p>Reply</p>
-                     <p>{comment?.replies.length}</p>
-                  </div>
+                     See replies
+                  </p>
                </div>
                {openReply && (
                   <div className=''>
@@ -334,7 +349,7 @@ const Comments = ({ comment }: any) => {
                         value={replyText}
                         onChange={(e) => setReplyText(e.target.value)}
                         placeholder='your reply...'
-                        className='border border-gray-300 dark:border-gray-600 rounded-xl w-full px-2 py-3 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-xs overflow-hidden'
+                        className='border border-gray-300 dark:border-gray-600 rounded-xl w-full px-2 py-3 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-sm overflow-hidden text-sm'
                      />
                      <button
                         disabled={!replyText}
@@ -356,18 +371,19 @@ const Comments = ({ comment }: any) => {
                      </button>
                   </div>
                )}
-
-               <div>
-                  {(replies as any)?.length > 0 && (
-                     <div>
-                        {replies?.map((reply: any) => (
-                           <div key={reply?.id}>
-                              <Replies reply={reply} />
-                           </div>
-                        ))}
-                     </div>
-                  )}
-               </div>
+               {openReplies && (
+                  <div>
+                     {(replies as any)?.length > 0 && (
+                        <div>
+                           {replies?.map((reply: any) => (
+                              <div key={reply?.id}>
+                                 <Replies reply={reply} />
+                              </div>
+                           ))}
+                        </div>
+                     )}
+                  </div>
+               )}
             </div>
          </div>
       </div>

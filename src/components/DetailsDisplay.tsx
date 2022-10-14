@@ -166,7 +166,7 @@ const DetailsDisplay = ({ post }: any) => {
 
    return (
       <div>
-         <h1 className='text-center text-3xl font-bold capitalize py-2'>
+         <h1 className='text-center text-3xl font-bold capitalize py-2 text-gray-600 dark:text-gray-400'>
             {post?.title}
          </h1>
          <div className='w-full mx-auto'>
@@ -250,18 +250,15 @@ const DetailsDisplay = ({ post }: any) => {
                      )}
                   </div>
                   <div>
-                     <p className='text-lg font-semibold text-gray-700'>
+                     <p className='text-lg font-semibold text-gray-700 dark:text-gray-400'>
                         Category:{' '}
                         <span className='capitalize'>{post?.category}</span>
                      </p>
-                     <div className='flex space-x-2 items-center'>
+                     <div className='flex space-x-2 items-center text-gray-700 dark:text-gray-400'>
                         <p>Tags:</p>
-                        <p className='flex space-x-2'>
+                        <p className='flex space-x-2 items-center'>
                            {post?.tags.map((tag: any, index: any) => (
-                              <span
-                                 key={index}
-                                 className='capitalize text-sm text-gray-600'
-                              >
+                              <span key={index} className='capitalize text-sm '>
                                  {tag}
                               </span>
                            ))}
@@ -279,8 +276,10 @@ const DetailsDisplay = ({ post }: any) => {
             <div className='space-y-2'>
                <div className='flex items-center space-x-2'>
                   {/* work on the likes, change from id to username */}
-                  <p className='text-gray-700 font-semibold'>Comments</p>
-                  <FaComments className='w-6 h-6 text-gray-600' />
+                  <p className='text-gray-700 font-semibold dark:text-gray-400'>
+                     Comments
+                  </p>
+                  <FaComments className='w-6 h-6 text-gray-600 dark:text-gray-400' />
                   {post?.comments.length > 0 && (
                      <span>{post?.comments.length}</span>
                   )}
@@ -300,7 +299,7 @@ const DetailsDisplay = ({ post }: any) => {
                            value={commentText}
                            onChange={(e) => setCommentText(e.target.value)}
                            placeholder='your comment...'
-                           className='border border-gray-300 dark:border-gray-600 rounded-xl w-full px-2 py-3 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-xs overflow-hidden'
+                           className='border border-gray-300 dark:border-gray-600 rounded-xl w-full px-2 py-3 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-sm overflow-hidden'
                         />
                         <div className='flex items-center justify-end'>
                            <button
@@ -335,7 +334,9 @@ const DetailsDisplay = ({ post }: any) => {
                            ))}
                         </div>
                      ) : (
-                        <p>No comments.</p>
+                        <p className='text-center text-gray-600 dark:text-gray-400'>
+                           No comments.
+                        </p>
                      )}
                   </div>
                </div>

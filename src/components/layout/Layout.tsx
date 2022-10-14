@@ -9,7 +9,7 @@ const Layout = () => {
       <div className='h-screen bg-white opacity-95 dark:bg-black duration-500 ease-in '>
          <Header />
          <MobileHeader />
-         <div className='md:pt-[74px] pt-[40px] px-2 pb-5 lg:px-0 lg:max-w-[90%] lg:mx-auto flex space-x-3'>
+         <div className='lg:pt-[74px] pt-[40px] px-2 pb-5 lg:px-0 lg:max-w-[90%] lg:mx-auto flex space-x-3'>
             <div className='lg:w-[80%] w-full mt-3'>
                <Outlet />
             </div>

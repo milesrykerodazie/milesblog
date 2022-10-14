@@ -65,9 +65,7 @@ export const commentsApiSlice = apiSlice.injectEndpoints({
                ...updateDetails,
             },
          }),
-         invalidatesTags: (result, error, arg) => [
-            { type: 'Post', id: 'LIST' },
-         ],
+         invalidatesTags: (result, error, arg) => [{ type: 'Comment' }],
       }),
       deleteComment: builder.mutation({
          query: (id) => ({
