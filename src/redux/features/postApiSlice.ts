@@ -3,10 +3,6 @@ import { createSelector, createEntityAdapter } from '@reduxjs/toolkit';
 
 const postsAdapter = createEntityAdapter();
 
-// const sortedDesc = arr1.sort(
-//    (objA, objB) => Number(objB.date) - Number(objA.date),
-//  );
-
 const initialState = postsAdapter.getInitialState();
 
 export const postApiSlice = apiSlice.injectEndpoints({
@@ -77,7 +73,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
 
       getPostComments: builder.query({
          query: (id) => ({
-            url: `post-comments?id=${id}`,
+            url: `post-comments/${id}`,
             validiteStatus: (
                response: { status: number },
                result: { isError: any },
@@ -86,7 +82,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
             },
          }),
          transformResponse: (responseData) => {
-            console.log('post response: => ', responseData);
+            console.log('post comments response: => ', responseData);
 
             // @ts-expect-error
             const loadedComments = responseData?.postComments?.map(
@@ -99,10 +95,8 @@ export const postApiSlice = apiSlice.injectEndpoints({
          },
          providesTags: (result: any, error: any, arg: any) => {
             if (result?.ids) {
-               return [
-                  ...result.ids.map((id: any) => ({ type: 'Comment', id })),
-               ];
-            } else return [{ type: 'Comment', id: 'LIST' }];
+               return [...result.ids.map((id: any) => ({ type: 'Post', id }))];
+            } else return [{ type: 'Post', id: 'LIST' }];
          },
       }),
 

@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { AiFillLike } from 'react-icons/ai';
+import React, { memo, useEffect, useRef, useState } from 'react';
+import { AiFillDelete, AiFillEdit, AiFillLike } from 'react-icons/ai';
+import { ImSpinner } from 'react-icons/im';
 import { toast } from 'react-toastify';
 import { format } from 'timeago.js';
+
 import {
+   useDeleteCommentMutation,
    useGetCommentRepliesQuery,
    useLikeCommentMutation,
+   useReplyCommentMutation,
+   useUpdateCommentMutation,
 } from '../redux/features/commentsApiSlice';
 
 import Replies from './Replies';
@@ -12,23 +17,73 @@ import Replies from './Replies';
 const customId = 'custom-id-yes';
 
 const Comments = ({ comment }: any) => {
+   //like comment
+   const [likeComment] = useLikeCommentMutation();
+
+   //reply comment
+   const [
+      replyComment,
+      {
+         data: replyData,
+         isLoading: replyLoading,
+         isSuccess: replySuccess,
+         isError: isReplyError,
+         error: replyError,
+      },
+   ] = useReplyCommentMutation();
+
+   //update comment
+   const [
+      updateComment,
+      {
+         data: updateData,
+         isLoading: isUpdateLoading,
+         isSuccess: isUpdateSuccess,
+         isError: isUpdateError,
+         error: updateError,
+      },
+   ] = useUpdateCommentMutation();
+
+   // delete comment
+   const [
+      deleteComment,
+      {
+         data: deleteData,
+         isLoading: isDeleteLoading,
+         isSuccess: isDeleteSuccess,
+         isError: isDeleteError,
+         error: deleteError,
+      },
+   ] = useDeleteCommentMutation();
+
    const { replies } = useGetCommentRepliesQuery(`${(comment as any)?.id}`, {
       pollingInterval: 60000,
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
       selectFromResult: ({ data }) => ({
          replies: data?.ids.map((id) => data?.entities[id]),
       }),
    });
 
-   //like comment
-   const [
-      likeComment,
-      { data: likeData, isLoading, isSuccess, isError, error },
-   ] = useLikeCommentMutation();
-
    const [likes, setLikes] = useState(comment?.likes?.length);
    const [isLiked, setIsLiked] = useState(false);
+   const [replyText, setReplyText] = useState('');
+   const [updateText, setUpdateText] = useState(comment?.comment);
+   const [openReply, setOpenReply] = useState(false);
+   const [openEdit, setOpenEdit] = useState(false);
+   const [openDelete, setOpenDelete] = useState(false);
+
+   //text area ref
+   const textAreaRef = useRef(null);
+   const resizeTextArea = () => {
+      if (textAreaRef?.current) {
+         (textAreaRef as any).current.style.height = 'auto';
+         (textAreaRef as any).current.style.height =
+            (textAreaRef as any).current.scrollHeight + 'px';
+      }
+   };
+   useEffect(resizeTextArea, [replyText, updateText]);
 
    //for authomatically getting post owner on login
    let user: any;
@@ -66,6 +121,66 @@ const Comments = ({ comment }: any) => {
       }
    };
 
+   useEffect(() => {
+      if (replySuccess) {
+         toast.success(replyData?.message, {
+            toastId: customId,
+         });
+
+         setReplyText('');
+         setOpenReply(false);
+      }
+      if (isUpdateSuccess) {
+         toast.success(updateData?.message, {
+            toastId: customId,
+         });
+         setOpenEdit(false);
+      }
+      if (isDeleteSuccess) {
+         toast.success(deleteData?.message, {
+            toastId: customId,
+         });
+         setOpenDelete(false);
+      }
+   }, [replySuccess, isUpdateSuccess, isDeleteSuccess]);
+
+   const updateObject = {
+      id: comment?.id,
+      commentOwner: user?.username,
+      comment: updateText,
+   };
+   const replyObject = {
+      commentId: comment?.id,
+      replyOwner: user?.username,
+      reply: replyText,
+   };
+
+   //handle reply comment
+   const handleReply = async (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      if (replyText) {
+         await replyComment(replyObject);
+      }
+   };
+
+   //handle update
+   const handleUpdate = async (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      if (updateText) {
+         await updateComment(updateObject);
+      }
+   };
+
+   //delete comment
+   const handleDelete = async (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      try {
+         await deleteComment(comment?.id);
+      } catch (err) {
+         console.error('Failed to delete comment', err);
+      }
+   };
+
    return (
       <div className=''>
          <div className='flex space-x-2'>
@@ -79,15 +194,105 @@ const Comments = ({ comment }: any) => {
                className='w-8 h-8 rounded-full object-cover'
             />
             <div className='space-y-3 flex-1'>
-               <div className='bg-gray-200 p-2 rounded-md flex justify-between'>
+               <div className='bg-gray-200 p-2 rounded-md flex justify-between relative'>
                   <div>
                      <p className='capitalize underline text-sm'>
                         {comment?.username}
                      </p>
                      <p className='text-sm'>{comment?.comment}</p>
                   </div>
-                  <span className='text-xs'>{format(comment?.createdAt)}</span>
+                  <div className='flex flex-col space-y-2 px-2'>
+                     <span className='text-xs'>
+                        {format(comment?.createdAt)}
+                     </span>
+                     {user && user?.username === comment?.commentOwner && (
+                        <div className='flex items-center space-x-3'>
+                           <AiFillDelete
+                              className='text-lg text-red-600 cursor-pointer'
+                              onClick={() =>
+                                 setOpenDelete((current) => !current)
+                              }
+                           />
+                           <AiFillEdit
+                              className='text-lg text-gray-700 cursor-pointer'
+                              onClick={() => setOpenEdit((current) => !current)}
+                           />
+                        </div>
+                     )}
+                  </div>
+                  {openDelete && (
+                     <div className='absolute top-2 left-1/2 flex space-x-2 items-center bg-white dark:bg-gray-800 px-2 py-1 rounded-sm shadow-md shadow-fuchsia-500'>
+                        <p className='text-fuchsia-500 text-sm flex items-center duration-500 ease-in'>
+                           {isDeleteLoading ? (
+                              <span className='flex items-baseline'>
+                                 Deleting...
+                                 <ImSpinner className='ml-1 animate-spin' />
+                              </span>
+                           ) : (
+                              <span
+                                 onClick={handleDelete}
+                                 className='cursor-pointer'
+                              >
+                                 Delete
+                              </span>
+                           )}
+                        </p>
+                        <span className='text-gray-800 dark:text-gray-300 text-sm'>
+                           /
+                        </span>
+                        <p
+                           className='text-gray-800 dark:text-gray-300 text-sm cursor-pointer'
+                           onClick={() => setOpenDelete((current) => !current)}
+                        >
+                           Cancel
+                        </p>
+                     </div>
+                  )}
                </div>
+               {openEdit && (
+                  <div className=''>
+                     {isUpdateError && (
+                        <p className='text-red-500 text-sm'>
+                           {(updateError as any)?.data?.message}
+                        </p>
+                     )}
+                     <textarea
+                        style={{ resize: 'none' }}
+                        ref={textAreaRef}
+                        rows={1}
+                        value={updateText}
+                        onChange={(e) => setUpdateText(e.target.value)}
+                        placeholder='your reply...'
+                        className='border border-gray-300 dark:border-gray-600 rounded-xl w-full px-2 py-3 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-xs overflow-hidden'
+                     />
+                     <div className='flex items-center space-x-3'>
+                        <button
+                           disabled={!updateText}
+                           className={`text-white bg-fuchsia-600 p-2 rounded-md text-sm font-semibold ${
+                              updateText
+                                 ? 'cursor-pointer'
+                                 : 'cursor-not-allowed opacity-40'
+                           }`}
+                           onClick={handleUpdate}
+                        >
+                           {isUpdateLoading ? (
+                              <p className='flex items-center'>
+                                 Updating...
+                                 <ImSpinner className='w-6 h-6 text-slate-200 ml-2 animate-spin' />
+                              </p>
+                           ) : (
+                              <p>Update comment</p>
+                           )}
+                        </button>
+                        <p
+                           className='text-gray-800 dark:text-gray-200 text-sm cursor-pointer'
+                           onClick={() => setOpenEdit(false)}
+                        >
+                           cancel
+                        </p>
+                     </div>
+                  </div>
+               )}
                <div className='flex space-x-2 text-sm items-center'>
                   <div className='flex space-x-2 items-center'>
                      <p>Like</p>
@@ -107,29 +312,68 @@ const Comments = ({ comment }: any) => {
                      </div>
                   </div>
                   <span>|</span>
-                  <div className='flex items-center space-x-2'>
+                  <div
+                     className='flex items-center space-x-2 cursor-pointer'
+                     onClick={() => setOpenReply((current: any) => !current)}
+                  >
                      <p>Reply</p>
                      <p>{comment?.replies.length}</p>
                   </div>
                </div>
+               {openReply && (
+                  <div className=''>
+                     {isReplyError && (
+                        <p className='text-red-500 text-sm'>
+                           {(replyError as any)?.data?.message}
+                        </p>
+                     )}
+                     <textarea
+                        style={{ resize: 'none' }}
+                        ref={textAreaRef}
+                        rows={1}
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                        placeholder='your reply...'
+                        className='border border-gray-300 dark:border-gray-600 rounded-xl w-full px-2 py-3 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-xs overflow-hidden'
+                     />
+                     <button
+                        disabled={!replyText}
+                        className={`text-white bg-fuchsia-600 p-2 rounded-md text-sm font-semibold ${
+                           replyText
+                              ? 'cursor-pointer'
+                              : 'cursor-not-allowed opacity-40'
+                        }`}
+                        onClick={handleReply}
+                     >
+                        {replyLoading ? (
+                           <p className='flex items-center'>
+                              Replying...
+                              <ImSpinner className='w-6 h-6 text-slate-200 ml-2 animate-spin' />
+                           </p>
+                        ) : (
+                           <p>Reply</p>
+                        )}
+                     </button>
+                  </div>
+               )}
+
                <div>
                   {(replies as any)?.length > 0 && (
                      <div>
                         {replies?.map((reply: any) => (
-                           <Replies key={reply?.id} reply={reply} />
+                           <div key={reply?.id}>
+                              <Replies reply={reply} />
+                           </div>
                         ))}
                      </div>
                   )}
                </div>
-               {/* <input
-                  type='text'
-                  aria-multiline
-                  className='outline-none border p-2 w-full'
-               /> */}
             </div>
          </div>
       </div>
    );
 };
 
-export default Comments;
+const memoizedComments = memo(Comments);
+
+export default memoizedComments;

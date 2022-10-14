@@ -13,6 +13,7 @@ const PostsPrefetch = () => {
             force: true,
          }),
       );
+
       // eslint-disable-next-line
    }, []);
    return <Outlet />;

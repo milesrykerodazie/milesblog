@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { memo, useEffect, useState, useRef } from 'react';
 import {
    useDeletePostMutation,
+   useGetPostCommentsQuery,
    useLikePostMutation,
 } from '../redux/features/postApiSlice';
 import { toast } from 'react-toastify';
@@ -13,10 +14,9 @@ import { usePostCommentMutation } from '../redux/features/commentsApiSlice';
 
 const customId = 'custom-id-yes';
 
-const DetailsDisplay = ({ post, comments }: any) => {
+const DetailsDisplay = ({ post }: any) => {
    //like post
-   const [likePost, { data: likeData, isLoading, isSuccess, isError, error }] =
-      useLikePostMutation();
+   const [likePost] = useLikePostMutation();
 
    //delete post
    const [
@@ -40,6 +40,16 @@ const DetailsDisplay = ({ post, comments }: any) => {
          error: commentError,
       },
    ] = usePostCommentMutation();
+
+   // getting the comments of this post
+   const { comments } = useGetPostCommentsQuery(`${(post as any)?.id}`, {
+      pollingInterval: 60000,
+      refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
+      selectFromResult: ({ data }) => ({
+         comments: data?.ids.map((id) => data?.entities[id]),
+      }),
+   });
 
    //use navigation
    const navigate = useNavigate();
@@ -289,7 +299,7 @@ const DetailsDisplay = ({ post, comments }: any) => {
                            rows={1}
                            value={commentText}
                            onChange={(e) => setCommentText(e.target.value)}
-                           placeholder='your comment.....'
+                           placeholder='your comment...'
                            className='border border-gray-300 dark:border-gray-600 rounded-xl w-full px-2 py-3 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-xs overflow-hidden'
                         />
                         <div className='flex items-center justify-end'>
@@ -316,14 +326,11 @@ const DetailsDisplay = ({ post, comments }: any) => {
                   )}
 
                   <div className='pt-3'>
-                     {comments?.length > 0 ? (
+                     {(comments as any)?.length > 0 ? (
                         <div>
                            {comments?.map((comment: any) => (
                               <div key={comment?.id}>
-                                 <Comments
-                                    key={comment?.id}
-                                    comment={comment}
-                                 />
+                                 <Comments comment={comment} />
                               </div>
                            ))}
                         </div>
