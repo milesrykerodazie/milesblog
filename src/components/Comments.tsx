@@ -93,6 +93,9 @@ const Comments = ({ comment }: any) => {
       user = JSON.parse(userName);
    }
 
+   const authEdit =
+      user?.username === comment?.commentOwner || user?.role === 'Admin';
+
    //checking if user has already liked a post
    useEffect(() => {
       setIsLiked(comment?.likes.includes(user?.username));
@@ -155,10 +158,30 @@ const Comments = ({ comment }: any) => {
       replyOwner: user?.username,
       reply: replyText,
    };
+   const deleteObject = {
+      id: comment?.id,
+      commentOwner: user?.username,
+   };
+
+   //handle open reply
+   const handleOpenReply = (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      if (user === undefined) {
+         return toast.warn('You are not authorized.', {
+            toastId: customId,
+         });
+      }
+      setOpenReply((current: any) => !current);
+   };
 
    //handle reply comment
    const handleReply = async (e: React.SyntheticEvent) => {
       e.preventDefault();
+      if (user === undefined) {
+         return toast.warn('You are not authorized.', {
+            toastId: customId,
+         });
+      }
       if (replyText) {
          await replyComment(replyObject);
       }
@@ -167,6 +190,11 @@ const Comments = ({ comment }: any) => {
    //handle update
    const handleUpdate = async (e: React.SyntheticEvent) => {
       e.preventDefault();
+      if (user === undefined) {
+         return toast.warn('You are not authorized.', {
+            toastId: customId,
+         });
+      }
       if (updateText) {
          await updateComment(updateObject);
       }
@@ -175,8 +203,13 @@ const Comments = ({ comment }: any) => {
    //delete comment
    const handleDelete = async (e: React.SyntheticEvent) => {
       e.preventDefault();
+      if (user === undefined) {
+         return toast.warn('You are not authorized.', {
+            toastId: customId,
+         });
+      }
       try {
-         await deleteComment(comment?.id);
+         await deleteComment(deleteObject);
       } catch (err) {
          console.error('Failed to delete comment', err);
       }
@@ -208,7 +241,7 @@ const Comments = ({ comment }: any) => {
                      <span className='text-xs text-gray-600 dark:text-gray-400 duration-500 ease-in'>
                         {format(comment?.createdAt)}
                      </span>
-                     {user && user?.username === comment?.commentOwner && (
+                     {user && authEdit && (
                         <div className='flex items-center space-x-3'>
                            <AiFillDelete
                               className='text-lg text-red-600 cursor-pointer'
@@ -322,18 +355,20 @@ const Comments = ({ comment }: any) => {
                      </span>
                      <div
                         className='flex items-center space-x-2 cursor-pointer text-gray-800 dark:text-gray-300 duration-500 ease-in'
-                        onClick={() => setOpenReply((current: any) => !current)}
+                        onClick={handleOpenReply}
                      >
                         <p>Reply</p>
                         <p>{comment?.replies.length}</p>
                      </div>
                   </div>
-                  <p
-                     className='text-sm text-fuchsia-600 cursor-pointer'
-                     onClick={() => setOpenReplies((current) => !current)}
-                  >
-                     See replies
-                  </p>
+                  {(replies as any)?.length > 0 && (
+                     <p
+                        className='text-sm text-fuchsia-600 cursor-pointer'
+                        onClick={() => setOpenReplies((current) => !current)}
+                     >
+                        See replies
+                     </p>
+                  )}
                </div>
                {openReply && (
                   <div className=''>

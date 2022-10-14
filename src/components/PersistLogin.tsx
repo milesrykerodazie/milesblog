@@ -26,7 +26,8 @@ const PersistLogin = () => {
       ) {
          const verifyRefreshToken = async () => {
             try {
-               await refresh({});
+               //@ts-expect-error
+               await refresh();
                setTrueSuccess(true);
             } catch (err) {
                console.error(err);

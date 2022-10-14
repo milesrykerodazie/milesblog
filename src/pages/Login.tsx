@@ -30,11 +30,8 @@ const Login = () => {
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       // const type = event.target.type;
-
       const name = event.target.name;
-
       const value = event.target.value;
-
       setData((prevData) => ({
          ...prevData,
          [name]: value,
@@ -42,6 +39,7 @@ const Login = () => {
    };
    const handleToggle = () => setPersist((current: any) => !current);
    const canSubmit = [...Object.values(data)].every(Boolean);
+
    const loginObject = {
       email: data?.email.trim(),
       password: data?.password.trim(),

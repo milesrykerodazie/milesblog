@@ -66,11 +66,12 @@ export const commentsApiSlice = apiSlice.injectEndpoints({
          invalidatesTags: (result, error, arg) => [{ type: 'Comment' }],
       }),
       deleteComment: builder.mutation({
-         query: (id) => ({
+         query: ({ id, commentOwner }) => ({
             url: `/delete-comment`,
             method: 'DELETE',
             body: {
                id,
+               commentOwner,
             },
          }),
          invalidatesTags: (result, error, arg) => [{ type: 'Comment' }],

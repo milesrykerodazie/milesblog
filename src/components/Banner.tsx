@@ -14,7 +14,7 @@ const Banner = ({ filtered }: any) => {
             <img
                src={post?.image.url}
                alt='post_img'
-               className='object-cover w-full h-52 rounded-md'
+               className='object-cover w-full h-52 lg:rounded-md'
             />
          )}
          <div className='absolute bottom-10 left-5 space-y-3'>

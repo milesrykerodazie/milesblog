@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import BlogPage from './pages/BlogPage';
 import ForgotPassword from './pages/ForgotPassword';
@@ -17,8 +17,11 @@ import PostDetails from './pages/PostDetails';
 import CategoryPosts from './pages/CategoryPosts';
 import EditPost from './pages/EditPost';
 import PostsPrefetch from './components/PostsPrefetch';
+import { useAppSelector } from './redux/app/store';
+import { selectCurrentToken } from './redux/features/auth/authSlice';
 
 const App = () => {
+   const token = useAppSelector(selectCurrentToken);
    return (
       <Routes>
          <Route element={<PersistLogin />}>
@@ -32,13 +35,25 @@ const App = () => {
 
                   <Route path='/post/:id' element={<PostDetails />} />
                   <Route
-                     path='admin'
+                     path='/create-post'
+                     element={
+                        token ? <CreatePost /> : <Navigate replace to={'/'} />
+                     }
+                  />
+                  <Route
+                     path='/edit-post/:id'
+                     element={
+                        token ? <EditPost /> : <Navigate replace to={'/'} />
+                     }
+                  />
+                  {/* <Route
+                     path='post'
                      element={<PrivateRoutes authRole='Admin' />}
                   >
-                     <Route index element={<AdminDashboard />} />
-                     <Route path='create' element={<CreatePost />} />
+                     <Route index element={<AdminDashboard />} /> 
+                      <Route index element={<CreatePost />} />
                      <Route path='edit/:id' element={<EditPost />} />
-                  </Route>
+                  </Route> */}
                </Route>
             </Route>
          </Route>

@@ -36,6 +36,16 @@ const Navbar = () => {
 
    return (
       <nav className='space-x-2 flex items-center'>
+         {token && (
+            <>
+               <Link to='/create-post'>
+                  <p className='font-medium text-gray-900 dark:text-white duration-500 ease-in'>
+                     Create Post
+                  </p>
+               </Link>
+               <p className='text-fuchsia-500'>|</p>
+            </>
+         )}
          <Link to='/about'>
             <p className='font-medium text-gray-900 dark:text-white duration-500 ease-in'>
                About Us

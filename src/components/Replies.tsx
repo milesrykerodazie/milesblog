@@ -64,6 +64,9 @@ const Replies = ({ reply }: any) => {
       user = JSON.parse(userName);
    }
 
+   const authEdit =
+      user?.username === reply?.replyOwner || user?.role === 'Admin';
+
    //checking if user has already liked a post
    useEffect(() => {
       setIsLiked(reply?.likes.includes(user?.username));
@@ -123,6 +126,11 @@ const Replies = ({ reply }: any) => {
    //handle update
    const handleUpdate = async (e: React.SyntheticEvent) => {
       e.preventDefault();
+      if (user === undefined) {
+         return toast.warn('Not authorized.', {
+            toastId: customId,
+         });
+      }
       if (updateText) {
          await updateReply(updateObject);
       }
@@ -135,6 +143,11 @@ const Replies = ({ reply }: any) => {
 
    const handleDelete = async (e: React.SyntheticEvent) => {
       e.preventDefault();
+      if (user === undefined) {
+         return toast.warn('Not authorized.', {
+            toastId: customId,
+         });
+      }
       try {
          await deleteReply(deleteObject).unwrap();
       } catch (err) {
@@ -168,7 +181,7 @@ const Replies = ({ reply }: any) => {
                      <span className='text-xs text-gray-600 dark:text-gray-400 duration-500 ease-in'>
                         {format(reply?.createdAt)}
                      </span>
-                     {user && user?.username === reply?.replyOwner && (
+                     {user && authEdit && (
                         <div className='flex items-center space-x-3'>
                            <AiFillDelete
                               className='text-lg text-red-600 cursor-pointer'

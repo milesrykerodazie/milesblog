@@ -91,6 +91,11 @@ const DetailsDisplay = ({ post }: any) => {
       user = JSON.parse(userName);
    }
 
+   console.log('user: => ', user);
+
+   const authEdit =
+      user?.username === post?.postOwner || user?.role === 'Admin';
+
    //checking if user has already liked a post
    useEffect(() => {
       setIsLiked(post?.likes.includes(user?.username));
@@ -181,7 +186,8 @@ const DetailsDisplay = ({ post }: any) => {
                   <div className='relative'>
                      <div className='flex items-center space-x-4 '>
                         <p className='text-sm text-gray-600'>{dateCreated}</p>
-                        {user && user?.username === post?.postOwner && (
+
+                        {user && authEdit && (
                            <div className='flex items-center space-x-3'>
                               <AiFillDelete
                                  className='text-lg text-red-600 cursor-pointer'
@@ -189,7 +195,7 @@ const DetailsDisplay = ({ post }: any) => {
                                     setOpenDelete((current) => !current)
                                  }
                               />
-                              <Link to={`/admin/edit/${post?.postSlug}`}>
+                              <Link to={`/edit-post/${post?.postSlug}`}>
                                  <AiFillEdit className='text-lg text-gray-700 cursor-pointer' />
                               </Link>
                            </div>
