@@ -39,8 +39,6 @@ const FeaturedPosts = () => {
       refetchOnMountOrArgChange: true,
    });
 
-   console.log('post length:', postsData?.ids.length);
-
    const { role } = useAuth();
 
    const adminFilter = postsData?.ids.filter(

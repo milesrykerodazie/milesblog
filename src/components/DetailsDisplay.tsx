@@ -91,8 +91,6 @@ const DetailsDisplay = ({ post }: any) => {
       user = JSON.parse(userName);
    }
 
-   console.log('user :', user);
-
    //checking if user has already liked a post
    useEffect(() => {
       setIsLiked(post?.likes.includes(user?.username));
@@ -122,8 +120,6 @@ const DetailsDisplay = ({ post }: any) => {
       }
    };
 
-   console.log('post details => ', post);
-
    //handle delete post
    const handleDelete = async (e: React.SyntheticEvent) => {
       await deletePost({
@@ -147,8 +143,6 @@ const DetailsDisplay = ({ post }: any) => {
          setCommentText('');
       }
    }, [deleteSuccess, commentSuccess, navigate]);
-
-   console.log('deleted post: =>', deleteData?.deletedPost);
 
    const commentObject = {
       postId: post?._id,

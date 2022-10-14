@@ -17,8 +17,6 @@ export const commentsApiSlice = apiSlice.injectEndpoints({
             },
          }),
          transformResponse: (responseData) => {
-            console.log('comment reply response: => ', responseData);
-
             // @ts-expect-error
             const loadedReplies = responseData?.replies?.map((reply: any) => {
                reply.id = reply._id;

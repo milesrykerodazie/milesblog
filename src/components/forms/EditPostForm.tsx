@@ -96,10 +96,7 @@ const EditPostForm = ({ post }: any) => {
    };
    //end of methods
 
-   console.log('update object: => ', updateObject);
-
    const canSubmit = [...Object.values(data)].every(Boolean);
-   console.log('can submit:', canSubmit);
 
    useEffect(() => {
       if (isSuccess) {

@@ -29,13 +29,12 @@ export const postApiSlice = apiSlice.injectEndpoints({
             },
          }),
          transformResponse: (responseData) => {
-            console.log('post response: => ', responseData);
-
-            // @ts-expect-error
-            const loadedPosts = responseData?.posts?.map((post) => {
-               post.id = post.postSlug;
-               return post;
-            });
+            const loadedPosts = (responseData as any)?.posts?.map(
+               (post: any) => {
+                  post.id = post.postSlug;
+                  return post;
+               },
+            );
             return postsAdapter.setAll(initialState, loadedPosts);
          },
          providesTags: (result: any, error: any, arg: any) => {
@@ -55,7 +54,6 @@ export const postApiSlice = apiSlice.injectEndpoints({
             },
          }),
          transformResponse: (responseData) => {
-            console.log(' category post response: => ', responseData);
             const loadedPosts = (responseData as any)?.posts?.map(
                (post: any) => {
                   post.id = post.postSlug;
@@ -82,10 +80,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
             },
          }),
          transformResponse: (responseData) => {
-            console.log('post comments response: => ', responseData);
-
-            // @ts-expect-error
-            const loadedComments = responseData?.postComments?.map(
+            const loadedComments = (responseData as any)?.postComments?.map(
                (comment: any) => {
                   comment.id = comment._id;
                   return comment;
