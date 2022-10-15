@@ -259,7 +259,7 @@ const DetailsDisplay = ({ post }: any) => {
                         </span>
                      )}
                   </div>
-                  <div className='flex lg:flex-row space-x-3 lg:space-x-0 flex-col'>
+                  <div className='flex lg:flex-row lg:space-x-3 flex-col'>
                      <p className='text-sm lg:text-base font-semibold text-gray-700 dark:text-gray-400'>
                         Category:{' '}
                         <span className='capitalize text-sm lg:text-base'>
