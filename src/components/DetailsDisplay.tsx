@@ -181,7 +181,7 @@ const DetailsDisplay = ({ post }: any) => {
                <img
                   src={post?.image.url}
                   alt='post_img'
-                  className='object-cover w-full md:h-[620px] h-[420px] rounded-md mb-4'
+                  className='object-cover w-full md:h-[500px] h-[300px] rounded-md mb-4'
                />
             )}
          </div>

@@ -41,7 +41,7 @@ const Post = ({ postId, featured }: any) => {
                   src={post?.image.url}
                   alt='post_img'
                   className={`object-cover w-full rounded-md ${
-                     featured ? 'h-52' : 'h-72'
+                     featured ? 'h-32' : 'lg:h-64 h-44'
                   }`}
                />
             )}
