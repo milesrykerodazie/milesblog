@@ -173,7 +173,7 @@ const DetailsDisplay = ({ post }: any) => {
 
    return (
       <div>
-         <h1 className='text-center text-3xl font-bold capitalize py-2 text-gray-600 dark:text-gray-400'>
+         <h1 className='text-center text-xl lg:text-3xl font-bold capitalize py-2 text-gray-600 dark:text-gray-400'>
             {post?.title}
          </h1>
          <div className='w-full mx-auto'>
@@ -185,26 +185,28 @@ const DetailsDisplay = ({ post }: any) => {
                />
             )}
          </div>
-         <div className='w-[80%] mx-auto'>
+         <div className='w-[90%] lg:w-[80%] mx-auto'>
             <div className='mb-4 flex flex-col md:flex-row md:items-center md:justify-between'>
                <div>
                   <div className='text-gray-800 dark:text-gray-300'>
                      post owner details
                   </div>
                   <div className='relative'>
-                     <div className='flex items-center space-x-4 '>
-                        <p className='text-sm text-gray-600'>{dateCreated}</p>
+                     <div className='flex items-center justify-between space-x-4 '>
+                        <p className='text-xs lg:text-sm text-gray-600'>
+                           {dateCreated}
+                        </p>
 
                         {user && authEdit && (
                            <div className='flex items-center space-x-3'>
                               <AiFillDelete
-                                 className='text-lg text-red-600 cursor-pointer'
+                                 className='text-sm lg:text-lg text-red-600 cursor-pointer'
                                  onClick={() =>
                                     setOpenDelete((current) => !current)
                                  }
                               />
                               <Link to={`/edit-post/${post?.postSlug}`}>
-                                 <AiFillEdit className='text-lg text-gray-700 cursor-pointer' />
+                                 <AiFillEdit className='text-sm lg:text-lg text-gray-700 cursor-pointer' />
                               </Link>
                            </div>
                         )}
@@ -241,30 +243,32 @@ const DetailsDisplay = ({ post }: any) => {
                      )}
                   </div>
                </div>
-               <div className='flex items-center space-x-10'>
+               <div className='flex items-center justify-between space-x-10'>
                   <div className='flex items-center space-x-2'>
                      {/* work on the likes, change from id to username */}
                      <p className='cursor-pointer' onClick={handleLike}>
                         {isLiked ? (
-                           <AiFillLike className='w-6 h-6 text-fuchsia-600' />
+                           <AiFillLike className='w-4 h-4 text-fuchsia-600' />
                         ) : (
-                           <AiFillLike className='w-6 h-6 text-gray-600 dark:text-gray-300' />
+                           <AiFillLike className='w-4 h-4 text-gray-600 dark:text-gray-300' />
                         )}
                      </p>
                      {likes > 0 && (
-                        <span className='text-gray-800 dark:text-gray-300'>
+                        <span className='text-gray-800 dark:text-gray-300 text-sm lg:text-base'>
                            {likes}
                         </span>
                      )}
                   </div>
-                  <div>
-                     <p className='text-lg font-semibold text-gray-700 dark:text-gray-400'>
+                  <div className='flex lg:flex-row space-x-3 lg:space-x-0 flex-col'>
+                     <p className='text-sm lg:text-base font-semibold text-gray-700 dark:text-gray-400'>
                         Category:{' '}
-                        <span className='capitalize'>{post?.category}</span>
+                        <span className='capitalize text-sm lg:text-base'>
+                           {post?.category}
+                        </span>
                      </p>
-                     <div className='flex space-x-2 items-center text-gray-700 dark:text-gray-400'>
+                     <div className='flex space-x-2 items-center text-gray-700 dark:text-gray-400 text-sm lg:text-base -mt-1 lg:mt-0'>
                         <p>Tags:</p>
-                        <p className='flex space-x-2 items-center'>
+                        <p className='flex space-x-1 items-center'>
                            {post?.tags.map((tag: any, index: any) => (
                               <span key={index} className='capitalize text-sm '>
                                  {tag}
@@ -278,7 +282,7 @@ const DetailsDisplay = ({ post }: any) => {
             <hr className=' mb-5 border-gray-300 dark:border-gray-600' />
             <p
                dangerouslySetInnerHTML={createMarkup()}
-               className=' dark:text-white text-gray-800 text-justify lg:text-lg w-full'
+               className=' dark:text-white text-gray-800 text-justify lg:text-lg pb-3'
             />
             {/* comment section */}
             <div className='space-y-2'>
