@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { ImSpinner } from 'react-icons/im';
 import Comments from './Comments';
 import { usePostCommentMutation } from '../redux/features/commentsApiSlice';
+import DOMPurify from 'dompurify';
 
 const customId = 'custom-id-yes';
 
@@ -51,12 +52,21 @@ const DetailsDisplay = ({ post }: any) => {
       }),
    });
 
+   //sending post owner to localStorage
+   useEffect(() => {
+      if (post?.postOwner) {
+         localStorage.setItem('po', JSON.stringify({ user: post?.postOwner }));
+      }
+   }, [post?.postOwner]);
+
+   const safePost = DOMPurify.sanitize(post?.post);
+
    //use navigation
    const navigate = useNavigate();
    //for getting the html form of the post
    function createMarkup() {
       return {
-         __html: post?.post,
+         __html: safePost,
       };
    }
 
@@ -90,8 +100,6 @@ const DetailsDisplay = ({ post }: any) => {
    if (userName) {
       user = JSON.parse(userName);
    }
-
-   console.log('user: => ', user);
 
    const authEdit =
       user?.username === post?.postOwner || user?.role === 'Admin';
@@ -270,7 +278,7 @@ const DetailsDisplay = ({ post }: any) => {
             <hr className=' mb-5 border-gray-300 dark:border-gray-600' />
             <p
                dangerouslySetInnerHTML={createMarkup()}
-               className='dark:text-white text-gray-800 text-justify lg:text-lg'
+               className=' dark:text-white text-gray-800 text-justify lg:text-lg w-full'
             />
             {/* comment section */}
             <div className='space-y-2'>

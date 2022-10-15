@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useOutletContext } from 'react-router-dom';
 import DetailsDisplay from '../components/DetailsDisplay';
 
 import { useGetPostsQuery } from '../redux/features/postApiSlice';

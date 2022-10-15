@@ -39,7 +39,10 @@ export const postApiSlice = apiSlice.injectEndpoints({
          },
          providesTags: (result: any, error: any, arg: any) => {
             if (result?.ids) {
-               return [...result.ids.map((id: any) => ({ type: 'Post', id }))];
+               return [
+                  { type: 'Post', id: 'LIST' },
+                  ...result.ids.map((id: any) => ({ type: 'Post', id })),
+               ];
             } else return [{ type: 'Post', id: 'LIST' }];
          },
       }),

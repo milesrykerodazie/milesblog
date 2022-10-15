@@ -2,6 +2,7 @@ import React from 'react';
 import { useGetPostsQuery } from '../redux/features/postApiSlice';
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 
 const Post = ({ postId, featured }: any) => {
    const { post }: any = useGetPostsQuery('postList', {
@@ -9,6 +10,8 @@ const Post = ({ postId, featured }: any) => {
          post: data?.entities[postId],
       }),
    });
+
+   const safePost = DOMPurify.sanitize(post?.post);
 
    //use navigation
    const navigate = useNavigate();
@@ -37,29 +40,33 @@ const Post = ({ postId, featured }: any) => {
                <img
                   src={post?.image.url}
                   alt='post_img'
-                  className='object-cover w-full h-48 rounded-md'
+                  className={`object-cover w-full rounded-md ${
+                     featured ? 'h-52' : 'h-72'
+                  }`}
                />
             )}
 
             <h2
-               className={`dark:text-white text-gray-800 truncate text-lg font-bold capitalize ${
-                  featured ? 'text-sm' : ''
+               className={`dark:text-white text-gray-800 truncate font-bold capitalize ${
+                  featured ? 'text-sm' : 'text-xl'
                }`}
             >
                {post?.title}
             </h2>
-            <p
+            {/* <div
                dangerouslySetInnerHTML={createMarkup()}
-               className={`truncate-line-clamp dark:text-white text-gray-800 ${
+               className={` dark:text-white text-gray-800 h-20 ${
                   featured ? 'text-sm' : ''
                }`}
-            />
+            /> */}
             <div className='flex items-center justify-between'>
                <p className='text-xs text-gray-500 dark:text-gray-300'>
                   {dateCreated}
                </p>
                <button
-                  className='bg-fuchsia-600 text-white text-sm p-2 rounded-md font-semibold'
+                  className={`bg-fuchsia-600 text-white text-sm  rounded-md font-semibold p-2 ${
+                     featured ? 'text-xs' : 'text-sm'
+                  }`}
                   onClick={postDetails}
                >
                   Read More
