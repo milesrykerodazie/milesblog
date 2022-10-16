@@ -1,7 +1,8 @@
 import { apiSlice } from '../app/api/apiSlice';
 import { createSelector, createEntityAdapter } from '@reduxjs/toolkit';
+import { RootState } from '../app/store';
 
-const usersAdapter = createEntityAdapter({});
+const usersAdapter = createEntityAdapter();
 
 const initialState = usersAdapter.getInitialState();
 
@@ -17,18 +18,20 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                return response.status === 200 && !result.isError;
             },
          }),
-         transformResponse: (responseData) => {
+         transformResponse: (responseData: any) => {
             console.log(responseData);
 
-            const loadedUsers = (responseData as any)?.users?.map(
-               (user: any) => {
-                  user.id = user.username;
-                  return user;
-               },
-            );
+            const loadedUsers = responseData?.users?.map((user: any) => {
+               user.id = user.username;
+               return user;
+            });
+            console.log('loadedUsers: => ', loadedUsers);
+
             return usersAdapter.setAll(initialState, loadedUsers);
          },
          providesTags: (result: any, error: any, arg: any) => {
+            console.log('users result: => ', result);
+
             if (result?.ids) {
                return [
                   { type: 'User', id: 'LIST' },
@@ -42,7 +45,9 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const { useGetAllUsersQuery } = usersApiSlice;
 // returns the query result object
-export const selectUsersResult = usersApiSlice.endpoints.getAllUsers.select({});
+export const selectUsersResult = usersApiSlice.endpoints.getAllUsers.select([]);
+
+console.log('selected users result', selectUsersResult);
 
 // creates memoized selector
 const selectUsersData = createSelector(
@@ -57,5 +62,5 @@ export const {
    selectIds: selectUserIds,
    // Pass in a selector that returns the users slice of state
 } = usersAdapter.getSelectors(
-   (state) => selectUsersData(state as any) ?? initialState,
+   (state) => selectUsersData(state as RootState) ?? initialState,
 );

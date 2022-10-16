@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../redux/app/store';
+import {
+   selectUserById,
+   useGetAllUsersQuery,
+} from '../redux/features/usersApiSlice';
 import CategoryNav from './CategoryNav';
 import Navbar from './Navbar';
 
@@ -13,6 +18,22 @@ const Header = () => {
       );
       return scrl;
    }, [pageScroll]);
+
+   //for authomatically getting post owner on login
+   let USER: any;
+   const userName = localStorage.getItem('user');
+   if (userName) {
+      USER = JSON.parse(userName);
+   }
+
+   console.log('user from mobile header: =>', USER?.username);
+
+   const { user }: any = useGetAllUsersQuery('usersList', {
+      selectFromResult: ({ data }) => ({
+         user: data?.entities[USER?.username],
+      }),
+   });
+
    return (
       <header
          className={`bg-white dark:bg-black shadow-sm shadow-fuchsia-300 hidden px-10 py-3 lg:h-20 lg:block fixed w-full top-0 z-50 ease-in duration-500 space-y-2 ${
@@ -25,6 +46,11 @@ const Header = () => {
                   <span className='text-fuchsia-500'>Miles</span>-Blog
                </p>
             </Link>
+            {USER && (
+               <div>
+                  <p>{user?.fullName}</p>
+               </div>
+            )}
             <Navbar />
          </div>
          <CategoryNav />

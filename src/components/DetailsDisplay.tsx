@@ -111,6 +111,7 @@ const DetailsDisplay = ({ post }: any) => {
 
    const handleLike = async (e: React.SyntheticEvent) => {
       e.preventDefault();
+
       if (user === undefined) {
          return toast.warn('Login to like post.', {
             toastId: customId,
@@ -244,20 +245,18 @@ const DetailsDisplay = ({ post }: any) => {
                   </div>
                </div>
                <div className='flex items-center justify-between space-x-10'>
-                  <div className='flex items-center space-x-2'>
-                     {/* work on the likes, change from id to username */}
+                  <div className='flex space-x-2 items-center'>
                      <p className='cursor-pointer' onClick={handleLike}>
                         {isLiked ? (
-                           <AiFillLike className='w-4 h-4 text-fuchsia-600' />
+                           <AiFillLike className='w-6 h-6 text-fuchsia-600' />
                         ) : (
-                           <AiFillLike className='w-4 h-4 text-gray-600 dark:text-gray-300' />
+                           <AiFillLike className='w-6 h-6 text-gray-600 dark:text-gray-300 duration-500 ease-in' />
                         )}
                      </p>
-                     {likes > 0 && (
-                        <span className='text-gray-800 dark:text-gray-300 text-sm lg:text-base'>
-                           {likes}
-                        </span>
-                     )}
+
+                     <span className='text-gray-800 dark:text-gray-300 duration-500 ease-in'>
+                        {likes}
+                     </span>
                   </div>
                   <div className='flex lg:flex-row lg:space-x-3 flex-col'>
                      <p className='text-sm lg:text-base font-semibold text-gray-700 dark:text-gray-400'>

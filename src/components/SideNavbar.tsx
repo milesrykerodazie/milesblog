@@ -1,15 +1,47 @@
 import { MdClose } from 'react-icons/md';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useLogoutMutation } from '../redux/features/authApiSlice';
+import { toast } from 'react-toastify';
+import { useAppSelector } from '../redux/app/store';
+import { selectCurrentToken } from '../redux/features/auth/authSlice';
 
 export interface stateTyp {
    open: boolean;
    setOpen: Dispatch<SetStateAction<boolean>>;
 }
-
+const customId = 'custom-id-yes';
 const SideNavbar = ({ open, setOpen }: stateTyp) => {
    const handleSidebarToggle = () => {
       setOpen((current) => !current);
    };
+
+   const [logout, { data: logoutData, isSuccess }] = useLogoutMutation();
+   //getting the token from redux
+   const token = useAppSelector(selectCurrentToken);
+
+   //reference for useEffect cleanup
+   const effectRan = useRef(false);
+   const navigate = useNavigate();
+
+   // @ts-expect-error
+   useEffect(() => {
+      if (
+         effectRan.current === true ||
+         process.env.NODE_ENV !== 'development'
+      ) {
+         if (isSuccess) {
+            toast.success(logoutData?.message, {
+               toastId: customId,
+            });
+            localStorage.removeItem('user');
+            setOpen((current) => !current);
+            navigate('/');
+         }
+      }
+      return () => (effectRan.current = true);
+      // eslint-disable-next-line
+   }, [isSuccess, logoutData?.message]);
    return (
       <div
          className={
@@ -34,6 +66,14 @@ const SideNavbar = ({ open, setOpen }: stateTyp) => {
                >
                   <MdClose className='w-6 h-6 dark:text-fuchsia-500 text-black/95' />
                </div>
+            </div>
+            <div className='text-gray-200'>
+               <p>Helo</p>
+               {token && (
+                  <p className='cursor-pointer ' onClick={logout}>
+                     Logout
+                  </p>
+               )}
             </div>
          </div>
       </div>

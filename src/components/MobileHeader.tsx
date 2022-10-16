@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import { BiMenu } from 'react-icons/bi';
 import { RiCloseFill } from 'react-icons/ri';
 import SideNavbar from './SideNavbar';
+import { useAppSelector } from '../redux/app/store';
+import {
+   selectUserById,
+   useGetAllUsersQuery,
+} from '../redux/features/usersApiSlice';
 
 const MobileHeader = () => {
    const [pageScroll, setPageScroll] = useState(false);
@@ -15,6 +20,24 @@ const MobileHeader = () => {
       return scrl;
    }, [pageScroll]);
    const [open, setOpen] = useState<boolean>(false);
+
+   //for authomatically getting post owner on login
+   let USER: any;
+   const userName = localStorage.getItem('user');
+   if (userName) {
+      USER = JSON.parse(userName);
+   }
+
+   console.log('user from mobile header: =>', USER?.username);
+
+   const { user }: any = useGetAllUsersQuery('usersList', {
+      selectFromResult: ({ data }) => ({
+         user: data?.entities[USER?.username],
+      }),
+   });
+
+   console.log('User details: =>', user);
+
    return (
       <nav>
          <div
@@ -27,6 +50,12 @@ const MobileHeader = () => {
                   <span className='text-fuchsia-500'>Miles</span>-Blog
                </p>
             </Link>
+            {USER && (
+               <div>
+                  <p>{user?.fullName}</p>
+               </div>
+            )}
+
             <div onClick={() => setOpen((current) => !current)}>
                {open ? (
                   <RiCloseFill className='w-8 h-8 text-gray-800 dark:text-gray-400' />

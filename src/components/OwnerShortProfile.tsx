@@ -11,21 +11,15 @@ const OwnerShortProfile = () => {
 
    console.log('post owner: => ', postOwner?.user);
 
-   // const { user }: any = useGetAllUsersQuery('usersList', {
-   //    refetchOnFocus: true,
-   //    refetchOnMountOrArgChange: true,
-   //    selectFromResult: ({ data }) => ({
-   //       user: data?.entities[postOwner?.user],
-   //    }),
-   // });
+   const { user }: any = useGetAllUsersQuery('usersList', {
+      selectFromResult: ({ data }) => ({
+         user: data?.entities[postOwner?.user],
+      }),
+   });
 
-   // console.log('getting a user: =>', user);
+   console.log('user from owner profile:=>', user);
 
-   return (
-      <div>
-         <h1>Helo</h1>
-      </div>
-   );
+   return <div>{postOwner && <h4>{user?.fullName}</h4>}</div>;
 };
 
 export default OwnerShortProfile;
