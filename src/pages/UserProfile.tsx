@@ -27,7 +27,8 @@ const UserProfile = () => {
    }
 
    const authEdit =
-      user?.username === userDetail?.user || usernamelocal?.role === 'Admin';
+      (usernamelocal && user?.username === userDetail?.user) ||
+      usernamelocal?.role === 'Admin';
 
    //formatting date
    const dateJoined = new Date(user?.createdAt).toLocaleString('en-US', {
