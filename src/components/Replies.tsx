@@ -157,11 +157,8 @@ const Replies = ({ reply }: any) => {
             toastId: customId,
          });
       }
-      try {
-         await deleteReply(deleteObject).unwrap();
-      } catch (err) {
-         console.error('Failed to delete the reply', err);
-      }
+
+      await deleteReply(deleteObject).unwrap();
    };
 
    return (
@@ -178,6 +175,11 @@ const Replies = ({ reply }: any) => {
             />
             <div className='space-y-3 flex-1'>
                <div className='bg-gray-200 p-2 rounded-md flex justify-between relative dark:bg-gray-800 duration-500 ease-in'>
+                  {isDeleteError && (
+                     <p className='text-red-500 text-sm'>
+                        {(deleteError as any)?.data?.message}
+                     </p>
+                  )}
                   <div>
                      <p className='capitalize underline text-sm text-gray-600 dark:text-gray-400 duration-500 ease-in'>
                         {reply?.username}

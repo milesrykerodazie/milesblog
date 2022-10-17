@@ -217,11 +217,8 @@ const Comments = ({ comment }: any) => {
             toastId: customId,
          });
       }
-      try {
-         await deleteComment(deleteObject);
-      } catch (err) {
-         console.error('Failed to delete comment', err);
-      }
+
+      await deleteComment(deleteObject);
    };
 
    return (
@@ -238,6 +235,11 @@ const Comments = ({ comment }: any) => {
             />
             <div className='space-y-3 flex-1'>
                <div className='bg-gray-200 dark:bg-gray-800 p-2 rounded-md flex justify-between relative duration-500 ease-in'>
+                  {isDeleteError && (
+                     <p className='text-red-500 text-sm'>
+                        {(deleteError as any)?.data?.message}
+                     </p>
+                  )}
                   <div>
                      <p className='capitalize underline text-sm text-gray-600 dark:text-gray-400 duration-500 ease-in'>
                         {user?.username}
