@@ -40,7 +40,7 @@ const CategoryPosts = () => {
       refetchOnMountOrArgChange: true,
    });
 
-   const { auth, role } = useAuth();
+   const { role } = useAuth();
 
    const filtered = postsData?.ids.filter(
       (filteredPost) =>

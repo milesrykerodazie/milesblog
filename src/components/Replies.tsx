@@ -3,7 +3,6 @@ import { AiFillDelete, AiFillEdit, AiFillLike } from 'react-icons/ai';
 import { ImSpinner } from 'react-icons/im';
 import { toast } from 'react-toastify';
 import { format } from 'timeago.js';
-import { useNavigate, useLocation } from 'react-router-dom';
 import {
    useDeleteReplyMutation,
    useLikeReplyMutation,
@@ -14,8 +13,7 @@ import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
 const customId = 'custom-id-yes';
 const Replies = ({ reply }: any) => {
    //like reply
-   const [likeReply, { data: likeData, isLoading, isSuccess, isError, error }] =
-      useLikeReplyMutation();
+   const [likeReply] = useLikeReplyMutation();
 
    //update reply
    const [
@@ -118,7 +116,12 @@ const Replies = ({ reply }: any) => {
          });
          setOpenDelete(false);
       }
-   }, [isUpdateSuccess, isDeleteSuccess]);
+   }, [
+      isUpdateSuccess,
+      isDeleteSuccess,
+      deleteData?.message,
+      updateData?.message,
+   ]);
 
    const updateObject = {
       id: reply?.id,

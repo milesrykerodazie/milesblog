@@ -14,7 +14,9 @@ import { useEffect, useState } from 'react';
 import { CATEGORIES, TagOptions } from '../../config/configurations';
 import { useUpdatePostMutation } from '../../redux/features/postApiSlice';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
+const customId = 'custom-id-yes';
 const EditPostForm = ({ post }: any) => {
    const [
       updatePost,
@@ -102,9 +104,12 @@ const EditPostForm = ({ post }: any) => {
 
    useEffect(() => {
       if (isSuccess) {
+         toast.success(updateData?.message, {
+            toastId: customId,
+         });
          navigate('/');
       }
-   }, [isSuccess, navigate]);
+   }, [isSuccess, navigate, updateData?.message]);
 
    const handleUpdate = async (e: React.SyntheticEvent) => {
       e.preventDefault();

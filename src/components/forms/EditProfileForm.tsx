@@ -4,7 +4,6 @@ import { BsPersonFill } from 'react-icons/bs';
 import { FaUserCheck, FaUserLock } from 'react-icons/fa';
 import { GrMail } from 'react-icons/gr';
 import { MdClose, MdVerified } from 'react-icons/md';
-import { TiTick } from 'react-icons/ti';
 import { useUpdateUserMutation } from '../../redux/features/usersApiSlice';
 import ActionButton from '../ActionButton';
 import { useNavigate } from 'react-router-dom';
@@ -101,7 +100,7 @@ const EditProfileForm = ({ user }: any) => {
          });
          navigate(`/author/${user?.username}`);
       }
-   }, [isSuccess, navigate]);
+   }, [isSuccess, navigate, updateData?.message, user?.username]);
 
    const handleActive = (e: React.SyntheticEvent) => {
       e.preventDefault();

@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../redux/app/store';
-import {
-   selectUserById,
-   useGetAllUsersQuery,
-} from '../redux/features/usersApiSlice';
+
+import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
 import CategoryNav from './CategoryNav';
 import Navbar from './Navbar';
 

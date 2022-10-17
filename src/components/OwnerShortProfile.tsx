@@ -39,6 +39,7 @@ const OwnerShortProfile = ({ sidebar }: any) => {
                      ? user?.profilePicture?.url
                      : 'https://demofree.sirv.com/nope-not-here.jpg'
                }
+               alt='user-pic'
                className='w-16 h-16 rounded-full object-cover ring-2 ring-fuchsia-600'
             />
 

@@ -1,5 +1,5 @@
 import { apiSlice } from '../app/api/apiSlice';
-import { createSelector, createEntityAdapter } from '@reduxjs/toolkit';
+import { createEntityAdapter } from '@reduxjs/toolkit';
 
 const commentsAdapter = createEntityAdapter();
 const initialState = commentsAdapter.getInitialState();

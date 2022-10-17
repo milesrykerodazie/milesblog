@@ -3,11 +3,8 @@ import { Link } from 'react-router-dom';
 import { BiMenu } from 'react-icons/bi';
 import { RiCloseFill } from 'react-icons/ri';
 import SideNavbar from './SideNavbar';
-import { useAppSelector } from '../redux/app/store';
-import {
-   selectUserById,
-   useGetAllUsersQuery,
-} from '../redux/features/usersApiSlice';
+
+import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
 
 const MobileHeader = () => {
    const [pageScroll, setPageScroll] = useState(false);

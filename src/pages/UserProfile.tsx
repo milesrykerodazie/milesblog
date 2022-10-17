@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
 
@@ -56,6 +55,7 @@ const UserProfile = () => {
                      ? user?.profilePicture?.url
                      : 'https://demofree.sirv.com/nope-not-here.jpg'
                }
+               alt=''
                className='w-16 h-16 lg:w-24 lg:h-24 rounded-full object-cover ring-2 ring-fuchsia-600'
             />
             <div className='flex items-center space-x-3'>

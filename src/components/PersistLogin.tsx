@@ -13,10 +13,8 @@ const PersistLogin = () => {
 
    const [trueSuccess, setTrueSuccess] = useState(false);
 
-   const [
-      refresh,
-      { data: refreshData, isUninitialized, isLoading, isSuccess },
-   ] = useRefreshMutation();
+   const [refresh, { isUninitialized, isLoading, isSuccess }] =
+      useRefreshMutation();
 
    // @ts-expect-error
    useEffect(() => {

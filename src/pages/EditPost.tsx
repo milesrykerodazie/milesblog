@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
 import { useParams } from 'react-router-dom';
 import EditPostForm from '../components/forms/EditPostForm';

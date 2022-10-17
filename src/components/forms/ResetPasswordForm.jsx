@@ -1,5 +1,4 @@
 import { RiLockPasswordFill } from 'react-icons/ri';
-import { BsPersonFill } from 'react-icons/bs';
 import { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 

@@ -164,7 +164,20 @@ const DetailsDisplay = ({ post }: any) => {
          });
          setCommentText('');
       }
-   }, [deleteSuccess, commentSuccess, navigate]);
+      if (isDeleteError) {
+         toast.success((deleteError as any)?.data?.message, {
+            toastId: customId,
+         });
+      }
+   }, [
+      deleteSuccess,
+      commentSuccess,
+      navigate,
+      deleteData?.message,
+      commentData?.message,
+      deleteError,
+      isDeleteError,
+   ]);
 
    const commentObject = {
       postId: post?._id,
@@ -201,8 +214,10 @@ const DetailsDisplay = ({ post }: any) => {
                      <div className='flex items-center space-x-3'>
                         <img
                            src='https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg'
+                           alt=''
                            className='w-8 h-8 rounded-full object-cover ring-2 ring-fuchsia-600'
                         />
+
                         <p className='text-gray-800 dark:text-gray-300'>
                            {user?.fullName}
                         </p>

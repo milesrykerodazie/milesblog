@@ -3,7 +3,6 @@ import { AiFillDelete, AiFillEdit, AiFillLike } from 'react-icons/ai';
 import { ImSpinner } from 'react-icons/im';
 import { toast } from 'react-toastify';
 import { format } from 'timeago.js';
-
 import {
    useDeleteCommentMutation,
    useGetCommentRepliesQuery,
@@ -155,7 +154,14 @@ const Comments = ({ comment }: any) => {
          });
          setOpenDelete(false);
       }
-   }, [replySuccess, isUpdateSuccess, isDeleteSuccess]);
+   }, [
+      replySuccess,
+      isUpdateSuccess,
+      isDeleteSuccess,
+      deleteData?.message,
+      replyData?.message,
+      updateData?.message,
+   ]);
 
    const updateObject = {
       id: comment?.id,
