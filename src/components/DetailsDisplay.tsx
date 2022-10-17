@@ -12,6 +12,7 @@ import { ImSpinner } from 'react-icons/im';
 import Comments from './Comments';
 import { usePostCommentMutation } from '../redux/features/commentsApiSlice';
 import DOMPurify from 'dompurify';
+import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
 
 const customId = 'custom-id-yes';
 
@@ -49,6 +50,13 @@ const DetailsDisplay = ({ post }: any) => {
       refetchOnMountOrArgChange: true,
       selectFromResult: ({ data }) => ({
          comments: data?.ids.map((id) => data?.entities[id]),
+      }),
+   });
+
+   //getting the post owner details
+   const { user }: any = useGetAllUsersQuery('usersList', {
+      selectFromResult: ({ data }) => ({
+         user: data?.entities[post?.postOwner],
       }),
    });
 
@@ -95,30 +103,30 @@ const DetailsDisplay = ({ post }: any) => {
    });
 
    //for authomatically getting post owner on login
-   let user: any;
+   let username: any;
    const userName = localStorage.getItem('user');
    if (userName) {
-      user = JSON.parse(userName);
+      username = JSON.parse(userName);
    }
 
    const authEdit =
-      user?.username === post?.postOwner || user?.role === 'Admin';
+      username?.username === post?.postOwner || username?.role === 'Admin';
 
    //checking if user has already liked a post
    useEffect(() => {
-      setIsLiked(post?.likes.includes(user?.username));
-   }, [user?.username, post?.likes]);
+      setIsLiked(post?.likes.includes(username?.username));
+   }, [username?.username, post?.likes]);
 
    const handleLike = async (e: React.SyntheticEvent) => {
       e.preventDefault();
 
-      if (user === undefined) {
+      if (username === undefined) {
          return toast.warn('Login to like post.', {
             toastId: customId,
          });
       }
       if (post?.postSlug) {
-         await likePost({ id: post?.postSlug, username: user?.username });
+         await likePost({ id: post?.postSlug, username: username?.username });
       }
       setLikes(isLiked ? likes - 1 : likes + 1);
       setIsLiked((current: any) => !current);
@@ -160,7 +168,7 @@ const DetailsDisplay = ({ post }: any) => {
 
    const commentObject = {
       postId: post?._id,
-      commentOwner: user?.username,
+      commentOwner: username?.username,
       comment: commentText,
    };
 
@@ -189,16 +197,24 @@ const DetailsDisplay = ({ post }: any) => {
          <div className='w-[90%] lg:w-[80%] mx-auto'>
             <div className='mb-4 flex flex-col md:flex-row md:items-center md:justify-between'>
                <div>
-                  <div className='text-gray-800 dark:text-gray-300'>
-                     post owner details
-                  </div>
+                  <Link to={`/author/${post?.postOwner}`}>
+                     <div className='flex items-center space-x-3'>
+                        <img
+                           src='https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg'
+                           className='w-8 h-8 rounded-full object-cover ring-2 ring-fuchsia-600'
+                        />
+                        <p className='text-gray-800 dark:text-gray-300'>
+                           {user?.fullName}
+                        </p>
+                     </div>
+                  </Link>
                   <div className='relative'>
                      <div className='flex items-center justify-between space-x-4 '>
                         <p className='text-xs lg:text-sm text-gray-600'>
                            {dateCreated}
                         </p>
 
-                        {user && authEdit && (
+                        {username && authEdit && (
                            <div className='flex items-center space-x-3'>
                               <AiFillDelete
                                  className='text-sm lg:text-lg text-red-600 cursor-pointer'
@@ -296,7 +312,7 @@ const DetailsDisplay = ({ post }: any) => {
                   )}
                </div>
                <div className=''>
-                  {user !== undefined && (
+                  {username !== undefined && (
                      <div>
                         {isCommentError && (
                            <p className='text-sm text-red-500'>

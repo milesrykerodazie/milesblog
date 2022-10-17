@@ -19,6 +19,7 @@ import EditPost from './pages/EditPost';
 import PostsPrefetch from './components/PostsPrefetch';
 import { useAppSelector } from './redux/app/store';
 import { selectCurrentToken } from './redux/features/auth/authSlice';
+import UserProfile from './pages/UserProfile';
 
 const App = () => {
    const token = useAppSelector(selectCurrentToken);
@@ -46,6 +47,7 @@ const App = () => {
                         token ? <EditPost /> : <Navigate replace to={'/'} />
                      }
                   />
+                  <Route path='/author/:id' element={<UserProfile />} />
                   {/* <Route
                      path='post'
                      element={<PrivateRoutes authRole='Admin' />}

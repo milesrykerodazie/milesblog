@@ -19,19 +19,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             },
          }),
          transformResponse: (responseData: any) => {
-            console.log(responseData);
-
             const loadedUsers = responseData?.users?.map((user: any) => {
                user.id = user.username;
                return user;
             });
-            console.log('loadedUsers: => ', loadedUsers);
 
             return usersAdapter.setAll(initialState, loadedUsers);
          },
          providesTags: (result: any, error: any, arg: any) => {
-            console.log('users result: => ', result);
-
             if (result?.ids) {
                return [
                   { type: 'User', id: 'LIST' },
@@ -46,8 +41,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 export const { useGetAllUsersQuery } = usersApiSlice;
 // returns the query result object
 export const selectUsersResult = usersApiSlice.endpoints.getAllUsers.select([]);
-
-console.log('selected users result', selectUsersResult);
 
 // creates memoized selector
 const selectUsersData = createSelector(
