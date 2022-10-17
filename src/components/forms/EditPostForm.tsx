@@ -16,8 +16,10 @@ import { useUpdatePostMutation } from '../../redux/features/postApiSlice';
 import { useNavigate } from 'react-router-dom';
 
 const EditPostForm = ({ post }: any) => {
-   const [updatePost, { isLoading, isSuccess, isError, error }] =
-      useUpdatePostMutation();
+   const [
+      updatePost,
+      { data: updateData, isLoading, isSuccess, isError, error },
+   ] = useUpdatePostMutation();
 
    const navigate = useNavigate();
    //edit methods
@@ -333,19 +335,24 @@ const EditPostForm = ({ post }: any) => {
                   </div>
 
                   <div className='flex-1'>
-                     <div
-                        className='flex items-center space-x-2 justify-end'
-                        onClick={() => setSuspended((current: any) => !current)}
-                     >
-                        <p className='text-gray-800 dark:text-gray-200'>
-                           Suspend:
-                        </p>
-                        {suspended ? (
-                           <BsFillEyeSlashFill className='text-gray-800 dark:text-gray-200' />
-                        ) : (
-                           <BsFillEyeFill className='text-gray-800 dark:text-gray-200' />
-                        )}
-                     </div>
+                     {data?.role === 'Admin' && (
+                        <div
+                           className='flex items-center space-x-2 justify-end'
+                           onClick={() =>
+                              setSuspended((current: any) => !current)
+                           }
+                        >
+                           <p className='text-gray-800 dark:text-gray-200'>
+                              Suspend:
+                           </p>
+                           {suspended ? (
+                              <BsFillEyeSlashFill className='text-gray-800 dark:text-gray-200' />
+                           ) : (
+                              <BsFillEyeFill className='text-gray-800 dark:text-gray-200' />
+                           )}
+                        </div>
+                     )}
+
                      <Editor />
                      <ReactQuill
                         className='dark:text-white rounded-md'

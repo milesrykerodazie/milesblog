@@ -195,7 +195,7 @@ const DetailsDisplay = ({ post }: any) => {
             )}
          </div>
          <div className='w-[90%] lg:w-[80%] mx-auto'>
-            <div className='mb-4 flex flex-col md:flex-row md:items-center md:justify-between'>
+            <div className='mb-4 flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-center md:justify-between'>
                <div>
                   <Link to={`/author/${post?.postOwner}`}>
                      <div className='flex items-center space-x-3'>
@@ -264,17 +264,17 @@ const DetailsDisplay = ({ post }: any) => {
                   <div className='flex space-x-2 items-center'>
                      <p className='cursor-pointer' onClick={handleLike}>
                         {isLiked ? (
-                           <AiFillLike className='w-6 h-6 text-fuchsia-600' />
+                           <AiFillLike className='w-5 h-5 text-fuchsia-600' />
                         ) : (
-                           <AiFillLike className='w-6 h-6 text-gray-600 dark:text-gray-300 duration-500 ease-in' />
+                           <AiFillLike className='w-5 h-5 text-gray-600 dark:text-gray-300 duration-500 ease-in' />
                         )}
                      </p>
 
-                     <span className='text-gray-800 dark:text-gray-300 duration-500 ease-in'>
+                     <span className='text-gray-800 dark:text-gray-300 duration-500 ease-in text-sm'>
                         {likes}
                      </span>
                   </div>
-                  <div className='flex lg:flex-row lg:space-x-3 flex-col'>
+                  <div className='flex lg:flex-row lg:space-x-3 flex-col space-y-2 lg:space-y-0'>
                      <p className='text-sm lg:text-base font-semibold text-gray-700 dark:text-gray-400'>
                         Category:{' '}
                         <span className='capitalize text-sm lg:text-base'>
@@ -297,7 +297,7 @@ const DetailsDisplay = ({ post }: any) => {
             <hr className=' mb-5 border-gray-300 dark:border-gray-600' />
             <p
                dangerouslySetInnerHTML={createMarkup()}
-               className=' dark:text-white text-gray-800 text-justify lg:text-lg pb-3'
+               className=' dark:text-white text-gray-800 text-justify text-sm lg:text-lg pb-3'
             />
             {/* comment section */}
             <div className='space-y-2'>

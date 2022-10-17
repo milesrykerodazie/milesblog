@@ -26,8 +26,6 @@ const Header = () => {
       USER = JSON.parse(userName);
    }
 
-   console.log('user from mobile header: =>', USER?.username);
-
    const { user }: any = useGetAllUsersQuery('usersList', {
       selectFromResult: ({ data }) => ({
          user: data?.entities[USER?.username],
@@ -48,7 +46,7 @@ const Header = () => {
             </Link>
             {USER && (
                <div>
-                  <p>{user?.fullName}</p>
+                  <p className='text-fuchsia-500 '>Welcome {user?.fullName}</p>
                </div>
             )}
             <Navbar />

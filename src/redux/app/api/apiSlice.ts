@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { setCredentials } from '../../features/auth/authSlice';
 import { RootState } from '../store';
 
-const { REACT_APP_API_LINK } = process.env;
+const { REACT_APP_API_LINK, REACT_APP_LOCAL_SERVER } = process.env;
 
 const baseQuery = fetchBaseQuery({
    baseUrl: `${REACT_APP_API_LINK}`,

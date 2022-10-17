@@ -11,6 +11,7 @@ import {
    useReplyCommentMutation,
    useUpdateCommentMutation,
 } from '../redux/features/commentsApiSlice';
+import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
 
 import Replies from './Replies';
 
@@ -66,6 +67,13 @@ const Comments = ({ comment }: any) => {
       }),
    });
 
+   //getting the post owner details
+   const { user }: any = useGetAllUsersQuery('usersList', {
+      selectFromResult: ({ data }) => ({
+         user: data?.entities[comment?.commentOwner],
+      }),
+   });
+
    const [likes, setLikes] = useState(comment?.likes?.length);
    const [isLiked, setIsLiked] = useState(false);
    const [replyText, setReplyText] = useState('');
@@ -87,29 +95,30 @@ const Comments = ({ comment }: any) => {
    useEffect(resizeTextArea, [replyText, updateText]);
 
    //for authomatically getting post owner on login
-   let user: any;
+   let userDetail: any;
    const userName = localStorage.getItem('user');
    if (userName) {
-      user = JSON.parse(userName);
+      userDetail = JSON.parse(userName);
    }
 
    const authEdit =
-      user?.username === comment?.commentOwner || user?.role === 'Admin';
+      userDetail?.username === comment?.commentOwner ||
+      userDetail?.role === 'Admin';
 
    //checking if user has already liked a post
    useEffect(() => {
-      setIsLiked(comment?.likes.includes(user?.username));
-   }, [user?.username, comment?.likes]);
+      setIsLiked(comment?.likes.includes(userDetail?.username));
+   }, [userDetail?.username, comment?.likes]);
 
    const handleLike = async (e: React.SyntheticEvent) => {
       e.preventDefault();
-      if (user === undefined) {
+      if (userDetail === undefined) {
          return toast.warn('Login to like post.', {
             toastId: customId,
          });
       }
       if (comment?._id) {
-         await likeComment({ id: comment?.id, username: user?.username });
+         await likeComment({ id: comment?.id, username: userDetail?.username });
       }
       setLikes(isLiked ? likes - 1 : likes + 1);
       setIsLiked((current: any) => !current);
@@ -150,23 +159,23 @@ const Comments = ({ comment }: any) => {
 
    const updateObject = {
       id: comment?.id,
-      commentOwner: user?.username,
+      commentOwner: userDetail?.username,
       comment: updateText,
    };
    const replyObject = {
       commentId: comment?.id,
-      replyOwner: user?.username,
+      replyOwner: userDetail?.username,
       reply: replyText,
    };
    const deleteObject = {
       id: comment?.id,
-      commentOwner: user?.username,
+      commentOwner: userDetail?.username,
    };
 
    //handle open reply
    const handleOpenReply = (e: React.SyntheticEvent) => {
       e.preventDefault();
-      if (user === undefined) {
+      if (userDetail === undefined) {
          return toast.warn('You are not authorized.', {
             toastId: customId,
          });
@@ -177,7 +186,7 @@ const Comments = ({ comment }: any) => {
    //handle reply comment
    const handleReply = async (e: React.SyntheticEvent) => {
       e.preventDefault();
-      if (user === undefined) {
+      if (userDetail === undefined) {
          return toast.warn('You are not authorized.', {
             toastId: customId,
          });
@@ -190,7 +199,7 @@ const Comments = ({ comment }: any) => {
    //handle update
    const handleUpdate = async (e: React.SyntheticEvent) => {
       e.preventDefault();
-      if (user === undefined) {
+      if (userDetail === undefined) {
          return toast.warn('You are not authorized.', {
             toastId: customId,
          });
@@ -203,7 +212,7 @@ const Comments = ({ comment }: any) => {
    //delete comment
    const handleDelete = async (e: React.SyntheticEvent) => {
       e.preventDefault();
-      if (user === undefined) {
+      if (userDetail === undefined) {
          return toast.warn('You are not authorized.', {
             toastId: customId,
          });
@@ -220,18 +229,18 @@ const Comments = ({ comment }: any) => {
          <div className='flex space-x-2'>
             <img
                src={
-                  comment?.userImage
-                     ? comment?.userImage
+                  user?.profilePicture?.url
+                     ? user?.profilePicture?.url
                      : 'https://demofree.sirv.com/nope-not-here.jpg'
                }
-               alt='user-img'
+               alt='userDetail-img'
                className='w-8 h-8 rounded-full object-cover ring-2 ring-fuchsia-600'
             />
             <div className='space-y-3 flex-1'>
                <div className='bg-gray-200 dark:bg-gray-800 p-2 rounded-md flex justify-between relative duration-500 ease-in'>
                   <div>
                      <p className='capitalize underline text-sm text-gray-600 dark:text-gray-400 duration-500 ease-in'>
-                        {comment?.username}
+                        {user?.username}
                      </p>
                      <p className='text-sm text-gray-600 dark:text-gray-400 duration-500 ease-in'>
                         {comment?.comment}
@@ -241,7 +250,7 @@ const Comments = ({ comment }: any) => {
                      <span className='text-xs text-gray-600 dark:text-gray-400 duration-500 ease-in'>
                         {format(comment?.createdAt)}
                      </span>
-                     {user && authEdit && (
+                     {userDetail && authEdit && (
                         <div className='flex items-center space-x-3'>
                            <AiFillDelete
                               className='text-lg text-red-600 cursor-pointer'

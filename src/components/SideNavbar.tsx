@@ -5,6 +5,8 @@ import { useLogoutMutation } from '../redux/features/authApiSlice';
 import { toast } from 'react-toastify';
 import { useAppSelector } from '../redux/app/store';
 import { selectCurrentToken } from '../redux/features/auth/authSlice';
+import OwnerShortProfile from './OwnerShortProfile';
+import CategoryNav from './CategoryNav';
 
 export interface stateTyp {
    open: boolean;
@@ -67,14 +69,24 @@ const SideNavbar = ({ open, setOpen }: stateTyp) => {
                   <MdClose className='w-6 h-6 dark:text-fuchsia-500 text-black/95' />
                </div>
             </div>
-            <div className='text-gray-200'>
-               <p>Helo</p>
-               {token && (
-                  <p className='cursor-pointer ' onClick={logout}>
+            <div className='text-gray-200 pb-4'>
+               <CategoryNav sidebar />
+               {token ? (
+                  <p
+                     className='cursor-pointer text-center font-semibold tracking-wider'
+                     onClick={logout}
+                  >
                      Logout
                   </p>
+               ) : (
+                  <Link to='/auth/login'>
+                     <p className='cursor-pointer text-center font-semibold tracking-wider'>
+                        Login
+                     </p>
+                  </Link>
                )}
             </div>
+            {token && <OwnerShortProfile sidebar />}
          </div>
       </div>
    );

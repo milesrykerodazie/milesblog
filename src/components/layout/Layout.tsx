@@ -1,10 +1,14 @@
 import { Outlet } from 'react-router-dom';
+import { useAppSelector } from '../../redux/app/store';
+import { selectCurrentToken } from '../../redux/features/auth/authSlice';
 import FeaturedPosts from '../FeaturedPosts';
 import Header from '../Header';
 import MobileHeader from '../MobileHeader';
 import OwnerShortProfile from '../OwnerShortProfile';
 
 const Layout = () => {
+   //getting the token from redux
+   const token = useAppSelector(selectCurrentToken);
    return (
       <div className='h-screen bg-white opacity-95 dark:bg-black duration-500 ease-in '>
          <Header />
@@ -15,7 +19,7 @@ const Layout = () => {
             </div>
             <div className='w-[20%] sticky top-[74px] h-[calc(100vh-96px)] space-y-3 hidden lg:inline-block'>
                <FeaturedPosts />
-               <OwnerShortProfile />
+               {token && <OwnerShortProfile />}
             </div>
          </div>
       </div>

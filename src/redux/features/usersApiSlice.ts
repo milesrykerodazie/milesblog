@@ -35,10 +35,22 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             } else return [{ type: 'User', id: 'LIST' }];
          },
       }),
+      updateUser: builder.mutation({
+         query: (updateDetails) => ({
+            url: '/update-user',
+            method: 'PATCH',
+            body: {
+               ...updateDetails,
+            },
+         }),
+         invalidatesTags: (result, error, arg) => [
+            { type: 'User', id: 'LIST' },
+         ],
+      }),
    }),
 });
 
-export const { useGetAllUsersQuery } = usersApiSlice;
+export const { useGetAllUsersQuery, useUpdateUserMutation } = usersApiSlice;
 // returns the query result object
 export const selectUsersResult = usersApiSlice.endpoints.getAllUsers.select([]);
 

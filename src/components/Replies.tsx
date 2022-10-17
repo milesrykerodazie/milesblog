@@ -9,6 +9,7 @@ import {
    useLikeReplyMutation,
    useUpdateReplyMutation,
 } from '../redux/features/commentsApiSlice';
+import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
 
 const customId = 'custom-id-yes';
 const Replies = ({ reply }: any) => {
@@ -40,6 +41,13 @@ const Replies = ({ reply }: any) => {
       },
    ] = useDeleteReplyMutation();
 
+   //getting the post owner details
+   const { user }: any = useGetAllUsersQuery('usersList', {
+      selectFromResult: ({ data }) => ({
+         user: data?.entities[reply?.replyOwner],
+      }),
+   });
+
    const [likes, setLikes] = useState(reply?.likes?.length);
    const [isLiked, setIsLiked] = useState(false);
    const [updateText, setUpdateText] = useState(reply?.reply);
@@ -58,29 +66,30 @@ const Replies = ({ reply }: any) => {
    useEffect(resizeTextArea, [updateText]);
 
    //for authomatically getting post owner on login
-   let user: any;
+   let userDetail: any;
    const userName = localStorage.getItem('user');
    if (userName) {
-      user = JSON.parse(userName);
+      userDetail = JSON.parse(userName);
    }
 
    const authEdit =
-      user?.username === reply?.replyOwner || user?.role === 'Admin';
+      userDetail?.username === reply?.replyOwner ||
+      userDetail?.role === 'Admin';
 
-   //checking if user has already liked a post
+   //checking if userDetail has already liked a post
    useEffect(() => {
-      setIsLiked(reply?.likes.includes(user?.username));
-   }, [user?.username, reply?.likes]);
+      setIsLiked(reply?.likes.includes(userDetail?.username));
+   }, [userDetail?.username, reply?.likes]);
 
    const handleLike = async (e: React.SyntheticEvent) => {
       e.preventDefault();
-      if (user === undefined) {
+      if (userDetail === undefined) {
          return toast.warn('Login to like post.', {
             toastId: customId,
          });
       }
       if (reply?._id) {
-         await likeReply({ id: reply?.id, username: user?.username });
+         await likeReply({ id: reply?.id, username: userDetail?.username });
       }
       setLikes(isLiked ? likes - 1 : likes + 1);
       setIsLiked((current: any) => !current);
@@ -113,20 +122,20 @@ const Replies = ({ reply }: any) => {
 
    const updateObject = {
       id: reply?.id,
-      replyOwner: user?.username,
+      replyOwner: userDetail?.username,
       reply: updateText,
    };
 
    const deleteObject = {
       id: reply?.id,
       commentId: reply?.commentId,
-      replyOwner: user?.username,
+      replyOwner: userDetail?.username,
    };
 
    //handle update
    const handleUpdate = async (e: React.SyntheticEvent) => {
       e.preventDefault();
-      if (user === undefined) {
+      if (userDetail === undefined) {
          return toast.warn('Not authorized.', {
             toastId: customId,
          });
@@ -143,7 +152,7 @@ const Replies = ({ reply }: any) => {
 
    const handleDelete = async (e: React.SyntheticEvent) => {
       e.preventDefault();
-      if (user === undefined) {
+      if (userDetail === undefined) {
          return toast.warn('Not authorized.', {
             toastId: customId,
          });
@@ -160,11 +169,11 @@ const Replies = ({ reply }: any) => {
          <div className='flex space-x-2'>
             <img
                src={
-                  reply?.userImage
-                     ? reply?.userImage
+                  user?.profilePicture?.url
+                     ? user?.profilePicture?.url
                      : 'https://demofree.sirv.com/nope-not-here.jpg'
                }
-               alt='user-img'
+               alt='userDetail-img'
                className='w-8 h-8 rounded-full object-cover ring-2 ring-fuchsia-600'
             />
             <div className='space-y-3 flex-1'>
@@ -181,7 +190,7 @@ const Replies = ({ reply }: any) => {
                      <span className='text-xs text-gray-600 dark:text-gray-400 duration-500 ease-in'>
                         {format(reply?.createdAt)}
                      </span>
-                     {user && authEdit && (
+                     {userDetail && authEdit && (
                         <div className='flex items-center space-x-3'>
                            <AiFillDelete
                               className='text-lg text-red-600 cursor-pointer'
