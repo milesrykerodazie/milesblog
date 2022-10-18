@@ -163,9 +163,9 @@ const RegistrationForm = ({
                   onChange={handleBio}
                   placeholder='Your Bio...'
                   className='input px-2 border rounded-md text-sm'
-               />
+               ></textarea>
                <p
-                  className={`text-right  font-charm font-semibold tracking-wide text-sm  ${
+                  className={`text-right  font-charm font-semibold tracking-wide text-sm hidden lg:block  ${
                      countRemaining <= 10
                         ? 'text-red-500'
                         : countRemaining <= 30
