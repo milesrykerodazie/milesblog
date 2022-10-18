@@ -30,15 +30,15 @@ const EditProfileForm = ({ user }: any) => {
    //image state
    const [image, setImage] = useState(undefined);
 
-   const [userBio, setUserBio] = useState('');
+   const [userBio, setUserBio] = useState(user?.userBio);
 
    //states for count
-   const [count, setCount] = useState(0);
-   const maxText = 200;
+   // const [count, setCount] = useState(0);
+   // const maxText = 200;
 
-   const countRemaining = maxText - count;
+   // const countRemaining = maxText - count;
 
-   console.log(userBio);
+   // console.log(userBio);
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       // const type = event.target.type;
@@ -55,7 +55,7 @@ const EditProfileForm = ({ user }: any) => {
 
    const handleBio = (e: React.ChangeEvent<HTMLInputElement>) => {
       e.preventDefault();
-      setCount(e.target.value.length);
+      // setCount(e.target.value.length);
       setUserBio(e.target.value);
    };
 
@@ -165,7 +165,7 @@ const EditProfileForm = ({ user }: any) => {
                type='file'
                id='picfile'
                name='image'
-               disabled={userRole?.role === 'Admin'}
+               disabled={user?.username !== userRole?.username}
                accept='.png,.jpeg,.jpg,.gif,.webp'
             />
          </div>
@@ -238,7 +238,6 @@ const EditProfileForm = ({ user }: any) => {
                   ref={textAreaRef}
                   id='userBio'
                   rows={2}
-                  maxLength={200}
                   value={userBio}
                   onChange={handleBio as any}
                   name='userBio'
@@ -246,7 +245,7 @@ const EditProfileForm = ({ user }: any) => {
                   placeholder='Your Bio...'
                   className='input p-2 border rounded-md text-sm'
                />
-               <p
+               {/* <p
                   className={`text-right  font-charm font-semibold tracking-wide text-sm  ${
                      countRemaining <= 10
                         ? 'text-red-500'
@@ -256,7 +255,7 @@ const EditProfileForm = ({ user }: any) => {
                   }`}
                >
                   {countRemaining}/{maxText}
-               </p>
+               </p> */}
             </div>
          </div>
          <div className='flex items-center space-x-4'>

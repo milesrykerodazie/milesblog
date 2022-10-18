@@ -39,13 +39,15 @@ const MobileHeader = () => {
             }`}
          >
             <Link to='/'>
-               <p className='text-black/80 font-extrabold font-kaushan text-xl tracking-widest dark:text-white/90'>
+               <p className='text-black/80 font-extrabold font-kaushan text-base tracking-widest dark:text-white/90'>
                   <span className='text-fuchsia-500'>Miles</span>-Blog
                </p>
             </Link>
             {USER && (
                <div>
-                  <p className='text-fuchsia-500 '>Welcome {user?.fullName}</p>
+                  <p className='text-fuchsia-500 text-sm'>
+                     Welcome {user?.fullName}
+                  </p>
                </div>
             )}
 

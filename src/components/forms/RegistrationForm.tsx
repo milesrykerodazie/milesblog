@@ -158,13 +158,12 @@ const RegistrationForm = ({
                   ref={textAreaRef}
                   rows={2}
                   name='userBio'
-                  maxLength={200}
                   value={userBio}
                   onChange={handleBio}
                   placeholder='Your Bio...'
                   className='input px-2 border rounded-md text-sm'
-               ></textarea>
-               <p
+               />
+               {/* <p
                   className={`text-right  font-charm font-semibold tracking-wide text-sm hidden lg:block  ${
                      countRemaining <= 10
                         ? 'text-red-500'
@@ -174,7 +173,7 @@ const RegistrationForm = ({
                   }`}
                >
                   {countRemaining}/{maxText}
-               </p>
+               </p> */}
             </div>
          </div>
 

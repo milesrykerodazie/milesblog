@@ -31,10 +31,10 @@ const Register = () => {
    const [userBio, setUserBio] = useState('');
 
    //states for count
-   const [count, setCount] = useState(0);
-   const maxText = 200;
+   // const [count, setCount] = useState(0);
+   // const maxText = 200;
 
-   const countRemaining = maxText - count;
+   // const countRemaining = maxText - count;
 
    //image state
    const [image, setImage] = useState(undefined);
@@ -71,7 +71,7 @@ const Register = () => {
 
    const handleBio = (e: React.ChangeEvent<HTMLInputElement>) => {
       e.preventDefault();
-      setCount(e.target.value.length);
+      // setCount(e.target.value.length);
       setUserBio(e.target.value);
    };
 
@@ -139,8 +139,8 @@ const Register = () => {
                      handleImage={handleImage}
                      userBio={userBio}
                      handleBio={handleBio}
-                     countRemaining={countRemaining}
-                     maxText={maxText}
+                     // countRemaining={countRemaining}
+                     // maxText={maxText}
                   />
                   {passwordMatch && (
                      <span className='py-1 text-red-600 text-sm'>
