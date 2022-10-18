@@ -213,7 +213,11 @@ const DetailsDisplay = ({ post }: any) => {
                   <Link to={`/author/${post?.postOwner}`}>
                      <div className='flex items-center space-x-3'>
                         <img
-                           src='https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg'
+                           src={
+                              user?.profilePicture?.url
+                                 ? user?.profilePicture?.url
+                                 : 'https://demofree.sirv.com/nope-not-here.jpg'
+                           }
                            alt=''
                            className='w-8 h-8 rounded-full object-cover ring-2 ring-fuchsia-600'
                         />

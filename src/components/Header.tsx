@@ -42,8 +42,17 @@ const Header = () => {
                </p>
             </Link>
             {USER && (
-               <div>
-                  <p className='text-fuchsia-500 '>Welcome {user?.fullName}</p>
+               <div className='flex items-center space-x-1'>
+                  <img
+                     src={
+                        user?.profilePicture?.url
+                           ? user?.profilePicture?.url
+                           : 'https://demofree.sirv.com/nope-not-here.jpg'
+                     }
+                     alt='userDetail-img'
+                     className='w-6 h-6 rounded-full object-cover'
+                  />
+                  <p className='capitalize text-sm'>{user?.username}</p>
                </div>
             )}
             <Navbar />

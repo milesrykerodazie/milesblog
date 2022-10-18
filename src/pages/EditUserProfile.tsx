@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import EditProfileForm from '../components/forms/EditProfileForm';
 import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
 import useTitle from '../hooks/useTitle';
+import LoadingComponent from '../components/LoadingComponent';
 
 const EditUserProfile = () => {
    const { id }: any = useParams();
@@ -16,7 +17,7 @@ const EditUserProfile = () => {
    });
 
    //put a loader
-   if (!user) return <p>Loading...</p>;
+   if (!user) return <LoadingComponent />;
 
    const profileContent = <EditProfileForm user={user} />;
 
