@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import ActionButton from '../components/ActionButton';
 import { GrMail } from 'react-icons/gr';
 import { useForgotPasswordMutation } from '../redux/features/authApiSlice';
+import useTitle from '../hooks/useTitle';
 
 const ForgotPassword = () => {
+   useTitle('forgot-password');
    const [
       forgotPassword,
       { data: fPSuccess, isLoading, isSuccess, isError, error },

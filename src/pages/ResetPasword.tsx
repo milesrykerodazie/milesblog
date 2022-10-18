@@ -8,10 +8,12 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
+import useTitle from '../hooks/useTitle';
 
 const customId = 'custom-id-yes';
 
 const ResetPassword = () => {
+   useTitle('reset-password');
    const location = useLocation();
    const { token, id } = queryString.parse(location.search);
 

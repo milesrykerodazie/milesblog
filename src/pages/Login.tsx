@@ -8,10 +8,12 @@ import { useAppDispatch } from '../redux/app/store';
 import { setCredentials } from '../redux/features/auth/authSlice';
 import usePersist from '../hooks/usePersist';
 import jwtDecode from 'jwt-decode';
+import useTitle from '../hooks/useTitle';
 
 const customId = 'custom-id-yes';
 
 const Login = () => {
+   useTitle('Login');
    //the login function
    const [
       login,

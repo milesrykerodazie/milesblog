@@ -4,9 +4,11 @@ import { toast } from 'react-toastify';
 import ActionButton from '../components/ActionButton';
 import RegistrationForm from '../components/forms/RegistrationForm';
 import { useRegisterMutation } from '../redux/features/authApiSlice';
+import useTitle from '../hooks/useTitle';
 
 const customId = 'custom-id-yes';
 const Register = () => {
+   useTitle('Register');
    //the register state from redux
    const [
       register,

@@ -4,10 +4,12 @@ import { toast } from 'react-toastify';
 import ActionButton from '../components/ActionButton';
 import VerifyEmailForm from '../components/forms/VerifyEmailForm';
 import { useVerifyEmailMutation } from '../redux/features/authApiSlice';
+import useTitle from '../hooks/useTitle';
 
 const customId = 'custom-id-yes';
 
 const VerifyEmail = () => {
+   useTitle('verify-email');
    //the verify email request
    const [
       verifyEmail,

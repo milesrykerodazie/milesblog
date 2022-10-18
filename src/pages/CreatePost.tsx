@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import CreatePostForm from '../components/forms/CreatePostForm';
 import { useCreatePostMutation } from '../redux/features/postApiSlice';
 import { toast } from 'react-toastify';
+import useTitle from '../hooks/useTitle';
 
 const customId = 'custom-id-yes';
 const CreatePost = () => {
+   useTitle('create-post');
    //getting the method to post
    const [
       createPost,

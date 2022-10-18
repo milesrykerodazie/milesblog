@@ -2,11 +2,12 @@ import { BiLoaderCircle } from 'react-icons/bi';
 import { useParams } from 'react-router-dom';
 import EditPostForm from '../components/forms/EditPostForm';
 import { useGetPostsQuery } from '../redux/features/postApiSlice';
+import useTitle from '../hooks/useTitle';
 
 const EditPost = () => {
    //checking params
    const { id }: any = useParams();
-
+   useTitle(id);
    const { post }: any = useGetPostsQuery('postList', {
       selectFromResult: ({ data }) => ({
          post: data?.entities[id],

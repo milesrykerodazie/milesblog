@@ -1,8 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
 import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
+import useTitle from '../hooks/useTitle';
 
 const UserProfile = () => {
    const { id }: any = useParams();
+   useTitle(id);
 
    //getting the post owner details
    const { user }: any = useGetAllUsersQuery('usersList', {

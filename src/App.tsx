@@ -19,8 +19,10 @@ import { useAppSelector } from './redux/app/store';
 import { selectCurrentToken } from './redux/features/auth/authSlice';
 import UserProfile from './pages/UserProfile';
 import EditUserProfile from './pages/EditUserProfile';
+import useTitle from './hooks/useTitle';
 
 const App = () => {
+   useTitle('Blog Sample');
    const token = useAppSelector(selectCurrentToken);
    return (
       <Routes>
