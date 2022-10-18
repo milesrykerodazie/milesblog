@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetCategoryPostsQuery } from '../redux/features/postApiSlice';
 import Post from '../components/Post';
-import { BiLoaderCircle } from 'react-icons/bi';
+
 import useTitle from '../hooks/useTitle';
 
 //get stuff from localeStorage
