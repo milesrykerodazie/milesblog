@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BsPersonFill } from 'react-icons/bs';
 import { GrMail } from 'react-icons/gr';
 import { RiLockPasswordFill } from 'react-icons/ri';
@@ -15,6 +15,10 @@ const RegistrationForm = ({
    image,
    setImage,
    handleImage,
+   userBio,
+   handleBio,
+   countRemaining,
+   maxText,
 }: {
    data: {
       fullName: string;
@@ -22,16 +26,30 @@ const RegistrationForm = ({
       username: string;
       password: string;
       confirmPassword: string;
-      userBio: string;
    };
 
    handleChange: any;
    image?: any;
    setImage?: any;
    handleImage: any;
+   userBio?: string;
+   handleBio?: any;
+   countRemaining?: any;
+   maxText?: any;
 }) => {
    const [passwordToggle, setPasswordToggle] = useState<string>('password');
    const [confirmToggle, setConfirmToggle] = useState<string>('password');
+
+   const textAreaRef = useRef(null);
+   const resizeTextArea = () => {
+      if (textAreaRef?.current) {
+         (textAreaRef as any).current.style.height = 'auto';
+         (textAreaRef as any).current.style.height =
+            (textAreaRef as any).current.scrollHeight + 'px';
+      }
+   };
+
+   useEffect(resizeTextArea, [userBio]);
 
    const registerForm = (
       <div className='space-y-5 pb-3'>
@@ -136,12 +154,27 @@ const RegistrationForm = ({
             <div>
                <textarea
                   id='userBio'
-                  rows={7}
+                  style={{ resize: 'none' }}
+                  ref={textAreaRef}
+                  rows={2}
                   name='userBio'
-                  onChange={handleChange}
+                  maxLength={200}
+                  value={userBio}
+                  onChange={handleBio}
                   placeholder='Your Bio...'
                   className='input px-2 border rounded-md text-sm'
                />
+               <p
+                  className={`text-right  font-charm font-semibold tracking-wide text-sm  ${
+                     countRemaining <= 10
+                        ? 'text-red-500'
+                        : countRemaining <= 30
+                        ? 'text-yellow-500'
+                        : 'text-gray-400'
+                  }`}
+               >
+                  {countRemaining}/{maxText}
+               </p>
             </div>
          </div>
 

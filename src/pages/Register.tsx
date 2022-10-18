@@ -25,10 +25,17 @@ const Register = () => {
       username: '',
       password: '',
       confirmPassword: '',
-      userBio: '',
    });
 
    const [passwordMatch, setPasswordMatch] = useState<string>('');
+   const [userBio, setUserBio] = useState('');
+
+   //states for count
+   const [count, setCount] = useState(0);
+   const maxText = 200;
+
+   const countRemaining = maxText - count;
+
    //image state
    const [image, setImage] = useState(undefined);
 
@@ -40,7 +47,6 @@ const Register = () => {
             username: '',
             password: '',
             confirmPassword: '',
-            userBio: '',
          });
          toast.success(registerResponse?.message, {
             toastId: customId,
@@ -61,6 +67,12 @@ const Register = () => {
          ...prevData,
          [name]: value,
       }));
+   };
+
+   const handleBio = (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      setCount(e.target.value.length);
+      setUserBio(e.target.value);
    };
 
    //handle and convert it in base 64
@@ -87,7 +99,7 @@ const Register = () => {
       email: data?.email.trim(),
       username: data?.username.trim(),
       password: data?.password.trim(),
-      userBio: data?.userBio.trim(),
+      userBio: userBio,
       profilePicture: image,
    };
 
@@ -109,8 +121,8 @@ const Register = () => {
          onSubmit={handleSubmit}
       >
          <div className='dark:bg-black/90 bg-white/80 h-screen w-full duration-500 ease-in'>
-            <div className='flex flex-col pt-3'>
-               <div className='lg:max-w-4xl w-full lg:mx-auto bg-white dark:bg-black p-3 space-y-2 shadow-md shadow-fuchsia-500 lg:rounded-md duration-500 ease-in'>
+            <div className='flex flex-col pt-3 md:pt-0 md:justify-center md:h-full'>
+               <div className='lg:max-w-4xl w-full lg:mx-auto bg-white dark:bg-black p-3 space-y-3 shadow-md shadow-fuchsia-500 lg:rounded-md duration-500 ease-in'>
                   {isError && (
                      <h2 className=' text-red-600 text-sm capitalize'>
                         {(error as any)?.data?.message}
@@ -125,6 +137,10 @@ const Register = () => {
                      image={image}
                      setImage={setImage}
                      handleImage={handleImage}
+                     userBio={userBio}
+                     handleBio={handleBio}
+                     countRemaining={countRemaining}
+                     maxText={maxText}
                   />
                   {passwordMatch && (
                      <span className='py-1 text-red-600 text-sm'>

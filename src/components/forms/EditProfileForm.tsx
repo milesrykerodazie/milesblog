@@ -24,12 +24,21 @@ const EditProfileForm = ({ user }: any) => {
       fullName: user?.fullName,
       email: user?.email,
       username: user?.username,
-      userBio: user?.userBio,
    });
 
    const [active, setActive] = useState(user?.active);
    //image state
    const [image, setImage] = useState(undefined);
+
+   const [userBio, setUserBio] = useState('');
+
+   //states for count
+   const [count, setCount] = useState(0);
+   const maxText = 200;
+
+   const countRemaining = maxText - count;
+
+   console.log(userBio);
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       // const type = event.target.type;
@@ -44,6 +53,12 @@ const EditProfileForm = ({ user }: any) => {
       }));
    };
 
+   const handleBio = (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      setCount(e.target.value.length);
+      setUserBio(e.target.value);
+   };
+
    const textAreaRef = useRef(null);
    const resizeTextArea = () => {
       if (textAreaRef?.current) {
@@ -53,7 +68,7 @@ const EditProfileForm = ({ user }: any) => {
       }
    };
 
-   useEffect(resizeTextArea, [data?.userBio]);
+   useEffect(resizeTextArea, [userBio]);
 
    //for authomatically getting post owner on login
    let userRole: any;
@@ -87,7 +102,7 @@ const EditProfileForm = ({ user }: any) => {
       role: user?.role,
       profilePicture: image,
       verified: user?.verified,
-      userBio: data?.userBio,
+      userBio: userBio,
       active: active,
    };
 
@@ -223,13 +238,25 @@ const EditProfileForm = ({ user }: any) => {
                   ref={textAreaRef}
                   id='userBio'
                   rows={2}
-                  value={data?.userBio}
-                  onChange={handleChange as any}
+                  maxLength={200}
+                  value={userBio}
+                  onChange={handleBio as any}
                   name='userBio'
                   disabled={user?.username !== userRole?.username}
                   placeholder='Your Bio...'
                   className='input p-2 border rounded-md text-sm'
                />
+               <p
+                  className={`text-right  font-charm font-semibold tracking-wide text-sm  ${
+                     countRemaining <= 10
+                        ? 'text-red-500'
+                        : countRemaining <= 30
+                        ? 'text-yellow-500'
+                        : 'text-gray-400'
+                  }`}
+               >
+                  {countRemaining}/{maxText}
+               </p>
             </div>
          </div>
          <div className='flex items-center space-x-4'>
