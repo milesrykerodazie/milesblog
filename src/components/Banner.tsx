@@ -35,7 +35,7 @@ const Banner = ({ filtered }: any) => {
                </p>
             </div>
          ) : (
-            <p>Loading</p>
+            <div className='w-full h-52 bg-gray-400/20 animate-pulse' />
          )}
       </div>
    );

@@ -31,13 +31,13 @@ const CategoryNav = ({ sidebar }: any) => {
                         to={`/category/${value}`}
                         className={({ isActive }) =>
                            isActive
-                              ? 'font-semibold text-fuchsia-600 border-t border-fuchsia-600 duration-500 ease-in uppercase text-base'
+                              ? 'font-semibold text-fuchsia-600  duration-500 ease-in uppercase text-base'
                               : 'font-semibold text-gray-800 dark:text-white duration-500 ease-in uppercase text-base flex space-x-1 '
                         }
                      >
                         <span>{value}</span>
                         {value !== CATEGORIES[CATEGORIES.length - 1].value && (
-                           <span className='text-fuchsia-500'>|</span>
+                           <span className='text-fuchsia-500 px-1'>|</span>
                         )}
                      </NavLink>
                   </div>

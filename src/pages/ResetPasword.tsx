@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 import useTitle from '../hooks/useTitle';
+import LoadingComponent from '../components/LoadingComponent';
 
 const customId = 'custom-id-yes';
 
@@ -101,7 +102,7 @@ const ResetPassword = () => {
          <div className='bg-slate-900/90 h-full'>
             <div className='flex flex-col justify-center items-center h-full'>
                <div className='max-w-3xl w-full mx-auto bg-white p-5 space-y-3 shadow-md  shadow-white lg:rounded-md'>
-                  {isLoading && <p>Loading....</p>}
+                  {isLoading && <LoadingComponent />}
                   {isSuccess && (
                      <>
                         <h2 className='text-xl font-bold text-center py-2 text-slate-600'>

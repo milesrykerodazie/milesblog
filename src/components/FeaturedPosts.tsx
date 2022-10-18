@@ -58,9 +58,10 @@ const FeaturedPosts = () => {
             Featured Post
          </h2>
          {isLoading ? (
-            <div className='flex items-center justify-center mt-24'>
-               <BiLoaderCircle className='w-14 h-12 text-gray-500 animate-spin' />
-            </div>
+            <>
+               <div className='bg-gray-300/20 h-48 mt-4 animate-pulse' />
+               <div className='bg-gray-300/20 h-48 mt-4 animate-pulse' />
+            </>
          ) : isError ? (
             <div>
                <p className='text-xl font-semibold'>

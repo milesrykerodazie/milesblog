@@ -52,8 +52,10 @@ const CategoryPosts = () => {
    return (
       <div>
          {isLoading ? (
-            <div className='flex items-center justify-center mt-24'>
-               <BiLoaderCircle className='w-14 h-12 text-gray-500 animate-spin' />
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
+               <div className='bg-gray-300/20 h-48 mt-4 animate-pulse' />
+               <div className='bg-gray-300/20 h-48 mt-4 animate-pulse' />
+               <div className='bg-gray-300/20 h-48 mt-4 animate-pulse' />
             </div>
          ) : isError ? (
             <div className='flex items-center justify-center h-[calc(100vh-96px)]'>
@@ -62,25 +64,29 @@ const CategoryPosts = () => {
                </p>
             </div>
          ) : isSuccess ? (
-            <>
-               {postsData && (
-                  <div>
-                     {role && role === 'Admin' ? (
+            <div>
+               {role && role === 'Admin' ? (
+                  <>
+                     {postsData && (
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-1'>
-                           {postsData?.ids.map((postId) => (
+                           {(postsData as any)?.ids?.map((postId: any) => (
                               <Post key={postId} postId={postId} />
                            ))}
                         </div>
-                     ) : (
+                     )}
+                  </>
+               ) : (
+                  <>
+                     {filtered && (
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-1'>
                            {(filtered as any)?.map((postId: any) => (
                               <Post key={postId} postId={postId} />
                            ))}
                         </div>
                      )}
-                  </div>
+                  </>
                )}
-            </>
+            </div>
          ) : null}
       </div>
    );

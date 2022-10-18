@@ -7,7 +7,7 @@ const LoadingComponent = () => {
          <p className='text-xl text-gray-600 dark:text-gray-400 tracking-wider animate-pulse duration-500 ease-in font-semibold'>
             Loading
          </p>
-         <BiLoaderCircle className='w-14 h-12 text-gray-500 animate-spin' />
+         <BiLoaderCircle className='w-14 h-14 text-gray-500 animate-spin' />
       </div>
    );
 };
