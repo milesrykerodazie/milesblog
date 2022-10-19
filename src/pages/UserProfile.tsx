@@ -90,19 +90,19 @@ const UserProfile = () => {
                className='w-16 h-16 lg:w-24 lg:h-24 rounded-full object-cover ring-2 ring-fuchsia-600'
             />
             <div className='flex items-center space-x-3'>
-               <p className='text-gray-800 dark:text-gray-200 text-sm lg:text-lg duration-500 ease-in'>
+               <p className='text-gray-800 dark:text-gray-200 text-sm lg:text-base duration-500 ease-in'>
                   <span className='font-semibold'>Name:</span> {user?.fullName}
                </p>
-               <span className='text-fuchsia-300 text-sm lg:text-lg'>|</span>
-               <p className='text-fuchsia-500 text-sm lg:text-lg'>
+               <span className='text-fuchsia-300 text-sm lg:text-base'>|</span>
+               <p className='text-fuchsia-500 text-sm lg:text-lbase'>
                   Joined: {dateJoined}
                </p>
             </div>
-            <p className='text-gray-800 dark:text-gray-200 text-sm lg:text-lg duration-500 ease-in'>
+            <p className='text-gray-800 dark:text-gray-200 text-sm lg:text-base duration-500 ease-in'>
                <span className='font-semibold'>Contact:</span> {user?.email}
             </p>
 
-            <p className='duration-500 ease-in text-gray-800 dark:text-gray-200 text-sm lg:text-lg'>
+            <p className='duration-500 ease-in text-gray-800 dark:text-gray-200 text-sm lg:text-base'>
                <span className='font-semibold'>Bio:</span>{' '}
                {user?.userBio ? user?.userBio : 'No bio at the moment.'}
             </p>
