@@ -55,8 +55,6 @@ const UserProfile = () => {
       e.preventDefault();
       setOpenDelete((current) => !current);
       if (user?._id) {
-         // @ts-expect-error
-         await logout();
          await deleteUser({ id: user?._id });
       }
    };

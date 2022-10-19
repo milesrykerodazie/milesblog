@@ -41,7 +41,7 @@ const Navbar = ({ user }: any) => {
       // eslint-disable-next-line
    }, [isSuccess, logoutData?.message]);
 
-   const canCreatePost = token && user?.verified;
+   const canCreatePost = userDetail !== undefined && user?.verified;
 
    return (
       <nav className='space-x-2 flex items-center'>
@@ -76,7 +76,7 @@ const Navbar = ({ user }: any) => {
                Contact Us
             </p>
          </Link>
-         {!token && (
+         {userDetail === undefined && (
             <>
                <p className='text-fuchsia-500'>|</p>
                <Link to='/auth'>
@@ -92,7 +92,7 @@ const Navbar = ({ user }: any) => {
                </Link>
             </>
          )}
-         {token && (
+         {userDetail !== undefined && (
             <nav className='space-x-2 flex items-center'>
                <p className='text-fuchsia-500'>|</p>
                <button
