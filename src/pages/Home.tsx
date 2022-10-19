@@ -2,6 +2,7 @@ import Banner from '../components/Banner';
 import Post from '../components/Post';
 import { useGetPostsQuery } from '../redux/features/postApiSlice';
 import { BiLoaderCircle } from 'react-icons/bi';
+import useTitle from '../hooks/useTitle';
 
 //get stuff from localeStorage
 const useAuth = () => {
@@ -27,6 +28,7 @@ const useAuth = () => {
 };
 
 const Home = () => {
+   useTitle('Miles-Blog-Sample');
    const {
       data: postsData,
       isLoading,
