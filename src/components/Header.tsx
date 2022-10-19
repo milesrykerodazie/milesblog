@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { MdVerified } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
@@ -31,7 +32,7 @@ const Header = () => {
 
    return (
       <header
-         className={`bg-white dark:bg-black shadow-sm shadow-fuchsia-300 hidden px-10 py-3 lg:h-20 lg:block fixed w-full top-0 z-50 ease-in duration-500 space-y-2 ${
+         className={`bg-white dark:bg-black shadow-sm shadow-fuchsia-300 hidden px-10 py-3 lg:h-24 lg:block fixed w-full top-0 z-50 ease-in duration-500 space-y-2 ${
             pageScroll && 'shadow-md shadow-fuchsia-700'
          }`}
       >
@@ -52,7 +53,10 @@ const Header = () => {
                      alt='userDetail-img'
                      className='w-6 h-6 rounded-full object-cover'
                   />
-                  <p className='capitalize text-sm'>{user?.username}</p>
+
+                  <p className='capitalize text-sm text-gray-800 dark:text-gray-200 duration-500 ease-in'>
+                     {user?.username}
+                  </p>
                </div>
             )}
             <Navbar user={user} />

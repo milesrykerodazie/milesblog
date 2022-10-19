@@ -66,7 +66,7 @@ const FeaturedPosts = () => {
             </div>
          ) : isSuccess ? (
             <>
-               <h2 className='text-lg text-gray-800 dark:text-white font-semibold bg-white dark:bg-black z-50 py-2'>
+               <h2 className='text-lg text-gray-800 dark:text-white font-semibold duration-500 ease-in z-50 py-2'>
                   Featured Post
                </h2>
                <div

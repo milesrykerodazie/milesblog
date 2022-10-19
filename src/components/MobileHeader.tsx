@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { BiMenu } from 'react-icons/bi';
 import { RiCloseFill } from 'react-icons/ri';
 import SideNavbar from './SideNavbar';
-
 import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
 
 const MobileHeader = () => {
@@ -54,7 +53,9 @@ const MobileHeader = () => {
                      alt='userDetail-img'
                      className='w-6 h-6 rounded-full object-cover'
                   />
-                  <p className='capitalize text-sm'>{user?.username}</p>
+                  <p className='capitalize text-xs text-gray-800 dark:text-gray-200 duration-500 ease-in'>
+                     {user?.username}
+                  </p>
                </div>
             )}
 
