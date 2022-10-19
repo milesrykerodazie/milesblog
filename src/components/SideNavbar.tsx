@@ -1,26 +1,34 @@
 import { MdClose } from 'react-icons/md';
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../redux/features/authApiSlice';
 import { toast } from 'react-toastify';
 import { useAppSelector } from '../redux/app/store';
 import { selectCurrentToken } from '../redux/features/auth/authSlice';
 import OwnerShortProfile from './OwnerShortProfile';
-import CategoryNav from './CategoryNav';
+import { CATEGORIES } from '../config/configurations';
 
-export interface stateTyp {
+export interface stateType {
    open: boolean;
    setOpen: Dispatch<SetStateAction<boolean>>;
 }
 const customId = 'custom-id-yes';
-const SideNavbar = ({ open, setOpen }: stateTyp) => {
-   const handleSidebarToggle = () => {
+const SideNavbar = ({ open, setOpen }: stateType) => {
+   const handleSidebarToggle = (e: React.SyntheticEvent) => {
+      e.preventDefault();
       setOpen((current) => !current);
    };
 
    const [logout, { data: logoutData, isSuccess }] = useLogoutMutation();
    //getting the token from redux
    const token = useAppSelector(selectCurrentToken);
+
+   //for authomatically getting post owner on login
+   let userDetail: any;
+   const userName = localStorage.getItem('user');
+   if (userName) {
+      userDetail = JSON.parse(userName);
+   }
 
    //reference for useEffect cleanup
    const effectRan = useRef(false);
@@ -44,6 +52,7 @@ const SideNavbar = ({ open, setOpen }: stateTyp) => {
       return () => (effectRan.current = true);
       // eslint-disable-next-line
    }, [isSuccess, logoutData?.message]);
+
    return (
       <div
          className={
@@ -70,20 +79,98 @@ const SideNavbar = ({ open, setOpen }: stateTyp) => {
                </div>
             </div>
             <div className='text-gray-200 pb-4'>
-               <CategoryNav sidebar />
-               {token ? (
+               <div className='text-gray-200 space-y-2 pb-4'>
+                  <h3 className='text-fuchsia-200 uppercase'>Categories</h3>
+                  {CATEGORIES.map(({ id, value }) => (
+                     <div key={id} className='duration-500 ease-in'>
+                        <NavLink
+                           to={`/category/${value}`}
+                           onClick={() => setOpen((current) => !current)}
+                           className={({ isActive }) =>
+                              isActive
+                                 ? 'font-semibold text-fuchsia-600 duration-500 ease-in capitalize text-sm'
+                                 : 'font-semibold text-gray-300 duration-500 ease-in capitalize text-sm flex space-x-1 '
+                           }
+                        >
+                           <span>{value}</span>
+                        </NavLink>
+                     </div>
+                  ))}
+               </div>
+               <hr className='pt-3 border-gray-600 dark:border-gray-400' />
+               {/* nav bar section */}
+               <div className='flex flex-col space-y-2 pb-3 text-sm duration-500 ease-in'>
+                  {userDetail?.role === 'Admin' && (
+                     <>
+                        <Link
+                           to={`/admin/userslist`}
+                           onClick={() => setOpen((current) => !current)}
+                        >
+                           <p className='font-medium duration-500 ease-in text-gray-300'>
+                              Users List
+                           </p>
+                        </Link>
+                     </>
+                  )}
+                  {token && (
+                     <>
+                        <Link
+                           to={`/create-post`}
+                           onClick={() => setOpen((current) => !current)}
+                        >
+                           <p className='font-medium duration-500 ease-in text-gray-300'>
+                              Create Post
+                           </p>
+                        </Link>
+                     </>
+                  )}
+                  <Link
+                     to={`/about`}
+                     onClick={() => setOpen((current) => !current)}
+                  >
+                     <p className='font-medium duration-500 ease-in text-gray-300'>
+                        About Us
+                     </p>
+                  </Link>
+
+                  <Link
+                     to={`/contact`}
+                     onClick={() => setOpen((current) => !current)}
+                  >
+                     <p className='font-medium duration-500 ease-in text-gray-300'>
+                        Contact Us
+                     </p>
+                  </Link>
+                  {!token && (
+                     <>
+                        <Link
+                           to={`/auth`}
+                           onClick={() => setOpen((current) => !current)}
+                        >
+                           <p className='font-medium duration-500 ease-in text-gray-300'>
+                              Register
+                           </p>
+                        </Link>
+
+                        <Link
+                           to={`/auth/login`}
+                           onClick={() => setOpen((current) => !current)}
+                        >
+                           <button className='font-medium duration-500 ease-in text-gray-300'>
+                              Login
+                           </button>
+                        </Link>
+                     </>
+                  )}
+               </div>
+               <hr className='py-3 border-gray-600 dark:border-gray-400' />
+               {token && (
                   <p
                      className='cursor-pointer text-center font-semibold tracking-wider'
                      onClick={logout}
                   >
                      Logout
                   </p>
-               ) : (
-                  <Link to='/auth/login'>
-                     <p className='cursor-pointer text-center font-semibold tracking-wider'>
-                        Login
-                     </p>
-                  </Link>
                )}
             </div>
             {token && <OwnerShortProfile sidebar />}

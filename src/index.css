@@ -7,6 +7,10 @@
    overflow: hidden;
 }
 
+h1 {
+   font-size: 32px;
+}
+
 ::-webkit-scrollbar {
    width: 7px;
 }
@@ -24,6 +28,27 @@
 @layer base {
    body {
       @apply h-screen bg-white dark:bg-black  duration-500 ease-in;
+   }
+   h1 {
+      @apply text-[24px] lg:text-[32px];
+   }
+   h2 {
+      @apply text-[16px] lg:text-[24px];
+   }
+   h3 {
+      @apply text-[12px] lg:text-[18.72px];
+   }
+   h4 {
+      @apply text-[10px] lg:text-[16px];
+   }
+   h5 {
+      @apply text-sm lg:text-[13.28px];
+   }
+   h6 {
+      @apply text-sm lg:text-[10.72px];
+   }
+   p {
+      @apply text-sm lg:text-[16px];
    }
 }
 

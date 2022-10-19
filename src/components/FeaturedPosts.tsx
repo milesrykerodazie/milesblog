@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { BiLoaderCircle } from 'react-icons/bi';
 import { useGetPostsQuery } from '../redux/features/postApiSlice';
 import Post from './Post';
 
@@ -54,9 +53,6 @@ const FeaturedPosts = () => {
 
    return (
       <div>
-         <h2 className='text-lg text-gray-800 dark:text-white font-semibold bg-white dark:bg-black z-50 py-2'>
-            Featured Post
-         </h2>
          {isLoading ? (
             <>
                <div className='bg-gray-300/20 h-48 mt-4 animate-pulse' />
@@ -69,28 +65,33 @@ const FeaturedPosts = () => {
                </p>
             </div>
          ) : isSuccess ? (
-            <div
-               className={` py-4 ${
-                  (adminFilter as any)?.length < 2 ||
-                  (filtered as any)?.length < 2
-                     ? 'h-auto overflow-y-hidden'
-                     : 'h-[500px] overflow-y-scroll'
-               }`}
-            >
-               {role && role === 'Admin' ? (
-                  <div className='grid grid-cols-1 after:gap-3 px-1'>
-                     {(adminFilter as any)?.map((postId: any) => (
-                        <Post key={postId} postId={postId} featured />
-                     ))}
-                  </div>
-               ) : (
-                  <div className='grid grid-cols-1  gap-3 px-1'>
-                     {(filtered as any)?.map((postId: any) => (
-                        <Post key={postId} postId={postId} featured />
-                     ))}
-                  </div>
-               )}
-            </div>
+            <>
+               <h2 className='text-lg text-gray-800 dark:text-white font-semibold bg-white dark:bg-black z-50 py-2'>
+                  Featured Post
+               </h2>
+               <div
+                  className={` py-4 ${
+                     (adminFilter as any)?.length < 2 ||
+                     (filtered as any)?.length < 2
+                        ? 'h-auto overflow-y-hidden'
+                        : 'h-[500px] overflow-y-scroll'
+                  }`}
+               >
+                  {role && role === 'Admin' ? (
+                     <div className='grid grid-cols-1 after:gap-3 px-1'>
+                        {(adminFilter as any)?.map((postId: any) => (
+                           <Post key={postId} postId={postId} featured />
+                        ))}
+                     </div>
+                  ) : (
+                     <div className='grid grid-cols-1  gap-3 px-1'>
+                        {(filtered as any)?.map((postId: any) => (
+                           <Post key={postId} postId={postId} featured />
+                        ))}
+                     </div>
+                  )}
+               </div>
+            </>
          ) : null}
       </div>
    );

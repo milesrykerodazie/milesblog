@@ -174,7 +174,7 @@ const Replies = ({ reply }: any) => {
                      : 'https://demofree.sirv.com/nope-not-here.jpg'
                }
                alt='userDetail-img'
-               className='w-8 h-8 rounded-full object-cover ring-2 ring-fuchsia-600'
+               className='w-5 h-5 rounded-full object-cover ring-2 ring-fuchsia-600'
             />
             <div className='space-y-3 flex-1'>
                <div className='bg-gray-200 p-2 rounded-md flex justify-between relative dark:bg-gray-800 duration-500 ease-in'>

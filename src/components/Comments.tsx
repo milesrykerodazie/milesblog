@@ -237,7 +237,7 @@ const Comments = ({ comment }: any) => {
                      : 'https://demofree.sirv.com/nope-not-here.jpg'
                }
                alt='userDetail-img'
-               className='w-8 h-8 rounded-full object-cover ring-2 ring-fuchsia-600'
+               className='w-5 h-5 rounded-full object-cover ring-2 ring-fuchsia-600'
             />
             <div className='space-y-3 flex-1'>
                <div className='bg-gray-200 dark:bg-gray-800 p-2 rounded-md flex justify-between relative duration-500 ease-in'>
@@ -255,19 +255,19 @@ const Comments = ({ comment }: any) => {
                      </p>
                   </div>
                   <div className='flex flex-col space-y-2 px-2'>
-                     <span className='text-xs text-gray-600 dark:text-gray-400 duration-500 ease-in'>
+                     <span className='text-xs text-gray-600 dark:text-gray-400 duration-500 ease-in truncate'>
                         {format(comment?.createdAt)}
                      </span>
                      {userDetail && authEdit && (
                         <div className='flex items-center space-x-3'>
                            <AiFillDelete
-                              className='text-lg text-red-600 cursor-pointer'
+                              className='text-sm lg:text-lg text-red-600 cursor-pointer'
                               onClick={() =>
                                  setOpenDelete((current) => !current)
                               }
                            />
                            <AiFillEdit
-                              className='text-lg text-gray-600 dark:text-gray-400 cursor-pointer duration-500 ease-in'
+                              className='text-sm lg:text-lg text-gray-600 dark:text-gray-400 cursor-pointer duration-500 ease-in'
                               onClick={() => setOpenEdit((current) => !current)}
                            />
                         </div>

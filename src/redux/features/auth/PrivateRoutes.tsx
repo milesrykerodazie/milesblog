@@ -31,8 +31,7 @@ type ProtectedRouteType = {
 const PrivateRoutes = ({ authRole }: ProtectedRouteType) => {
    const { auth, role } = useAuth();
 
-   // return authRole === role ? <Outlet /> : <Navigate to='/' />;
-   return <Outlet />;
+   return authRole === role ? <Outlet /> : <Navigate to='/' />;
 };
 
 export default PrivateRoutes;

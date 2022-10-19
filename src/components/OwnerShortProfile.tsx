@@ -77,7 +77,7 @@ const OwnerShortProfile = ({ sidebar }: any) => {
                <div className='duration-500 ease-in text-gray-800 dark:text-gray-200 text-sm flex flex-col items-center justify-center'>
                   <label className='font-semibold'>Bio</label>
 
-                  <p>
+                  <p className='text-justify truncate-line-clamp'>
                      {user?.userBio ? user?.userBio : 'No bio at the moment.'}
                   </p>
                </div>

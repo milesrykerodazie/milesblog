@@ -55,7 +55,7 @@ const Header = () => {
                   <p className='capitalize text-sm'>{user?.username}</p>
                </div>
             )}
-            <Navbar />
+            <Navbar user={user} />
          </div>
          <CategoryNav />
       </header>

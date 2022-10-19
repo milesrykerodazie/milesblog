@@ -70,6 +70,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
          }),
       }),
 
+      resendVerification: builder.mutation({
+         query: (username) => ({
+            url: '/resend-verification',
+            method: 'POST',
+            body: { username },
+         }),
+      }),
+
       refresh: builder.mutation({
          query: () => ({
             url: '/auth-refresh',
@@ -97,4 +105,5 @@ export const {
    useVerifyResetLinkQuery,
    useResetPasswordMutation,
    useRefreshMutation,
+   useResendVerificationMutation,
 } = authApiSlice;

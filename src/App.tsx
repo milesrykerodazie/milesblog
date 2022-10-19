@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/layout/Layout';
-import BlogPage from './pages/BlogPage';
 import ForgotPassword from './pages/ForgotPassword';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -20,6 +19,8 @@ import { selectCurrentToken } from './redux/features/auth/authSlice';
 import UserProfile from './pages/UserProfile';
 import EditUserProfile from './pages/EditUserProfile';
 import useTitle from './hooks/useTitle';
+import PrivateRoutes from './redux/features/auth/PrivateRoutes';
+import UsersList from './pages/UsersList';
 
 const App = () => {
    useTitle('Blog Sample');
@@ -32,7 +33,7 @@ const App = () => {
                   <Route index element={<Home />} />
                   <Route path='/about' element={<About />} />
                   <Route path='/contact' element={<Contact />} />
-                  <Route path='/blog' element={<BlogPage />} />
+
                   <Route path='/category/:id' element={<CategoryPosts />} />
 
                   <Route path='/post/:id' element={<PostDetails />} />
@@ -53,14 +54,12 @@ const App = () => {
                      path='/edit-profile/:id'
                      element={<EditUserProfile />}
                   />
-                  {/* <Route
-                     path='post'
+                  <Route
+                     path='admin'
                      element={<PrivateRoutes authRole='Admin' />}
                   >
-                     <Route index element={<AdminDashboard />} /> 
-                      <Route index element={<CreatePost />} />
-                     <Route path='edit/:id' element={<EditPost />} />
-                  </Route> */}
+                     <Route path='userslist' element={<UsersList />} />
+                  </Route>
                </Route>
             </Route>
          </Route>

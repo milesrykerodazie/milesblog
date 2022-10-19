@@ -13,10 +13,13 @@ import Comments from './Comments';
 import { usePostCommentMutation } from '../redux/features/commentsApiSlice';
 import DOMPurify from 'dompurify';
 import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
+import { useResendVerificationMutation } from '../redux/features/authApiSlice';
 
 const customId = 'custom-id-yes';
 
-const DetailsDisplay = ({ post }: any) => {
+const DetailsDisplay = ({ post, authUser }: any) => {
+   console.log(authUser);
+
    //like post
    const [likePost] = useLikePostMutation();
 
@@ -52,6 +55,12 @@ const DetailsDisplay = ({ post }: any) => {
          comments: data?.ids.map((id) => data?.entities[id]),
       }),
    });
+
+   //resend verifivation
+   const [
+      resendVerification,
+      { data: verificationData, isLoading, isSuccess, isError, error },
+   ] = useResendVerificationMutation();
 
    //getting the post owner details
    const { user }: any = useGetAllUsersQuery('usersList', {
@@ -165,7 +174,7 @@ const DetailsDisplay = ({ post }: any) => {
          setCommentText('');
       }
       if (isDeleteError) {
-         toast.success((deleteError as any)?.data?.message, {
+         toast.error((deleteError as any)?.data?.message, {
             toastId: customId,
          });
       }
@@ -188,8 +197,32 @@ const DetailsDisplay = ({ post }: any) => {
    //comment on post
    const handleComment = async (e: React.SyntheticEvent) => {
       e.preventDefault();
+
       if (commentText) {
          await postComment(commentObject);
+      }
+   };
+
+   useEffect(() => {
+      if (isSuccess) {
+         toast.success(verificationData?.message, {
+            toastId: customId,
+         });
+         navigate('/auth/verifyemail');
+      }
+      if (isError) {
+         toast.error((error as any)?.data?.message, {
+            toastId: customId,
+         });
+      }
+      // eslint-disable-next-line
+   }, [isSuccess, isError, verificationData?.message, error]);
+
+   // resend verification method
+   const handleVerification = async (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      if (authUser) {
+         await resendVerification(authUser.username);
       }
    };
 
@@ -316,18 +349,20 @@ const DetailsDisplay = ({ post }: any) => {
             <hr className=' mb-5 border-gray-300 dark:border-gray-600' />
             <p
                dangerouslySetInnerHTML={createMarkup()}
-               className=' dark:text-white text-gray-800 text-justify text-sm lg:text-lg pb-3'
+               className=' dark:text-white text-gray-800 text-justify pb-3'
             />
             {/* comment section */}
             <div className='space-y-2'>
                <div className='flex items-center space-x-2'>
                   {/* work on the likes, change from id to username */}
-                  <p className='text-gray-700 font-semibold dark:text-gray-400'>
+                  <p className='text-gray-700 font-semibold dark:text-gray-400 text-sm lg:text-base'>
                      Comments
                   </p>
-                  <FaComments className='w-6 h-6 text-gray-600 dark:text-gray-400' />
+                  <FaComments className='w-5 h-5 text-gray-600 dark:text-gray-400' />
                   {post?.comments.length > 0 && (
-                     <span>{post?.comments.length}</span>
+                     <span className='text-gray-800 dark:text-gray-300 text-sm lg:text-base'>
+                        {post?.comments.length}
+                     </span>
                   )}
                </div>
                <div className=''>
@@ -344,28 +379,49 @@ const DetailsDisplay = ({ post }: any) => {
                            rows={1}
                            value={commentText}
                            onChange={(e) => setCommentText(e.target.value)}
-                           placeholder='your comment...'
+                           placeholder={
+                              authUser?.verified
+                                 ? 'your comment...'
+                                 : 'verify your mail to comment'
+                           }
+                           disabled={!authUser?.verified}
                            className='border border-gray-300 dark:border-gray-600 rounded-xl w-full px-2 py-3 outline-none focus:ring-1 focus:ring-fuchsia-400 dark:bg-black/90 text-gray-800 dark:text-gray-300 duration-500 ease-in placeholder:text-gray-400 dark:placeholder:text-gray-400/80 placeholder:text-sm overflow-hidden'
                         />
                         <div className='flex items-center justify-end'>
-                           <button
-                              disabled={!commentText}
-                              className={`text-white bg-fuchsia-600 p-2 rounded-sm font-semibold ${
-                                 commentText
-                                    ? 'cursor-pointer'
-                                    : 'cursor-not-allowed opacity-40'
-                              }`}
-                              onClick={handleComment}
-                           >
-                              {commentLoading ? (
-                                 <p className='flex items-center'>
-                                    Comenting...
-                                    <ImSpinner className='w-6 h-6 text-slate-200 ml-2 animate-spin' />
-                                 </p>
-                              ) : (
-                                 <p>Comment</p>
-                              )}
-                           </button>
+                           {authUser?.verified ? (
+                              <button
+                                 disabled={!commentText}
+                                 className={`text-white bg-fuchsia-600 p-2 rounded-sm text-sm lg:text-base font-semibold ${
+                                    commentText
+                                       ? 'cursor-pointer'
+                                       : 'cursor-not-allowed opacity-40'
+                                 }`}
+                                 onClick={handleComment}
+                              >
+                                 {commentLoading ? (
+                                    <p className='flex items-center'>
+                                       Comenting...
+                                       <ImSpinner className='w-6 h-6 text-slate-200 ml-2 animate-spin' />
+                                    </p>
+                                 ) : (
+                                    <p>Comment</p>
+                                 )}
+                              </button>
+                           ) : (
+                              <button
+                                 className='text-white bg-fuchsia-600 p-2 rounded-sm font-semibold text-sm lg:text-base'
+                                 onClick={handleVerification}
+                              >
+                                 {isLoading ? (
+                                    <p className='flex items-center'>
+                                       Verifying...
+                                       <ImSpinner className='w-5 h-5 text-slate-200 ml-2 animate-spin' />
+                                    </p>
+                                 ) : (
+                                    <p>Verify Email</p>
+                                 )}
+                              </button>
+                           )}
                         </div>
                      </div>
                   )}

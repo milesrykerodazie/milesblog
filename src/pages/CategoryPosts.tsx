@@ -59,7 +59,7 @@ const CategoryPosts = () => {
             </div>
          ) : isError ? (
             <div className='flex items-center justify-center h-[calc(100vh-96px)]'>
-               <p className='text-xl font-semibold text-gray-800 dark:text-gray-300'>
+               <p className='text-sm lg:text-xl font-semibold text-gray-800 dark:text-gray-300'>
                   {(error as any)?.data?.message}
                </p>
             </div>
