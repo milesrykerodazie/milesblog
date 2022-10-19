@@ -24,7 +24,7 @@ const Post = ({ postId, featured }: any) => {
    return (
       <div className='space-y-2'>
          <div
-            className={` bg-white dark:bg-black shadow-md shadow-fuchsia-600 p-2 rounded-md space-y-2  duration-500 ${
+            className={` bg-white dark:bg-black shadow-md shadow-fuchsia-600 rounded-md space-y-2  duration-500 ${
                post?.suspended !== false ? 'opacity-30' : featured ? '' : 'mt-3'
             }`}
          >
@@ -32,34 +32,35 @@ const Post = ({ postId, featured }: any) => {
                <img
                   src={post?.image.url}
                   alt='post_img'
-                  className={`object-cover w-full rounded-md ${
+                  className={`object-cover w-full rounded-t-md ${
                      featured ? 'h-32' : 'lg:h-64 h-44'
                   }`}
                />
             )}
+            <div className='space-y-2 p-2'>
+               <h2
+                  className={`dark:text-white text-gray-800 truncate font-bold capitalize ${
+                     featured ? 'text-sm' : 'text-xl'
+                  }`}
+               >
+                  {post?.title}
+               </h2>
 
-            <h2
-               className={`dark:text-white text-gray-800 truncate font-bold capitalize ${
-                  featured ? 'text-sm' : 'text-xl'
-               }`}
-            >
-               {post?.title}
-            </h2>
-
-            <div className='flex items-center justify-between'>
-               <p className='text-xs text-gray-500 dark:text-gray-300'>
-                  {dateCreated}
-               </p>
-               {post?.suspended === false && (
-                  <button
-                     className={`bg-fuchsia-600 text-white text-sm  rounded-md font-semibold p-2 ${
-                        featured ? 'text-xs' : 'text-sm'
-                     }`}
-                     onClick={postDetails}
-                  >
-                     Read More
-                  </button>
-               )}
+               <div className='flex items-center justify-between'>
+                  <p className='text-xs text-gray-500 dark:text-gray-300'>
+                     {dateCreated}
+                  </p>
+                  {post?.suspended === false && (
+                     <button
+                        className={`bg-fuchsia-600 text-white text-sm  rounded-md font-semibold p-2 ${
+                           featured ? 'text-xs' : 'text-sm'
+                        }`}
+                        onClick={postDetails}
+                     >
+                        Read More
+                     </button>
+                  )}
+               </div>
             </div>
          </div>
       </div>
