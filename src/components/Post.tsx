@@ -24,8 +24,8 @@ const Post = ({ postId, featured }: any) => {
    return (
       <div className='space-y-2'>
          <div
-            className={`mt-3 bg-white dark:bg-black shadow-md shadow-fuchsia-600 p-2 rounded-md space-y-2  duration-500 ${
-               post?.suspended !== false ? 'opacity-30' : featured ? '' : ''
+            className={` bg-white dark:bg-black shadow-md shadow-fuchsia-600 p-2 rounded-md space-y-2  duration-500 ${
+               post?.suspended !== false ? 'opacity-30' : featured ? '' : 'mt-3'
             }`}
          >
             {post?.image.url && (
@@ -50,14 +50,16 @@ const Post = ({ postId, featured }: any) => {
                <p className='text-xs text-gray-500 dark:text-gray-300'>
                   {dateCreated}
                </p>
-               <button
-                  className={`bg-fuchsia-600 text-white text-sm  rounded-md font-semibold p-2 ${
-                     featured ? 'text-xs' : 'text-sm'
-                  }`}
-                  onClick={postDetails}
-               >
-                  Read More
-               </button>
+               {post?.suspended === false && (
+                  <button
+                     className={`bg-fuchsia-600 text-white text-sm  rounded-md font-semibold p-2 ${
+                        featured ? 'text-xs' : 'text-sm'
+                     }`}
+                     onClick={postDetails}
+                  >
+                     Read More
+                  </button>
+               )}
             </div>
          </div>
       </div>

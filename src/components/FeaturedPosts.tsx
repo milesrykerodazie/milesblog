@@ -60,17 +60,17 @@ const FeaturedPosts = () => {
             </>
          ) : isError ? (
             <div>
-               <p className='text-xl font-semibold'>
+               <p className='text-sm text-red-500 font-semibold'>
                   {(error as any)?.data?.message}
                </p>
             </div>
          ) : isSuccess ? (
             <>
-               <h2 className='text-lg text-gray-800 dark:text-white font-semibold duration-500 ease-in z-50 py-2'>
+               <h2 className='text-base text-gray-800 dark:text-white font-semibold duration-500 ease-in z-50 py-2 '>
                   Featured Post
                </h2>
                <div
-                  className={` py-4 ${
+                  className={` pb-3  ${
                      (adminFilter as any)?.length < 2 ||
                      (filtered as any)?.length < 2
                         ? 'h-auto overflow-y-hidden'
@@ -78,13 +78,13 @@ const FeaturedPosts = () => {
                   }`}
                >
                   {role && role === 'Admin' ? (
-                     <div className='grid grid-cols-1 after:gap-3 px-1'>
+                     <div className='grid grid-cols-1 gap-y-2 px-1'>
                         {(adminFilter as any)?.map((postId: any) => (
                            <Post key={postId} postId={postId} featured />
                         ))}
                      </div>
                   ) : (
-                     <div className='grid grid-cols-1  gap-3 px-1'>
+                     <div className='grid grid-cols-1 gap-y-2 px-1'>
                         {(filtered as any)?.map((postId: any) => (
                            <Post key={postId} postId={postId} featured />
                         ))}
