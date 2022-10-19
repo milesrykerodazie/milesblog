@@ -29,7 +29,7 @@ type ProtectedRouteType = {
 };
 
 const PrivateRoutes = ({ authRole }: ProtectedRouteType) => {
-   const { auth, role } = useAuth();
+   const { role } = useAuth();
 
    return authRole === role ? <Outlet /> : <Navigate to='/' />;
 };

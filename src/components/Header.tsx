@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { MdVerified } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
