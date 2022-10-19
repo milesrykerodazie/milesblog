@@ -1,6 +1,14 @@
-import { Link, useParams } from 'react-router-dom';
-import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import {
+   useDeleteUserMutation,
+   useGetAllUsersQuery,
+} from '../redux/features/usersApiSlice';
 import useTitle from '../hooks/useTitle';
+import { ImSpinner } from 'react-icons/im';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
+const customId = 'custom-id-yes';
 
 const UserProfile = () => {
    const { id }: any = useParams();
@@ -13,6 +21,13 @@ const UserProfile = () => {
       }),
    });
 
+   const [
+      deleteUser,
+      { data: deleteData, isSuccess, isLoading, isError, error },
+   ] = useDeleteUserMutation();
+
+   const navigate = useNavigate();
+
    //for authomatically getting post owner on login
    let userDetail: any;
    const userName = localStorage.getItem('user');
@@ -20,16 +35,9 @@ const UserProfile = () => {
       userDetail = JSON.parse(userName);
    }
 
-   //for authomatically getting post owner on login
-   let usernamelocal: any;
-   const userLocal = localStorage.getItem('user');
-   if (userLocal) {
-      usernamelocal = JSON.parse(userLocal);
-   }
-
    const authEdit =
-      (usernamelocal && user?.username === userDetail?.user) ||
-      usernamelocal?.role === 'Admin';
+      userDetail &&
+      (user?.username === userDetail?.username || userDetail?.role === 'Admin');
 
    //formatting date
    const dateJoined = new Date(user?.createdAt).toLocaleString('en-US', {
@@ -37,6 +45,26 @@ const UserProfile = () => {
       month: 'long',
       year: 'numeric',
    });
+
+   const [openDelete, setOpenDelete] = useState(false);
+
+   const handleDelete = async (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      if (user?._id) {
+         await deleteUser({ id: user?._id });
+      }
+      setOpenDelete((current) => !current);
+   };
+
+   useEffect(() => {
+      if (isSuccess) {
+         toast.success(deleteData?.message, {
+            toastId: customId,
+         });
+         navigate('/');
+      }
+      // eslint-disable-next-line
+   }, [isSuccess, deleteData?.message]);
 
    return (
       <div>
@@ -77,6 +105,50 @@ const UserProfile = () => {
                <span className='font-semibold'>Bio:</span>{' '}
                {user?.userBio ? user?.userBio : 'No bio at the moment.'}
             </p>
+            {authEdit && (
+               <button
+                  type='submit'
+                  className='w-1/2 bg-fuchsia-300 text-white py-2 rounded-md font-semibold tracking-wide uppercase flex items-center justify-center space-x-3'
+                  onClick={() => setOpenDelete((current) => !current)}
+               >
+                  {isLoading ? (
+                     <div className='flex items-center space-x-1'>
+                        <p>
+                           Deleting<span className='animate-pulse'>...</span>
+                        </p>
+                        <ImSpinner className='w-5 h-5 text-slate-200 animate-spin' />
+                     </div>
+                  ) : (
+                     <p>Delete</p>
+                  )}
+               </button>
+            )}
+            {openDelete && (
+               <div className='flex flex-col items-center text-xs lg:text-sm space-y-2'>
+                  <p className='text-gray-800 dark:text-gray-200'>
+                     Are you sure you want to leave Miles Blog Sample?
+                  </p>
+                  <div className='flex items-center space-x-3'>
+                     <button
+                        className='bg-red-500 text-white px-3 py-1 rounded-md font-semibold tracking-wide uppercase'
+                        onClick={handleDelete}
+                     >
+                        Yes
+                     </button>
+                     <button
+                        className='bg-fuchsia-300 text-white px-3 py-1 rounded-md font-semibold tracking-wide uppercase'
+                        onClick={() => setOpenDelete((current) => !current)}
+                     >
+                        No
+                     </button>
+                  </div>
+               </div>
+            )}
+            {isError && (
+               <p className='text-sm text-red-500 tracking-wider'>
+                  {(error as any)?.data?.message}
+               </p>
+            )}
          </div>
       </div>
    );

@@ -63,11 +63,18 @@ const OwnerShortProfile = ({ sidebar }: any) => {
 
    return (
       <div>
-         <Link to={`/edit-profile/${user?.username}`}>
-            <button className='bg-fuchsia-600 px-2 rounded-sm  text-gray-100 text-sm'>
-               Edit
-            </button>
-         </Link>
+         <div className='flex items-center justify-between'>
+            <Link to={`/edit-profile/${user?.username}`}>
+               <button className='bg-fuchsia-600 px-2 py-1 rounded-md  text-gray-100 text-sm'>
+                  Edit
+               </button>
+            </Link>
+            <Link to={`/author/${user?.username}`}>
+               <button className='bg-fuchsia-600 px-2 py-1 rounded-md  text-gray-100 text-sm'>
+                  Profile
+               </button>
+            </Link>
+         </div>
 
          <div className='flex flex-col justify-center items-center py-2 space-y-4'>
             <img

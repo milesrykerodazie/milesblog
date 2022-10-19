@@ -47,10 +47,24 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             { type: 'User', id: 'LIST' },
          ],
       }),
+      deleteUser: builder.mutation({
+         query: ({ id }) => ({
+            url: `/delete-user`,
+            method: 'DELETE',
+            body: { id },
+         }),
+         invalidatesTags: (result, error, arg) => [
+            { type: 'User', id: 'LIST' },
+         ],
+      }),
    }),
 });
 
-export const { useGetAllUsersQuery, useUpdateUserMutation } = usersApiSlice;
+export const {
+   useGetAllUsersQuery,
+   useUpdateUserMutation,
+   useDeleteUserMutation,
+} = usersApiSlice;
 // returns the query result object
 export const selectUsersResult = usersApiSlice.endpoints.getAllUsers.select([]);
 
