@@ -7,6 +7,7 @@ import useTitle from '../hooks/useTitle';
 import { ImSpinner } from 'react-icons/im';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useLogoutMutation } from '../redux/features/authApiSlice';
 
 const customId = 'custom-id-yes';
 
@@ -20,6 +21,8 @@ const UserProfile = () => {
          user: data?.entities[id],
       }),
    });
+
+   const [logout] = useLogoutMutation();
 
    const [
       deleteUser,
@@ -52,6 +55,8 @@ const UserProfile = () => {
       e.preventDefault();
       setOpenDelete((current) => !current);
       if (user?._id) {
+         // @ts-expect-error
+         await logout();
          await deleteUser({ id: user?._id });
       }
    };
