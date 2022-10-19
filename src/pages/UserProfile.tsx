@@ -61,6 +61,7 @@ const UserProfile = () => {
          toast.success(deleteData?.message, {
             toastId: customId,
          });
+         localStorage.removeItem('user');
          navigate('/');
       }
       // eslint-disable-next-line

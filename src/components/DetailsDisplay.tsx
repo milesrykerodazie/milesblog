@@ -60,13 +60,6 @@ const DetailsDisplay = ({ post, authUser }: any) => {
       }),
    });
 
-   //sending post owner to localStorage
-   useEffect(() => {
-      if (post?.postOwner) {
-         localStorage.setItem('po', JSON.stringify({ user: post?.postOwner }));
-      }
-   }, [post?.postOwner]);
-
    const safePost = DOMPurify.sanitize(post?.post);
 
    //use navigation
