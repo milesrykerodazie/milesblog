@@ -50,10 +50,10 @@ const UserProfile = () => {
 
    const handleDelete = async (e: React.SyntheticEvent) => {
       e.preventDefault();
+      setOpenDelete((current) => !current);
       if (user?._id) {
          await deleteUser({ id: user?._id });
       }
-      setOpenDelete((current) => !current);
    };
 
    useEffect(() => {
