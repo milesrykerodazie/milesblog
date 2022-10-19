@@ -60,7 +60,7 @@ const FeaturedPosts = () => {
             </>
          ) : isError ? (
             <div>
-               <p className='text-sm text-red-500 font-semibold'>
+               <p className='text-sm text-red-500 font-semibold pt-3'>
                   {(error as any)?.data?.message}
                </p>
             </div>
