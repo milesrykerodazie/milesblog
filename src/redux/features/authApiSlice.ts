@@ -42,9 +42,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                setTimeout(() => {
                   dispatch(apiSlice.util.resetApiState());
                }, 1000);
-            } catch (err) {
-               console.log(err);
-            }
+            } catch (err) {}
          },
       }),
 

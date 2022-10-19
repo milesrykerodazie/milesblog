@@ -1,16 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useAppSelector } from '../redux/app/store';
-import { selectCurrentToken } from '../redux/features/auth/authSlice';
 import { useLogoutMutation } from '../redux/features/authApiSlice';
 
 const customId = 'custom-id-yes';
 
 const Navbar = ({ user }: any) => {
    const [logout, { data: logoutData, isSuccess }] = useLogoutMutation();
-   //getting the token from redux
-   const token = useAppSelector(selectCurrentToken);
+
    //reference for useEffect cleanup
    const effectRan = useRef(false);
 

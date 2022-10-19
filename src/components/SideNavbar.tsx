@@ -3,10 +3,9 @@ import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../redux/features/authApiSlice';
 import { toast } from 'react-toastify';
-import { useAppSelector } from '../redux/app/store';
-import { selectCurrentToken } from '../redux/features/auth/authSlice';
 import OwnerShortProfile from './OwnerShortProfile';
 import { CATEGORIES } from '../config/configurations';
+import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
 
 export interface stateType {
    open: boolean;
@@ -20,8 +19,6 @@ const SideNavbar = ({ open, setOpen }: stateType) => {
    };
 
    const [logout, { data: logoutData, isSuccess }] = useLogoutMutation();
-   //getting the token from redux
-   const token = useAppSelector(selectCurrentToken);
 
    //for authomatically getting post owner on login
    let userDetail: any;
@@ -29,6 +26,14 @@ const SideNavbar = ({ open, setOpen }: stateType) => {
    if (userName) {
       userDetail = JSON.parse(userName);
    }
+
+   const { user }: any = useGetAllUsersQuery('usersList', {
+      selectFromResult: ({ data }) => ({
+         user: data?.entities[userDetail?.username],
+      }),
+   });
+
+   const canCreatePost = userDetail !== undefined && user?.verified;
 
    //reference for useEffect cleanup
    const effectRan = useRef(false);
@@ -112,7 +117,7 @@ const SideNavbar = ({ open, setOpen }: stateType) => {
                         </Link>
                      </>
                   )}
-                  {token && (
+                  {canCreatePost && (
                      <>
                         <Link
                            to={`/create-post`}
@@ -141,7 +146,7 @@ const SideNavbar = ({ open, setOpen }: stateType) => {
                         Contact Us
                      </p>
                   </Link>
-                  {!token && (
+                  {userDetail === undefined && (
                      <>
                         <Link
                            to={`/auth`}
@@ -164,7 +169,7 @@ const SideNavbar = ({ open, setOpen }: stateType) => {
                   )}
                </div>
                <hr className='py-3 border-gray-600 dark:border-gray-400' />
-               {token && (
+               {userDetail !== undefined && (
                   <p
                      className='cursor-pointer text-center font-semibold tracking-wider'
                      onClick={logout}
@@ -173,7 +178,7 @@ const SideNavbar = ({ open, setOpen }: stateType) => {
                   </p>
                )}
             </div>
-            {token && <OwnerShortProfile sidebar />}
+            {userDetail !== undefined && <OwnerShortProfile sidebar />}
          </div>
       </div>
    );

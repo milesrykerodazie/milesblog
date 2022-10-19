@@ -118,6 +118,13 @@ const EditPostForm = ({ post }: any) => {
       }
    };
 
+   //for authomatically getting post owner on login
+   let userDetail: any;
+   const userName = localStorage.getItem('user');
+   if (userName) {
+      userDetail = JSON.parse(userName);
+   }
+
    const editForm = (
       <form className='pb-10' onSubmit={handleUpdate}>
          <div className='w-full lg:mx-auto bg-white dark:bg-black p-5 space-y-3 shadow-md shadow-fuchsia-500 lg:rounded-md duration-500 ease-in'>
@@ -212,23 +219,26 @@ const EditPostForm = ({ post }: any) => {
                            )}
                         </div>
                         <div className='flex items-center justify-between md:flex-1'>
-                           <div>
-                              <label htmlFor='featured' className='label'>
-                                 Featured
-                              </label>
-                              <p
-                                 className='justify-center items-center flex cursor-pointer py-2'
-                                 onClick={() =>
-                                    setFeatured((current: any) => !current)
-                                 }
-                              >
-                                 {featured ? (
-                                    <TiTick className='text-fuchsia-600 text-lg' />
-                                 ) : (
-                                    <TiTick className='text-gray-600/60 text-lg' />
-                                 )}
-                              </p>
-                           </div>
+                           {userDetail?.role === 'Admin' && (
+                              <div>
+                                 <label htmlFor='featured' className='label'>
+                                    Featured
+                                 </label>
+                                 <p
+                                    className='justify-center items-center flex cursor-pointer py-2'
+                                    onClick={() =>
+                                       setFeatured((current: any) => !current)
+                                    }
+                                 >
+                                    {featured ? (
+                                       <TiTick className='text-fuchsia-600 text-lg' />
+                                    ) : (
+                                       <TiTick className='text-gray-600/60 text-lg' />
+                                    )}
+                                 </p>
+                              </div>
+                           )}
+
                            <div>
                               <label htmlFor='role' className='label'>
                                  Role
@@ -340,7 +350,7 @@ const EditPostForm = ({ post }: any) => {
                   </div>
 
                   <div className='flex-1'>
-                     {data?.role === 'Admin' && (
+                     {userDetail?.role === 'Admin' && (
                         <div
                            className='flex items-center space-x-2 justify-end'
                            onClick={() =>

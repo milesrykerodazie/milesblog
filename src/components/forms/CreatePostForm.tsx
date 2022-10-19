@@ -70,6 +70,13 @@ const CreatePostForm = ({
       setTags(newTags);
    };
 
+   //for authomatically getting post owner on login
+   let userDetail: any;
+   const userName = localStorage.getItem('user');
+   if (userName) {
+      userDetail = JSON.parse(userName);
+   }
+
    const postForm = (
       <div>
          <div className='flex flex-col lg:flex-row lg:space-x-3'>
@@ -148,23 +155,26 @@ const CreatePostForm = ({
                      )}
                   </div>
                   <div className='flex items-center justify-between md:flex-1'>
-                     <div>
-                        <label htmlFor='featured' className='label'>
-                           Featured
-                        </label>
-                        <p
-                           className='justify-center items-center flex cursor-pointer py-2'
-                           onClick={() =>
-                              setFeatured((current: any) => !current)
-                           }
-                        >
-                           {featured ? (
-                              <TiTick className='text-fuchsia-600 text-lg' />
-                           ) : (
-                              <TiTick className='text-gray-600/60 text-lg' />
-                           )}
-                        </p>
-                     </div>
+                     {userDetail?.role === 'Admin' && (
+                        <div>
+                           <label htmlFor='featured' className='label'>
+                              Featured
+                           </label>
+                           <p
+                              className='justify-center items-center flex cursor-pointer py-2'
+                              onClick={() =>
+                                 setFeatured((current: any) => !current)
+                              }
+                           >
+                              {featured ? (
+                                 <TiTick className='text-fuchsia-600 text-lg' />
+                              ) : (
+                                 <TiTick className='text-gray-600/60 text-lg' />
+                              )}
+                           </p>
+                        </div>
+                     )}
+
                      <div>
                         <label htmlFor='role' className='label'>
                            Role

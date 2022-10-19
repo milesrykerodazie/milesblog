@@ -31,7 +31,6 @@ const FeaturedPosts = () => {
       isLoading,
       isSuccess,
       isError,
-      error,
    } = useGetPostsQuery('postList', {
       pollingInterval: 120000,
       refetchOnFocus: true,
@@ -61,7 +60,7 @@ const FeaturedPosts = () => {
          ) : isError ? (
             <div>
                <p className='text-sm text-red-500 font-semibold pt-3'>
-                  {(error as any)?.data?.message}
+                  No Featured Posts
                </p>
             </div>
          ) : isSuccess ? (

@@ -32,14 +32,6 @@ const EditProfileForm = ({ user }: any) => {
 
    const [userBio, setUserBio] = useState(user?.userBio);
 
-   //states for count
-   // const [count, setCount] = useState(0);
-   // const maxText = 200;
-
-   // const countRemaining = maxText - count;
-
-   // console.log(userBio);
-
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       // const type = event.target.type;
 
