@@ -7,31 +7,31 @@ export const ROLES = [
 export const CATEGORIES = [
    {
       id: '001',
-      value: 'relationship',
+      value: 'category-1',
    },
    {
       id: '002',
-      value: 'positive-mindset',
+      value: 'category-2',
    },
    {
       id: '003',
-      value: 'career',
+      value: 'category-3',
    },
    {
       id: '004',
-      value: 'social',
+      value: 'category-4',
    },
    {
       id: '005',
-      value: 'politics',
+      value: 'category-5',
    },
    {
       id: '006',
-      value: 'family',
+      value: 'category-6',
    },
    {
       id: '007',
-      value: 'God',
+      value: 'category-7',
    },
 ];
 
@@ -59,5 +59,9 @@ export const TagOptions = [
    {
       id: '006',
       value: 'tag6',
+   },
+   {
+      id: '007',
+      value: 'tag7',
    },
 ];
