@@ -15,10 +15,10 @@ h1 {
    width: 7px;
 }
 ::-webkit-scrollbar-track {
-   background: #f0abfc;
+   background: #e5e7eb;
 }
 ::-webkit-scrollbar-thumb {
-   background: #e5e7eb;
+   background: #f0abfc;
 }
 
 @tailwind base;
