@@ -120,20 +120,17 @@ const CreatePostForm = ({
                      <label htmlFor='category' className='label'>
                         Category
                      </label>
-                     <div className='flex items-center p-2 justify-between'>
+                     <div
+                        className='flex items-center p-2 justify-between'
+                        onClick={() => setOpen((current) => !current)}
+                     >
                         <p className='border-b border-gray-300 dark:border-gray-600 py-2 lg:py-1 pl-6 pr-3 w-full dark:bg-black/90 text-gray-800/60 dark:text-gray-300 duration-500 ease-in text-xs capitalize tracking-wider'>
                            {category === '' ? 'Select Category' : category}
                         </p>
                         {!open ? (
-                           <MdKeyboardArrowRight
-                              className='w-4 h-4 lg:w-6 lg:h-6 text-gray-800 dark:text-white duration-500 ease-in'
-                              onClick={() => setOpen((current) => !current)}
-                           />
+                           <MdKeyboardArrowRight className='w-4 h-4 lg:w-6 lg:h-6 text-gray-800 dark:text-white duration-500 ease-in' />
                         ) : (
-                           <MdOutlineKeyboardArrowDown
-                              className='w-4 h-4 lg:w-6 lg:h-6 text-gray-800 dark:text-white duration-500 ease-in '
-                              onClick={() => setOpen((current) => !current)}
-                           />
+                           <MdOutlineKeyboardArrowDown className='w-4 h-4 lg:w-6 lg:h-6 text-gray-800 dark:text-white duration-500 ease-in ' />
                         )}
                      </div>
                      {/* select category */}
@@ -207,12 +204,22 @@ const CreatePostForm = ({
                               ))}
                            </div>
                         ) : (
-                           <p className='text-xs text-gray-500/60 dark: py-2'>
-                              Select Tags
-                           </p>
+                           <div
+                              className='flex items-center justify-between w-full'
+                              onClick={() => setOpenTag((current) => !current)}
+                           >
+                              <p className='text-xs text-gray-500/60 dark: py-2'>
+                                 Select Tags
+                              </p>
+                              {!openTag ? (
+                                 <MdKeyboardArrowRight className='w-4 h-4 lg:w-6 lg:h-6 text-gray-800 dark:text-white duration-500 ease-in' />
+                              ) : (
+                                 <MdOutlineKeyboardArrowDown className='w-4 h-4 lg:w-6 lg:h-6 text-gray-800 dark:text-white duration-500 ease-in ' />
+                              )}
+                           </div>
                         )}
 
-                        {!openTag ? (
+                        {/* {!openTag ? (
                            <MdKeyboardArrowRight
                               className='w-4 h-4 lg:w-6 lg:h-6 text-gray-800 dark:text-white duration-500 ease-in'
                               onClick={() => setOpenTag((current) => !current)}
@@ -222,7 +229,7 @@ const CreatePostForm = ({
                               className='w-4 h-4 lg:w-6 lg:h-6 text-gray-800 dark:text-white duration-500 ease-in '
                               onClick={() => setOpenTag((current) => !current)}
                            />
-                        )}
+                        )} */}
                      </div>
 
                      {/* select category */}
