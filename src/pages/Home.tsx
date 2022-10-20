@@ -58,7 +58,7 @@ const Home = () => {
             </div>
          ) : isError ? (
             <div className='flex items-center justify-center h-[calc(100vh-96px)]'>
-               <p className='text-xl font-semibold'>
+               <p className='text-gray-800 dark:text-gray-200 lg:text-xl font-semibold duration-500 ease-in'>
                   {(error as any)?.data?.message}
                </p>
             </div>

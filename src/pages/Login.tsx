@@ -108,7 +108,7 @@ const Login = () => {
                         onChange={handleToggle}
                         checked={persist}
                      />
-                     <span className=''>Trust This Device</span>
+                     <span className=''>Keep me logged in</span>
                   </label>
                   <ActionButton
                      buttonDescription='Sign In'
