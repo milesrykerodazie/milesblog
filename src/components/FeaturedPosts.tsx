@@ -73,7 +73,7 @@ const FeaturedPosts = () => {
                      (adminFilter as any)?.length < 2 ||
                      (filtered as any)?.length < 2
                         ? 'h-auto overflow-y-hidden'
-                        : 'h-[500px] overflow-y-scroll'
+                        : 'h-[400px] overflow-y-scroll'
                   }`}
                >
                   {role && role === 'Admin' ? (
