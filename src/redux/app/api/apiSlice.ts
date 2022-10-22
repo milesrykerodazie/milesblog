@@ -5,7 +5,8 @@ import { RootState } from '../store';
 const { REACT_APP_API_LINK } = process.env;
 
 const baseQuery = fetchBaseQuery({
-   baseUrl: `${REACT_APP_API_LINK}`,
+   // baseUrl: `${REACT_APP_API_LINK}`,
+   baseUrl: 'http://localhost:9000/milesapi',
    credentials: 'include',
    prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;

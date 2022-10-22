@@ -284,7 +284,7 @@ const DetailsDisplay = ({ post, authUser }: any) => {
                      </p>
 
                      <span className='text-gray-800 dark:text-gray-300 duration-500 ease-in text-sm'>
-                        {likes}
+                        {likes > 0 && likes}
                      </span>
                   </div>
                   <div className='flex lg:flex-row lg:space-x-3 flex-col space-y-2 lg:space-y-0'>

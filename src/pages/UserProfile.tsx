@@ -20,6 +20,7 @@ const UserProfile = () => {
          user: data?.entities[id],
       }),
    });
+   console.log(user);
 
    const [
       deleteUser,
@@ -51,7 +52,7 @@ const UserProfile = () => {
    const handleDelete = async (e: React.SyntheticEvent) => {
       e.preventDefault();
       setOpenDelete((current) => !current);
-      if (user?._id) {
+      if (user?.username) {
          await deleteUser({ id: user?._id });
       }
    };

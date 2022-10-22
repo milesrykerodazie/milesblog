@@ -17,6 +17,9 @@ const ResetPassword = () => {
    useTitle('reset-password');
    const location = useLocation();
    const { token, id } = queryString.parse(location.search);
+   console.log('Location => ', location);
+
+   console.log(token, id);
 
    // verify token and id from reset link
 

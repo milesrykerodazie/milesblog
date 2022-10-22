@@ -82,14 +82,20 @@ export const postApiSlice = apiSlice.injectEndpoints({
                return response.status === 200 && !result.isError;
             },
          }),
-         transformResponse: (responseData) => {
-            const loadedComments = (responseData as any)?.postComments?.map(
-               (comment: any) => {
-                  comment.id = comment._id;
-                  return comment;
-               },
-            );
-            return postsAdapter.setAll(initialState, loadedComments);
+         transformResponse: (responseData: any) => {
+            if (responseData) {
+               console.log(responseData);
+
+               const loadedComments = (responseData as any)?.postComments?.map(
+                  (comment: any) => {
+                     if (comment) {
+                        (comment as any).id = (comment as any)?._id;
+                        return comment;
+                     }
+                  },
+               );
+               return postsAdapter.setAll(initialState, loadedComments);
+            }
          },
          providesTags: (result: any, error: any, arg: any) => {
             if (result?.ids) {

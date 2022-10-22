@@ -176,7 +176,7 @@ const Replies = ({ reply }: any) => {
                alt='userDetail-img'
                className='w-5 h-5 rounded-full object-cover ring-2 ring-fuchsia-600'
             />
-            <div className='space-y-3 flex-1'>
+            <div className='space-y-2 flex-1'>
                <div className='bg-gray-200 p-2 rounded-md flex justify-between relative dark:bg-gray-800 duration-500 ease-in'>
                   {isDeleteError && (
                      <p className='text-red-500 text-sm'>
@@ -283,7 +283,7 @@ const Replies = ({ reply }: any) => {
                      </div>
                   </div>
                )}
-               <div className='flex space-x-2 text-sm items-center'>
+               <div className='flex space-x-2 text-sm items-center pb-2'>
                   <div className='flex space-x-2 items-center'>
                      <p className='text-gray-800 dark:text-gray-300 duration-500 ease-in'>
                         Like

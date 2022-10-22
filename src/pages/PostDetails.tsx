@@ -3,6 +3,7 @@ import DetailsDisplay from '../components/DetailsDisplay';
 import { useGetPostsQuery } from '../redux/features/postApiSlice';
 import useTitle from '../hooks/useTitle';
 import { useGetAllUsersQuery } from '../redux/features/usersApiSlice';
+import LoadingComponent from '../components/LoadingComponent';
 
 const PostDetails = () => {
    //checking params
@@ -29,7 +30,11 @@ const PostDetails = () => {
 
    return (
       <div>
-         <DetailsDisplay post={post} authUser={user} />
+         {post ? (
+            <DetailsDisplay post={post} authUser={user} />
+         ) : (
+            <LoadingComponent />
+         )}
       </div>
    );
 };
